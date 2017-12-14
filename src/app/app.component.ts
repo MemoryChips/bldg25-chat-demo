@@ -6,5 +6,15 @@ import { Component } from '@angular/core'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app'
+  title = 'Chat5'
+  answer = ''
+  answerDisplay = ''
+  showSpinner = false
+  showAnswer() {
+    this.showSpinner = true
+    setTimeout(() => {
+      this.answerDisplay = this.answer
+      this.showSpinner = false
+    }, 2000)
+  }
 }

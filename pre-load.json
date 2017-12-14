@@ -1,0 +1,23 @@
+{
+  "courses": {
+
+    "angular-complete-course": {
+      "title": "Angular 2 - The complete course",
+      "description": "The complete course on angular 2 including angular 5.",
+      "url": "https://codingthesmartway.com/courses/angular2-complete-guide/"
+    },
+
+    "modern-react": {
+      "title": "Modern React with Redux",
+      "description": "The complete course on react with redux.",
+      "url": "https://codingthesmartway.com/courses/modern-react-with-redux/"
+    },
+
+    "robt-tips": {
+      "title": "Tips You may have never Heard",
+      "description": "The list of very useful tips course on react with redux.",
+      "url": "https://www.google.com/"
+    }
+
+  }
+}

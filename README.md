@@ -1,5 +1,30 @@
 # ChatStrong
 
+## Firebase
+
+firebase.google.com
+
+```html
+<script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDBRr35JOKFmxv84LfQi89vpHklgfjrT-8",
+    authDomain: "chat-5-firebase.firebaseapp.com",
+    databaseURL: "https://chat-5-firebase.firebaseio.com",
+    projectId: "chat-5-firebase",
+    storageBucket: "chat-5-firebase.appspot.com",
+    messagingSenderId: "1036420277755"
+  };
+  firebase.initializeApp(config);
+</script>
+```
+
+## Preload data
+Upload pre-load.json to firebase
+
+## Angular CLI setup
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.5.
 
 ## Development server

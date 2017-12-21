@@ -6,10 +6,10 @@ import { AngularFireModule } from 'angularfire2'
 import { AngularFireDatabaseModule } from 'angularfire2/database'
 import { AngularFireAuthModule } from 'angularfire2/auth'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-
+import { CustomFormsModule } from 'ng2-validation'
 import { RouterModule } from '@angular/router'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-
+// import { DataTableModule } from 'angular-4-data-table'
 import { AppComponent } from './app.component'
 
 import { environment } from '../environments/environment'
@@ -28,6 +28,12 @@ import { AdminProductsComponent } from './admin/admin-products/admin-products.co
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component'
 
 import { AuthService } from './auth/auth.service'
+import { UserService } from './auth/user.service'
+import { CategoryService } from './services/category.service'
+import { ProductService } from './services/product.service'
+import { AdminGuard } from './auth/admin.guard'
+import { AuthGuard } from './auth/auth.guard'
+import { ProductFormComponent } from './admin/product-form/product-form.component'
 
 @NgModule({
   declarations: [
@@ -45,30 +51,44 @@ import { AuthService } from './auth/auth.service'
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
+    ProductFormComponent,
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    // DataTableModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
+    CustomFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
       { path: 'products', component: ProductsComponent },
-      { path: 'shopping-cart', component: ShoppingCartComponent },
-      { path: 'check-out', component: CheckOutComponent },
-      { path: 'order-success', component: OrderSuccessComponent },
-      { path: 'my/orders', component: MyOrdersComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'admin/products', component: AdminProductsComponent },
-      { path: 'admin/orders', component: AdminOrdersComponent },
+      { path: 'shopping-cart', component: ShoppingCartComponent },
+
+      { path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuard] },
+      { path: 'order-success', component: OrderSuccessComponent, canActivate: [AuthGuard] },
+      { path: 'my/orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
+
+      { path: 'admin/products/new', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
+      { path: 'admin/products/:id', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
+      { path: 'admin/products', component: AdminProductsComponent, canActivate: [AuthGuard, AdminGuard] },
+      { path: 'admin/orders', component: AdminOrdersComponent, canActivate: [AuthGuard, AdminGuard] },
     ])
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    AuthGuard,
+    UserService,
+    AdminGuard,
+    CategoryService,
+    ProductService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,38 @@
+$sort-highlight-color: rgb(20, 16, 214);
+$header-color: #000;
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.example-header {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-table {
+  // max-height: 500px;
+  overflow: auto;
+}
+
+// .mat-header-cell.mat-sort-header-sorted {
+//   color: $sort-highlight-color;
+//   font-weight: bold;
+// }
+.mat-header-cell {
+  color: $header-color;
+  font-size: 90%;
+  font-weight: bold;
+
+  &.mat-sort-header-sorted {
+    color: $sort-highlight-color;
+    font-weight: bold;
+  }
+}

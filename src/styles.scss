@@ -1,9 +1,54 @@
 // You can add global styles to this file, and also import other style files
 @import '~bootstrap/dist/css/bootstrap.css';
+@import '~font-awesome/css/font-awesome.css';
+
+$theme-color: #008000;
+$theme-color-hover: #B1C522;
 
 // Move down content because we have a fixed navbar that is 3.5rem tall
 body {
   padding-top: 4.5rem;
 }
 
+h1, h2, h3 {
+  margin-bottom: 1.5rem;
+}
+
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.navbar-dark .navbar-brand {
+  color: $theme-color;
+}
+
+.navbar-dark .navbar-brand:focus, .navbar-dark .navbar-brand:hover {
+  color: $theme-color-hover;
+}
+
+.list-group-item.active {
+  background-color: $theme-color;
+  border-color: $theme-color;
+}
+
+.badge-info {
+  background-color: $theme-color;
+  color: #FFF;
+}
+
+.btn-primary {
+  background-color: $theme-color;
+  border-color: $theme-color;
+}
+
+.btn-primary:hover {
+  background-color: $theme-color-hover;
+  border-color: $theme-color-hover;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: $theme-color;
+  border-color: $theme-color;
+}
+
+.form-control:focus {
+  border-color: $theme-color;
+}

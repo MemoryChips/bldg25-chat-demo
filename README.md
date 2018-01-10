@@ -4,6 +4,8 @@
 
 firebase.google.com
 
+Currently firebase is locked to version 4.8.0 in the client. Review the need for this.
+
 ```html
 <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
 <script>

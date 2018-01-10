@@ -1,6 +1,6 @@
+import { AutoUnsubscribe } from '../../shared/utils'
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core'
-import { ProductService } from '../../services/product.service'
-import { Product } from '../../models/product'
+import { ProductService, Product } from '../../shared/services/product.service'
 import { OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs/Subscription'
 
@@ -11,6 +11,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material'
   templateUrl: './admin-products.component.html',
   styleUrls: ['./admin-products.component.scss']
 })
+@AutoUnsubscribe
 export class AdminProductsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   displayedColumns = ['title', 'category', 'price', 'actions']
@@ -19,17 +20,18 @@ export class AdminProductsComponent implements OnInit, OnDestroy, AfterViewInit 
   @ViewChild(MatPaginator) paginator: MatPaginator
   @ViewChild(MatSort) sort: MatSort
 
-  private sub: Subscription
+  sub$: Subscription
   constructor(private productService: ProductService) {}
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase()
   }
+
   ngOnDestroy() {
-    this.sub.unsubscribe()
   }
+
   ngOnInit() {
-    this.sub = this.productService.getAll().subscribe(
+    this.sub$ = this.productService.getAll().subscribe(
       (products) => {
         this.dataSource.data = products
       })

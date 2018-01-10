@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core'
-import { CategoryService } from '../../services/category.service'
-import { ProductService } from '../../services/product.service'
+import { CategoryService } from '../../shared/services/category.service'
+import { ProductService, Product } from '../../shared/services/product.service'
 import { Router } from '@angular/router'
 import { ActivatedRoute } from '@angular/router'
-import { Product } from '../../models/product'
 import 'rxjs/add/operator/take'
 // import { Observable } from 'rxjs/Observable'
 
@@ -26,7 +25,7 @@ export class ProductFormComponent implements OnInit {
     private route: ActivatedRoute,
     private ps: ProductService
   ) {
-    this.categories$ = cs.getCategories()
+    this.categories$ = cs.getAll()
     this.key = this.route.snapshot.paramMap.get('id')
     if (this.key) {
       // take operator takes the number of items and then unsubscribes itself from the Observable

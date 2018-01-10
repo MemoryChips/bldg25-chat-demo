@@ -4,8 +4,13 @@ import { AngularFireAuth } from 'angularfire2/auth'
 import { auth, User } from 'firebase'
 import { ActivatedRoute } from '@angular/router'
 import { Router } from '@angular/router'
-import { AppUser } from './../models/app-user'
 import { UserService } from './user.service'
+
+export interface AppUser {
+  name: string,
+  email: string,
+  isAdmin: boolean
+}
 
 @Injectable()
 export class AuthService {

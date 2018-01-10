@@ -47,13 +47,7 @@
     </form>
     <!-- end form -->
   </div>
-  <div class="col-md-4" *ngIf="product.title">
-    <div class="card" style="width: 20rem;">
-      <img class="card-img-top" [src]="product.imageUrl" alt="Your image here">
-      <div class="card-body">
-        <h4 class="card-title">{{ product.title }}</h4>
-        <p class="card-text">{{ product.price | currency:'USD': true}}</p>
-      </div>
-    </div>
+  <div class="col-md-6" *ngIf="product.title">
+    <app-product-card [product]="product" [show-actions]="false"></app-product-card>
   </div>
 </div>

@@ -1,46 +1,81 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
-import { AngularFireAuth } from 'angularfire2/auth'
-import { auth, User } from 'firebase'
 import { ActivatedRoute } from '@angular/router'
-import { Router } from '@angular/router'
-import { UserService } from './user.service'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { HttpClient } from '@angular/common/http'
 
 export interface AppUser {
-  name: string,
   email: string,
-  isAdmin: boolean
+  id: undefined,
+  roles: string[],
+  userName: string,
+  isAdmin?: boolean,
+}
+export const ANONYMOUS_USER: AppUser = {
+  id: undefined,
+  email: undefined,
+  userName: 'anonymous',
+  roles: []
+}
+
+export interface Credentials {
+  userName?: string
+  email: string
+  password: string
 }
 
 @Injectable()
 export class AuthService {
 
-  user$: Observable<User>
+  private subject = new BehaviorSubject<AppUser>(undefined)
+  returnUrl = '/'
+  user$: Observable<AppUser> = this.subject.asObservable().filter(user => !!user)
+  isLoggedIn$: Observable<boolean> = this.user$.map(user => !!user.id)
+  isLoggedOut$: Observable<boolean> = this.isLoggedIn$.map(isLoggedIn => !isLoggedIn)
+  chatConnection: WebSocket
+
+  public showPassword = false
+  public passwordInputType = 'password'
 
   constructor(
-    private afAuth: AngularFireAuth,
+    private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService
+    // private userService: UserService
   ) {
-    this.user$ = this.afAuth.authState
-  }
-
-  logout(): Promise<any> {
-    return this.afAuth.auth.signOut().then(() => {
-      console.log('successful logout')
-      this.router.navigateByUrl('/home')
-    }).catch((err) => {
-      console.log('Error logging out.', err)
+    this.returnUrl = localStorage.getItem('returnUrl') || '/'
+    this.http.get<AppUser>('/api/user')
+      // .do(console.log)
+      .subscribe((user) => {
+        this.subject.next(user ? user : ANONYMOUS_USER)
+      }
+    )
+    this.isLoggedIn$.subscribe((isLoggedIn) => {
+      if (isLoggedIn) {
+        this.connectChat()
+      } else {
+        if (this.chatConnection) { this.chatConnection.close() }
+      }
     })
   }
 
-  get appUser$(): Observable<AppUser> {
-    return this.user$
-      .switchMap(user => {
-        if (user) { return this.userService.get(user.uid) }
-        return Observable.of(null)
-      })
+  private connectChat() {
+    this.chatConnection = new WebSocket('ws://localhost:4200/api-ws')
+    this.chatConnection.onmessage = (m) => { console.log('Server: ' + m.data) }
+    window.setTimeout(() => {
+      this.chatConnection.send('timer message')
+    }, 1000)
+  }
+
+  logout(): Observable<any> {
+    return this.http.post('/api/logout', null)
+      .shareReplay()
+      .do(_user => this.subject.next(ANONYMOUS_USER))
+  }
+
+  getReturnUrl() {return this.returnUrl}
+  setReturnUrl(url: string) {
+    localStorage.setItem('returnUrl', this.returnUrl)
+    this.returnUrl = url
   }
 
   preLogin() {
@@ -49,26 +84,26 @@ export class AuthService {
     localStorage.setItem('returnUrl', returnUrl)
   }
 
-  loginGoogle(): Promise<any> {
-    this.preLogin()
-    return this.afAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider()).then(() => {
-      console.log('successful login with Google')
-    }).catch((err) => {
-      console.log('Error during login with Google.', err)
-    })
+  signUp(credentials: Credentials) {
+    return this.http.post<AppUser>('/api/signup', credentials)
+      .shareReplay()
+      .do(user => this.subject.next(user))
   }
 
-  // loginFb() {
-  //   this.angularFireAuth.auth.signInWithPopup({
-  //     provider: AUTH_PROVIDERS..Facebook,
-  //     method: AuthMethods.Popup,
-  //   }).then(
-  //     (success) => {
-  //       this.router.navigate(['/members']);
-  //     }).catch(
-  //     (err) => {
-  //       this.error = err;
-  //     })
-  // }
+  login(credentials: Credentials) {
+    this.preLogin()
+    return this.http.post<AppUser>('/api/login', credentials)
+      .shareReplay()
+      .do(user => {
+        this.subject.next(user)
+      })
+  }
+
+  socialLogin(provider: string) {
+    this.preLogin()
+    return this.http.get<AppUser>('/api/social-login/' + provider)
+      .shareReplay()
+      .do(user => this.subject.next(user))
+  }
 
 }

@@ -1,22 +1,31 @@
 import { Component, OnInit } from '@angular/core'
 import { ShoppingCartService, Cart } from '../../shared/services/shopping-cart.service'
-import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks'
 
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.scss']
 })
-export class ShoppingCartComponent implements OnInit {
+export class ShoppingCartComponent implements OnInit, OnDestroy {
 
-  cart$: Observable<Cart>
+  cart: Cart
+
+  private subscriptions: Subscription[]
 
   constructor(
     private shoppingCartService: ShoppingCartService
   ) { }
 
-  async ngOnInit() {
-    this.cart$ = await this.shoppingCartService.getCart()
+  ngOnInit() {
+    this.subscriptions = [
+      this.shoppingCartService.cart$.subscribe(cart => this.cart = cart),
+    ]
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe())
   }
 
   clearCart() {

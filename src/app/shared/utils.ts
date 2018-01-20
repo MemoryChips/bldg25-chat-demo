@@ -1,3 +1,15 @@
+export function values<T>(obj: { [key: string]: T }): T[] {
+  return Object.keys(obj).map(key => obj[key])
+}
+
+export interface KeyedObj<T> {
+  [key: string]: T
+}
+export function addKey<T>(obj: KeyedObj<T>) {
+  Object.keys(obj).forEach((key) => { obj[key]['key'] = key })
+  return obj
+}
+
 // decorate class to unsubscribe looking at all properties
 export function AutoUnsubscribe(constructor) {
   const original = constructor.prototype.ngOnDestroy

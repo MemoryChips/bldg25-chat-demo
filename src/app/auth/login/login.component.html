@@ -3,3 +3,60 @@
   class="btn btn-primary">
   Login with Google
 </button>
+<div class="row" *ngIf="isLoggedIn">
+  <div class="column">
+    <h3>You are logged in as
+      <strong>{{ user.userName || user.email }}</strong>.</h3>
+    <div>Please use ChatTime! by interacting with the box on the lower right.</div>
+  </div>
+</div>
+<div class="row" *ngIf="!isLoggedIn">
+  <div class="column medium-6 medium-centered large-4 large-centered">
+    <form #loginForm="ngForm" (ngSubmit)="submitLogin(loginForm)" novalidate="">
+      <div class="row column log-in-form">
+        <h4 class="text-center expanded">Log in with your email account</h4>
+        <label class="expanded">Email
+          <input class="expanded" #email="ngModel" required="" type="email" name="email" [(ngModel)]="credentials.email" placeholder="somebody@example.com"
+          />
+        </label>
+        <label class="expanded">Password
+          <input class="expanded" #password="ngModel" required="" type="{{passwordInputType}}" name="password" [(ngModel)]="credentials.password"
+            placeholder="password" />
+        </label>
+        <p>
+          <a class="text-right expanded" (click)="toggleShowPassword()">show/hide password</a>
+        </p>
+        <button class="button expanded" type="submit" [disabled]="loginForm.invalid">Login</button>
+        <p class="text-center expanded">
+          <a href="#">Forgot your password?</a>
+        </p>
+        <p class="text-center expanded">
+          <a [routerLink]="['/signup']" routerLinkActive="active">New user signup?</a>
+        </p>
+      </div>
+    </form>
+    <br/>
+    <br/>
+    <h3 class="text-center">Or Signin With Your Social Account
+      <h6 class="text-center">(Are Popups required?)</h6>
+      <div class="row">
+        <div class="columns small-12">
+          <ul class="social list-inline">
+            <li>
+              <button class="button expanded twitter" [disabled]="isLoggedIn" type="button" (click)="submitSocialLogin('twitter')">
+                <i class="fa fa-twitter"></i>
+                <span>Twitter</span>
+              </button>
+            </li>
+            <li>
+              <button class="button expanded googleplus" [disabled]="isLoggedIn" type="button" (click)="submitSocialLogin('google')">
+                <i class="fa fa-google-plus"></i>
+                <span>Google</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </h3>
+  </div>
+</div>

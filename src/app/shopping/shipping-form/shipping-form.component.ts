@@ -28,7 +28,7 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$.subscribe(user => this.userId = user.uid)
+    this.userSubscription = this.authService.user$.subscribe(user => this.userId = user.id)
   }
 
   ngOnDestroy() {
@@ -38,6 +38,6 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
   async placeOrder() {
     const order = new Order(this.userId, this.shipping, this.cart)
     const result = await this.orderService.placeOrder(order)
-    this.router.navigate(['/order-success', result.key])
+    this.router.navigate(['/order-success', result])
   }
 }

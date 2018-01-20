@@ -3,7 +3,6 @@ import { AuthService, AppUser } from '../../auth/auth.service'
 import { ShoppingCartService, Cart } from '../../shared/services/shopping-cart.service'
 import { Subscription } from 'rxjs/Subscription'
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks'
-import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +12,9 @@ import { Observable } from 'rxjs/Observable'
 export class NavbarComponent implements OnInit, OnDestroy {
 
   appUser: AppUser
-  cart$: Observable<Cart>
+  isAdmin = false
+  isLoggedIn = false
+  cart: Cart
 
   private subscriptions: Subscription[]
 
@@ -22,10 +23,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private shoppingCartService: ShoppingCartService
   ) { }
 
-  async ngOnInit() {
-    this.cart$ = await this.shoppingCartService.getCart()
+  ngOnInit() {
     this.subscriptions = [
-      this.authService.appUser$.subscribe(appUser => this.appUser = appUser)
+      this.shoppingCartService.cart$.subscribe(cart => this.cart = cart),
+      this.authService.user$.subscribe(appUser => {
+        this.appUser = appUser
+        this.isAdmin = appUser.roles.includes('admin')
+      }),
+      this.authService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn)
     ]
   }
 
@@ -33,5 +38,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => s.unsubscribe())
   }
 
-  logout() {this.authService.logout()}
+  logout() {
+    this.authService.logout().subscribe((success) => {
+      if (success) {
+        console.log('logged out')
+      }
+    })
+  }
 }

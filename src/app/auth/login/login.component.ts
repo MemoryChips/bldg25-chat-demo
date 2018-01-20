@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs/Subscription'
-import { AuthService } from '../auth.service'
+import { AuthService, Credentials, AppUser } from '../auth.service'
 import { Router } from '@angular/router'
+import { Unsubscribe } from 'shared/utils'
 
 @Component({
   selector: 'app-login',
@@ -10,28 +11,68 @@ import { Router } from '@angular/router'
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  error: any
+  user: AppUser
+  isLoggedIn = false
+  _subscriptions: Array<Subscription> = []
+  credentials: Credentials = {
+    email: 'student@gmail.com',
+    password: 'Password10'
+  }
+  showPassword = false
+  passwordInputType = 'password'
 
-  private subscriptions: Array<Subscription> = []
-
-  constructor(public authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.subscriptions = [
-      this.authService.user$.subscribe((user) => {
-        if (user) {
-          this.router.navigateByUrl('/home')
-        }
-      }),
+    this._subscriptions = [
+      this.authService.user$.subscribe(user => this.user = user),
+      this.authService.isLoggedIn$.subscribe(isLoggedIn => { this.isLoggedIn = isLoggedIn })
     ]
   }
 
+  @Unsubscribe()
   ngOnDestroy() {
-    this.subscriptions.map((s: Subscription) => {
-      s.unsubscribe()
+    // this._subscriptions.map((s: Subscription) => {
+    //   s.unsubscribe()
+    // })
+  }
+
+  // ---- template handlers --------------------------------------------------------------------------------------------
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword
+    if (this.showPassword) {
+      this.passwordInputType = 'text'
+    } else {
+      this.passwordInputType = 'password'
+    }
+  }
+
+  submitSocialLogin(provider: string) {
+    this.authService.socialLogin(provider).subscribe((_user) => {
+      if (_user) {
+        console.log('Success! Redirecting now...', _user)
+        this.routeToRedirect()
+      }
+    }, err => {
+      console.log('Error logging in.', err)
     })
   }
 
-  loginGoogle() {
-    this.authService.loginGoogle()
-  }}
+  submitLogin() {
+    this.authService.login(this.credentials).subscribe((_user) => {
+      console.log('Success! Redirecting now...', _user)
+      this.routeToRedirect()
+    }, err => {
+      console.log('Error logging in.', err)
+    })
+  }
+
+  private routeToRedirect() {
+    this.router.navigate([this.authService.returnUrl])
+  }
+
+}

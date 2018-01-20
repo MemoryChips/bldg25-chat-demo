@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
-import { AngularFireDatabase } from 'angularfire2/database'
-import { Observable } from 'rxjs/Observable'
+// import { Observable } from 'rxjs/Observable'
+import { HttpClient } from '@angular/common/http'
+import { addKey, values, KeyedObj } from 'shared/utils'
 
 export interface Product {
   title: string
@@ -10,34 +11,45 @@ export interface Product {
   key?: string
 }
 
-export function addKey(items) {
-  return items.map(item => ({ key: item.key, ...item.payload.val() }))
+export interface Category {
+  title: string,
+  lead: string,
+  key?: string
 }
 
 @Injectable()
 export class ProductService {
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private http: HttpClient) { }
 
   create(product) {
-    return this.db.list('/products').push(product)
+    return this.http.put('/api/products', product)
   }
 
   getAll() {
-    // return this.db.list('/products').valueChanges() as Observable<Product[]>
-    return this.db.list('/products').snapshotChanges().map(addKey) as Observable<Product[]>
+    return this.http.get<KeyedObj<Product>>('/api/products')
   }
 
-  getProduct(productId: string) {
-    return this.db.object('/products/' + productId).valueChanges() as Observable<Product>
+  getList() {
+    // return this.getAll().map(addKey).map(values)
+    return this.getAll().map(addKey).map(values)
   }
 
-  update(productId: string, product: Product): Promise<any> {
-    return this.db.object('/products/' + productId).update(product)
+  get(productId: string) {
+    return this.http.get<Product>('/api/products/' + productId)
   }
 
-  delete(productId: string): Promise<any> {
-    return this.db.object('/products/' + productId).remove()
+  update(productId: string, product: Product) {
+    return this.http.post<Product>('/api/products/' + productId, product)
+  }
+
+  delete(productId: string) {
+    return this.http.delete('/api/products/' + productId)
+  }
+
+  getCategories() {
+    // return this.db.list('/categories', ref => ref.orderByChild('title')).valueChanges()
+    return this.http.get<KeyedObj<Category>>('/api/categories').map(addKey).map(values)
   }
 
 }

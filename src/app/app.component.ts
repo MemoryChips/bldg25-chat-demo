@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { AuthService } from './auth/auth.service'
-import { UserService } from './auth/user.service'
+// import { UserService } from './auth/user.service'
 import { Router } from '@angular/router'
 
 @Component({
@@ -14,12 +14,12 @@ export class AppComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private userService: UserService,
+    // private userService: UserService,
     private router: Router
   ) {
-    this.auth.user$.subscribe(user => {
-      if (!user) return
-      this.userService.save(user)  // ensures we have the update name in the database
+    this.auth.user$.subscribe(_user => {
+      // if (!user) return
+      // this.userService.saveUser(user)  // ensures we have the update name in the database
       const returnUrl = localStorage.getItem('returnUrl')
       if (!returnUrl) return
       localStorage.removeItem('returnUrl')

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core'
 import { Cart, ShoppingCartService } from './shopping-cart.service'
-import { AngularFireDatabase } from 'angularfire2/database'
+// import { AngularFireDatabase } from 'angularfire2/database'
 import { Observable } from 'rxjs/Observable'
+import { HttpClient } from '@angular/common/http'
+import { addKey, values, KeyedObj } from 'shared/utils'
 
 export class Order {
   datePlaced: number
@@ -34,12 +36,12 @@ export interface Shipping {
 export class OrderService {
 
   constructor(
-    private db: AngularFireDatabase,
+    private http: HttpClient,
     private shoppingCartService: ShoppingCartService
   ) { }
 
   async placeOrder(order: Order) {
-    const result = await this.db.list('/orders').push(order)
+    const result = await this.http.post<string>('/orders', order).toPromise()
     this.shoppingCartService.clearCart()  // this should be a transaction
     return result
   }
@@ -52,12 +54,11 @@ export class OrderService {
   // }
 
   getOrders() {
-    return this.db.list('/orders').valueChanges() as Observable<Order[]>
+    return this.http.get<{[key: string]: Order}>('/orders').map(addKey).map(values)
   }
 
-  getOrdersByUser(userId: string) {
-    return this.db.list('/orders', ref => {
-      return ref.orderByChild('userId').equalTo(userId)
-    }).valueChanges() as Observable<Order[]>
+  getOrdersByUser(userId: string): Observable<Order[]> {
+    return this.http.get<KeyedObj<Order>>('/api/orders/' + userId )
+      .map(addKey).map(values)
   }
 }

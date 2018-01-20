@@ -1,0 +1,34 @@
+@import '../login-shared';
+
+$color-googleplus-back: #DD4B39;
+$color-linkedin-back: #0976B4;
+$color-github-back: #333;
+$color-facebook-back: #3B5998;
+$color-twitter-back: #55ACEE;
+$text-color: #FFF;
+$text-color-github: #999;
+
+.googleplus {
+  background: $color-googleplus-back;
+  color: $text-color;
+}
+
+.linkedin {
+  background: $color-linkedin-back;
+  color: $text-color;
+}
+
+.github {
+  background: $color-github-back;
+  color: $text-color-github;
+}
+
+.facebook {
+  background: $color-facebook-back;
+  color: $text-color;
+}
+
+.twitter {
+  background: $color-twitter-back;
+  color: $text-color;
+}

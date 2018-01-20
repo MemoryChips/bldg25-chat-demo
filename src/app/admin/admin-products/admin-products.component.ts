@@ -31,7 +31,7 @@ export class AdminProductsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngOnInit() {
-    this.sub$ = this.productService.getAll().subscribe(
+    this.sub$ = this.productService.getList().subscribe(
       (products) => {
         this.dataSource.data = products
       })

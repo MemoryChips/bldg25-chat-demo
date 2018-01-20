@@ -23,7 +23,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
     //   cart$.subscribe(cart => this.cart = cart),
     // ]
     this.subscriptions = [
-      (await this.shoppingCartService.getCart()).subscribe(cart => this.cart = cart),
+      this.shoppingCartService.cart$.subscribe(cart => this.cart = cart),
     ]
   }
 

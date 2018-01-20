@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { CategoryService, Category } from '../../../shared/services/category.service'
+import { ProductService, Category } from 'shared/services/product.service'
 import { Input } from '@angular/core'
 
 @Component({
@@ -12,10 +12,10 @@ export class ProductFilterComponent implements OnInit {
   categories: Category[]
   @Input() categoryKey: string
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: ProductService) { }
 
   ngOnInit() {
-    this.categoryService.getAll().subscribe(cats => this.categories = cats)
+    this.categoryService.getCategories().subscribe(cats => this.categories = cats)
   }
 
 }

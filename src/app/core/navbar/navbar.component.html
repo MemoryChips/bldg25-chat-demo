@@ -17,6 +17,27 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item dropdown" ngbDropdown *ngIf="isLoggedIn; else anonymousUser">
+          <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{appUser?.userName || "logging in ..."}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
+            <a class="dropdown-item" routerLink="/my/orders">
+              <i class="fa fa-suitcase" aria-hidden="true"></i>
+              My Orders</a>
+            <ng-container *ngIf="isAdmin">
+              <a class="dropdown-item" routerLink="/admin/orders">
+                <i class="fa fa-tasks" aria-hidden="true"></i>
+                Manage Orders</a>
+              <a class="dropdown-item" routerLink="/admin/products">
+                <i class="fa fa-product-hunt" aria-hidden="true"></i>
+                Manage Products</a>
+            </ng-container>
+            <a class="dropdown-item" (click)="logout()">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+              Log Out</a>
+          </div>
+        </li>
         <li class="nav-item active">
           <a class="nav-link" routerLink="/products">
             <i class="fa fa-product-hunt" aria-hidden="true"></i>
@@ -25,7 +46,7 @@
         <li class="nav-item active">
           <a class="nav-link" routerLink="/shopping-cart">
             <i class="fa fa-shopping-cart" area-hidden="true"></i>
-            <span class="badge badge-info badge-pill" *ngIf="cart$ | async as cart">
+            <span class="badge badge-info badge-pill" *ngIf="cart">
               {{ cart.totalItemsCount }}
             </span>
           </a>
@@ -42,28 +63,10 @@
               Signup</a>
           </li>
         </ng-template>
-        <li class="nav-item dropdown" ngbDropdown
-          *ngIf="appUser; else anonymousUser">
-          <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{appUser?.name || "logging in ..."}}
+        <li class="nav-item active" *ngIf="isLoggedIn">
+          <a class="nav-link" (click)="logout()">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
           </a>
-          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
-            <a class="dropdown-item" routerLink="/my/orders">
-              <i class="fa fa-suitcase" aria-hidden="true"></i>
-              My Orders</a>
-            <ng-container *ngIf="appUser.isAdmin">
-              <a class="dropdown-item" routerLink="/admin/orders">
-                <i class="fa fa-tasks" aria-hidden="true"></i>
-                Manage Orders</a>
-              <a class="dropdown-item" routerLink="/admin/products">
-                <i class="fa fa-product-hunt" aria-hidden="true"></i>
-                Manage Products</a>
-            </ng-container>
-            <a class="dropdown-item" (click)="logout()">
-              <i class="fa fa-sign-out" aria-hidden="true"></i>
-              Log Out</a>
-          </div>
         </li>
       </ul>
     </div>

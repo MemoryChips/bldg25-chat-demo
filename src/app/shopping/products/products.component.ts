@@ -27,9 +27,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.populateProducts()
-    const cart$ = await this.shoppingCartService.getCart()
     this.subscriptions = [
-      cart$.subscribe(cart => this.cart = cart)
+      this.shoppingCartService.cart$.subscribe(cart => this.cart = cart),
     ]
   }
 
@@ -38,7 +37,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   private populateProducts() {
-    this.productService.getAll().switchMap((prods) => {
+    this.productService.getList().switchMap((prods) => {
       this.products = prods
       return this.route.queryParamMap
     }).subscribe(params => {

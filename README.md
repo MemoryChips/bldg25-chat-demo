@@ -22,6 +22,18 @@ Currently firebase is locked to version 4.8.0 in the client. Review the need for
 </script>
 ```
 
+## Install Redis on Linux Mint
+
+1. download tar ball and unzip in somewhere in home dir
+2. make
+3. make test
+4. cd /home/rob/Downloads/redis-4.0.6/src/
+5. ./redis-server ../redis.conf
+5. ./redis-cli
+
+### install redis client for node
+1. npm i redis
+
 ## Preload data
 Upload pre-load.json to firebase
 

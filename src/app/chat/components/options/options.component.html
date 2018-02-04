@@ -1,0 +1,5 @@
+<p>options works!</p>
+<button class="button expanded" (click)="toggleRoomListOption()">
+  <span *ngIf="!(showOnlyOpenRooms$ | async)">Show Only Open Rooms</span>
+  <span *ngIf="(showOnlyOpenRooms$ | async)">Show All Rooms</span>
+</button>

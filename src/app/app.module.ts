@@ -21,8 +21,7 @@ import { SignupComponent } from './auth/signup/signup.component'
 import { HomeComponent } from './core/home/home.component'
 import { MaterialModule } from './material/material.module'
 import { SharedModule } from './shared/shared.module'
-
-// import { DataTableModule } from 'angular-4-data-table'
+import { ChatModule } from './chat/chat.module'
 
 import 'rxjs/add/operator/toPromise'
 import 'rxjs/add/operator/switchMap'
@@ -45,7 +44,7 @@ import 'rxjs/add/observable/of'
     AdminModule,
     CoreModule,
     AuthModule,
-    // DataTableModule,
+    ChatModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
     MaterialModule,

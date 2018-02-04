@@ -76,12 +76,6 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-unused-variable": [
-      true,
-      {
-        "ignore-pattern": "^_"
-      }
-    ],
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
@@ -129,14 +123,14 @@
     ],
     "directive-selector": [
       true,
-      "attribute",
-      "app",
+      "element",
+      ["app", "chat"],
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      ["app", "chat"],
       "kebab-case"
     ],
     "angular-whitespace": [true, "check-interpolation"],

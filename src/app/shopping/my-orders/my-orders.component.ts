@@ -16,6 +16,6 @@ export class MyOrdersComponent {
     authService: AuthService,
     orderService: OrderService
   ) {
-    this.orders$ = authService.user$.switchMap(u => orderService.getOrdersByUser(u.id))
+    this.orders$ = authService.user$.switchMap(_u => orderService.getOrdersByUser())
   }
 }

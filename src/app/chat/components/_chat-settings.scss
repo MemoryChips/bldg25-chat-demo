@@ -1,0 +1,41 @@
+$light-gray: #e6e6e6;
+$off-black: #3b3b3b;
+$loggedInColor: #006600;
+$loggedOutColor: #441111;
+$medium-gray: #cacaca;
+$message-info-color: #bbbbbb;
+$message-label-color: #aaaaaa;
+$near-white: #efefef;
+$off-black: #3b3b3b;
+$dark-gray: #8a8a8a;
+
+$node-width: 15rem;
+
+$message-read-color: gray;
+$message-notread-color: black;
+
+$node-margin: 1px 1px 1px 1px;
+$node-controller-margin: 0px 1px 1px 0px;
+
+.node {
+  margin: $node-margin;
+  // margin: 1px 1px 1px 1px;
+  height: 2.5rem;
+  padding: 8px 4px 4px 14px;
+  background-color: $off-black;
+  color: $dark-gray;
+  border-left: 1px;
+  min-width: 2.5rem;
+  &.expanded {
+    width: $node-width;
+  }
+  // &.is-collapsed {
+  //   padding: 0;
+  // }
+  &:hover {
+    background-color: $dark-gray;
+    border: 1px solid black;
+    color: $light-gray;
+  }
+  pointer-events:all;
+}

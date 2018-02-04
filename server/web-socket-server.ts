@@ -2,7 +2,7 @@ import * as http from 'http'
 import * as https from 'https'
 import { Request } from 'express'
 import * as WebSocket from 'ws'
-import { decodeJwt } from './security.utils'
+import { decodeJwt } from './auth/security'
 
 function getCookiesMap(cookiesString): {[key: string]: string} {
   return cookiesString.split(';')

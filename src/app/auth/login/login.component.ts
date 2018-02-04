@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
+import { FormControl, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs/Subscription'
 import { AuthService, Credentials, AppUser } from '../auth.service'
 import { Router } from '@angular/router'
 import { Unsubscribe } from 'shared/utils'
+import { MatSnackBar } from '@angular/material'
 
 @Component({
   selector: 'app-login',
@@ -15,15 +17,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   isLoggedIn = false
   _subscriptions: Array<Subscription> = []
   credentials: Credentials = {
-    email: 'student@gmail.com',
+    email: 'admin@gmail.com',
     password: 'Password10'
   }
   showPassword = false
   passwordInputType = 'password'
+  hide = true
+  email = new FormControl('', [Validators.required, Validators.email])
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -68,6 +73,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.routeToRedirect()
     }, err => {
       console.log('Error logging in.', err)
+      this.openSnackBar(err.error, 'dismiss')
+    })
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
     })
   }
 

@@ -1,0 +1,8 @@
+
+<chat-user-list-row
+  class="chat-user-list-row"
+  *ngFor="let user of users; let i = index; let isLast = last"
+  [user]="user"
+  [localUserId]="localUser?.id"
+  [class.end]="isLast">
+</chat-user-list-row>

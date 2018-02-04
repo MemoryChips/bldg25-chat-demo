@@ -1,4 +1,115 @@
-# ChatStrong
+# Chat5
+
+## Development Notes
+
+- git clone; npm install
+- install redis server
+```bash
+npm start # ng serve
+npm run start-redisdb # start development redis server
+# run debugger version of server setup in vs-code of server
+# OR run server from command line:
+npm run start-server # start express server written in typescript
+redis-cli # optional start redis-cli; requires AUTH <key> to use
+
+# converting pug files
+pug client/src/app/chat/activator/activator.component.pug -P
+pug *.pug -P  # cd to directory
+```
+
+### CLI commands
+```bash
+# edit .angular-cli.json to change app to chat for prefix
+ng g c chat/components/BroadcastMessage -d
+ng g s chat/ChatMessage -d
+ng g c chat/components/Main -d
+ng g c chat/components/Windows -d
+ng g c chat/components/Activator -d
+ng g c chat/components/Tabs -d
+```
+
+## Deployment Notes
+
+1. Minification
+2. Uglification
+3. Bundling
+4. Dead code elimination
+5. AOT compilation
+
+- navbar background color changed to blue in development
+```bash
+ng build --prod
+```
+
+### Deployment Options
+1. GitHub Pages - no backend
+2. Firebase - front and backend
+3. Heroku - custom backend
+
+#### Heroku
+1. Create account on Heroku
+2. Download Heroku cli
+3. Setup process.env.PORT .REDISHOST etc to configure redisdb and server.ts
+
+```bash
+heroku --version
+heroku login
+heroku create  # gets a random name
+heroku open # opens address in chrome
+# move angular/cli and angular/compiler-cli to dependencies for use by heroku
+# move typescript
+# move ts-node (maybe not needed if server.ts is compiled)
+# script section
+"postinstall": "ng build --prod"
+"postinstall": "ng build --prod && ./node_modules/typescript/bin/tsc ./server/server.ts"
+npm i express
+# change start script to run node server; create dev start script for existing start
+"start": "./node_modules/.bin/ts-node ./server/server.ts"
+# or maybe compile server.ts and then run it
+"start": "./node_modules/typescript/bin/tsc ./server/server.ts && node server.js"
+
+git push heroku master  # push changes to heroku
+heroku open # shortcut to go to webpage
+
+# good idea - add engines to package.json
+"engines": {
+  "node": "x.x.x",
+  "npm": "x.x.x"
+}
+```
+#### Setup on Github
+```bash
+# - create repo
+# - git remote add origin...
+git push origin master
+npm i -g angular-cli-ghpages
+ng build --prod --base-href="https://<username>.github.io/<repository>/" # trailing / important
+ngh --no-silent # maybe run with sudo
+```
+
+#### Setup on Firebase
+- create app in google firebase site
+```bash
+npm i -g firebase-tools
+firebase login # opens a browser window
+firebase init
+# firebase.json
+{
+  "hosting": {
+    "public": "dist",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+ng build --prod
+firebase deploy
+#
+```
+
 
 ## Firebase
 
@@ -24,12 +135,13 @@ Currently firebase is locked to version 4.8.0 in the client. Review the need for
 
 ## Install Redis on Linux Mint
 
-1. download tar ball and unzip in somewhere in home dir
+1. download tar ball and unzip in somewhere in home dir from https://redis.io/
 2. make
 3. make test
-4. cd /home/rob/Downloads/redis-4.0.6/src/
-5. ./redis-server ../redis.conf
-5. ./redis-cli
+4. cd /home/rob/redis-4.0.6/src/
+6. Add redis to your path so scripts can find it
+5. npm run start-redisdb
+5. redis-cli
 
 ### install redis client for node
 1. npm i redis

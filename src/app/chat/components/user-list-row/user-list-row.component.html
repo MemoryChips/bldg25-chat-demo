@@ -1,0 +1,13 @@
+<a class="row align-middle">
+  <div class="column flex-child-grow">
+    <span
+      class="fa fa-circle"
+      [ngClass]="{'logged-in-color': (user.connected || isLocalUser), 'logged-out-color': !(user.connected || isLocalUser)}">
+    </span>
+    <strong>&nbsp; {{ user.name }} &nbsp; </strong>
+    <span *ngIf="isLocalUser">&nbsp;(You)</span>
+  </div>
+  <div class="column flex-child-shrink">
+    <div *ngIf="!isLocalUser &amp;&amp; isMouseover"><i class="fa fa-comment fa-1x fa-center"></i></div>
+  </div>
+</a>

@@ -41,9 +41,4 @@ export class AdminProductsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource.sort = this.sort
   }
 
-  // filter(query: string) {
-  //   this.products = (query) ?
-  //     this.unFilteredProducts.filter(p => p.title.toLowerCase().includes(query.toLowerCase())) :
-  //     this.unFilteredProducts
-  // }
 }

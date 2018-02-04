@@ -10,6 +10,7 @@ import { AdminOrdersComponent } from './admin-orders/admin-orders.component'
 import { AdminProductsComponent } from './admin-products/admin-products.component'
 import { AdminGuard } from './admin.guard'
 import { ProductFormComponent } from './product-form/product-form.component'
+import { BroadcastMessageComponent } from '../chat/components/broadcast-message/broadcast-message.component'
 
 @NgModule({
   imports: [
@@ -22,12 +23,14 @@ import { ProductFormComponent } from './product-form/product-form.component'
       { path: 'admin/products/:id', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
       { path: 'admin/products', component: AdminProductsComponent, canActivate: [AuthGuard, AdminGuard] },
       { path: 'admin/orders', component: AdminOrdersComponent, canActivate: [AuthGuard, AdminGuard] },
+      { path: 'admin/broadcastMessage', component: BroadcastMessageComponent, canActivate: [AuthGuard, AdminGuard] },
     ])
   ],
   declarations: [
     AdminProductsComponent,
     AdminOrdersComponent,
     ProductFormComponent,
+    // BroadcastMessageComponent,
   ],
   providers: [
     AdminGuard,

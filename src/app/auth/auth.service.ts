@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { HttpClient } from '@angular/common/http'
 
@@ -40,36 +40,39 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    // private userService: UserService
+    private router: Router
   ) {
+    console.log('Auth service created.')
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
-    this.http.get<AppUser>('/api/user')
-      // .do(console.log)
+    this.http.get<AppUser>('/api/auth/user-me')
       .subscribe((user) => {
-        this.subject.next(user ? user : ANONYMOUS_USER)
+        this.subject.next(user.id ? user : ANONYMOUS_USER)
       }
     )
-    this.isLoggedIn$.subscribe((isLoggedIn) => {
-      if (isLoggedIn) {
-        this.connectChat()
-      } else {
-        if (this.chatConnection) { this.chatConnection.close() }
-      }
-    })
+    // this.isLoggedIn$.subscribe((isLoggedIn) => {
+    //   if (isLoggedIn) {
+    //     this.connectChat()
+    //   } else {
+    //     if (this.chatConnection) { this.chatConnection.close() }
+    //   }
+    // })
   }
 
-  private connectChat() {
-    this.chatConnection = new WebSocket('ws://localhost:4200/api-ws')
-    this.chatConnection.onmessage = (m) => { console.log('Server: ' + m.data) }
-    window.setTimeout(() => {
-      this.chatConnection.send('timer message')
-    }, 1000)
-  }
+  // private connectChat() {
+  //   this.chatConnection = new WebSocket('ws://localhost:4200/api-ws')
+  //   this.chatConnection.onmessage = (m) => { console.log('Server: ' + m.data) }
+  //   window.setTimeout(() => {
+  //     this.chatConnection.send('timer message')
+  //   }, 1000)
+  // }
 
   logout(): Observable<any> {
-    return this.http.post('/api/logout', null)
+    return this.http.post('/api/auth/logout', null)
       .shareReplay()
-      .do(_user => this.subject.next(ANONYMOUS_USER))
+      .do(_user => {
+        this.subject.next(ANONYMOUS_USER)
+        this.router.navigateByUrl('/home')
+      })
   }
 
   getReturnUrl() {return this.returnUrl}
@@ -85,14 +88,14 @@ export class AuthService {
   }
 
   signUp(credentials: Credentials) {
-    return this.http.post<AppUser>('/api/signup', credentials)
+    return this.http.post<AppUser>('/api/auth/signup', credentials)
       .shareReplay()
       .do(user => this.subject.next(user))
   }
 
   login(credentials: Credentials) {
     this.preLogin()
-    return this.http.post<AppUser>('/api/login', credentials)
+    return this.http.post<AppUser>('/api/auth/login', credentials)
       .shareReplay()
       .do(user => {
         this.subject.next(user)
@@ -101,7 +104,7 @@ export class AuthService {
 
   socialLogin(provider: string) {
     this.preLogin()
-    return this.http.get<AppUser>('/api/social-login/' + provider)
+    return this.http.get<AppUser>('/api/auth/social-login/' + provider)
       .shareReplay()
       .do(user => this.subject.next(user))
   }

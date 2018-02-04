@@ -1,0 +1,63 @@
+@import "../_chat-settings.scss";
+$chat-room-margin: 0px 0.25rem 0 0;
+
+chat-room {
+  display: inline-block;
+  margin: $chat-room-margin;
+  // width: 24rem;
+  max-width: 30rem;
+  height: 100%;
+  border: none;
+  pointer-events: all;
+  position: relative;
+}
+
+chat-room.minimized {
+  max-width: 24rem;
+}
+
+chat-room ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 8px;
+  background-color: #dddddd;
+}
+
+chat-room ::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  background-color: rgba(0,0,0,.25);
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.25);
+  box-shadow: 0 0 1px rgba(255,255,255,.25);
+}
+
+// .chat-windows {
+//   align-items: flex-end;
+//   margin-bottom: 1px;
+// }
+.container {
+  width: 400px;
+}
+.tile {
+  background: lightblue;
+}
+
+// .node {
+//   height: 2.5rem;
+//   padding: 8px 4px 4px 14px;
+//   background-color: $off-black;
+//   color: $dark-gray;
+//   margin: 1px 1px 1px 1px;
+//   border-left: 1px;
+//   min-width: 2.5rem;
+//   &.expanded {
+//     width: $node-width;
+//   }
+//   // &.is-collapsed {
+//   //   padding: 0;
+//   // }
+//   &:hover {
+//     background-color: $dark-gray;
+//     border: 1px solid black;
+//     color: $light-gray;
+//   }
+//   pointer-events:all;
+// }

@@ -1,8 +1,3 @@
-<button
-  (click)="loginGoogle()"
-  class="btn btn-primary">
-  Login with Google
-</button>
 <div class="row" *ngIf="isLoggedIn">
   <div class="column">
     <h3>You are logged in as
@@ -10,53 +5,44 @@
     <div>Please use ChatTime! by interacting with the box on the lower right.</div>
   </div>
 </div>
-<div class="row" *ngIf="!isLoggedIn">
-  <div class="column medium-6 medium-centered large-4 large-centered">
-    <form #loginForm="ngForm" (ngSubmit)="submitLogin(loginForm)" novalidate="">
-      <div class="row column log-in-form">
-        <h4 class="text-center expanded">Log in with your email account</h4>
-        <label class="expanded">Email
-          <input class="expanded" #email="ngModel" required="" type="email" name="email" [(ngModel)]="credentials.email" placeholder="somebody@example.com"
-          />
-        </label>
-        <label class="expanded">Password
-          <input class="expanded" #password="ngModel" required="" type="{{passwordInputType}}" name="password" [(ngModel)]="credentials.password"
-            placeholder="password" />
-        </label>
-        <p>
-          <a class="text-right expanded" (click)="toggleShowPassword()">show/hide password</a>
-        </p>
-        <button class="button expanded" type="submit" [disabled]="loginForm.invalid">Login</button>
-        <p class="text-center expanded">
-          <a href="#">Forgot your password?</a>
-        </p>
-        <p class="text-center expanded">
-          <a [routerLink]="['/signup']" routerLinkActive="active">New user signup?</a>
-        </p>
-      </div>
-    </form>
-    <br/>
-    <br/>
-    <h3 class="text-center">Or Signin With Your Social Account
-      <h6 class="text-center">(Are Popups required?)</h6>
-      <div class="row">
-        <div class="columns small-12">
-          <ul class="social list-inline">
-            <li>
-              <button class="button expanded twitter" [disabled]="isLoggedIn" type="button" (click)="submitSocialLogin('twitter')">
-                <i class="fa fa-twitter"></i>
-                <span>Twitter</span>
-              </button>
-            </li>
-            <li>
-              <button class="button expanded googleplus" [disabled]="isLoggedIn" type="button" (click)="submitSocialLogin('google')">
-                <i class="fa fa-google-plus"></i>
-                <span>Google</span>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </h3>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <!-- <div class="column medium-6 medium-centered large-4 large-centered"> -->
+
+      <form #loginForm="ngForm" class="form-horizontal" (ngSubmit)="submitLogin(loginForm)" novalidate="">
+        <fieldset>
+          <div id="legend">
+            <legend class="text-center">Email Login</legend>
+          </div>
+
+          <div class="example-container">
+
+            <mat-form-field>
+              <input name="email" matInput placeholder="Enter your email" [(ngModel)]="credentials.email" [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input name="password" matInput placeholder="Enter your password" [(ngModel)]="credentials.password" [type]="hide ? 'password' : 'text'">
+              <mat-icon class="nav-item" matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}
+              </mat-icon>
+            </mat-form-field>
+
+          </div>
+
+          <div class="control-group">
+            <!-- Button -->
+            <div class="controls">
+              <button class="btn btn-success" type="submit">Login</button>
+            </div>
+          </div>
+          <p class="text-center expanded">
+            <a [routerLink]="['/signup']" routerLinkActive="active">New User Signup?</a>
+          </p>
+        </fieldset>
+      </form>
+
+    </div>
   </div>
 </div>

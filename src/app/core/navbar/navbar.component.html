@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/">Home
+          <a class="nav-link" routerLink="/">Home {{ development }}
             <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -19,7 +19,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="nav-item dropdown" ngbDropdown *ngIf="isLoggedIn; else anonymousUser">
           <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{appUser?.userName || "logging in ..."}}
+            {{ appUser?.userName || "logging in ..." }}
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
             <a class="dropdown-item" routerLink="/my/orders">
@@ -32,6 +32,9 @@
               <a class="dropdown-item" routerLink="/admin/products">
                 <i class="fa fa-product-hunt" aria-hidden="true"></i>
                 Manage Products</a>
+              <a class="dropdown-item" routerLink="/admin/broadcastMessage">
+                <i class="fa fa-podcast" aria-hidden="true"></i>
+                Send Broadcast Message</a>
             </ng-container>
             <a class="dropdown-item" (click)="logout()">
               <i class="fa fa-sign-out" aria-hidden="true"></i>

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 // import { CategoryService } from '../../shared/services/category.service'
-import { ProductService, Product } from 'shared/services/product.service'
+import { ProductService, Product, Category } from 'shared/services/product.service'
 import { Router } from '@angular/router'
 import { ActivatedRoute } from '@angular/router'
 import 'rxjs/add/operator/take'
-// import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-product-form',
@@ -13,14 +13,12 @@ import 'rxjs/add/operator/take'
 })
 export class ProductFormComponent implements OnInit {
 
-  categories$
-  // categories$: Observable<Category[]>
+  categories$: Observable<Category[]>
   product: Product = {title: '', price: null, imageUrl: '', category: null}
   key: string
   buttonText = 'Save'
 
   constructor(
-    // cs: CategoryService,
     private router: Router,
     private route: ActivatedRoute,
     private ps: ProductService
@@ -28,14 +26,14 @@ export class ProductFormComponent implements OnInit {
     this.categories$ = ps.getCategories()
     this.key = this.route.snapshot.paramMap.get('id')
     if (this.key) {
-      // take operator takes the number of items and then unsubscribes itself from the Observable
       this.ps.get(this.key).take(1).subscribe(p => this.product = p)
     }
   }
 
   save(product) {
     if (this.key) {
-      this.ps.update(this.key, product).toPromise().then(() => {
+      this.ps.update(this.key, product).toPromise().then((_success) => {
+        console.log(`update success: ${_success}`)
         this.router.navigate(['/admin/products'])
       })
     } else {

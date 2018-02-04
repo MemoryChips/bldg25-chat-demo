@@ -3,7 +3,8 @@ import { Cart, ShoppingCartService } from './shopping-cart.service'
 // import { AngularFireDatabase } from 'angularfire2/database'
 import { Observable } from 'rxjs/Observable'
 import { HttpClient } from '@angular/common/http'
-import { addKey, values, KeyedObj } from 'shared/utils'
+// import { addKey, values, KeyedObj } from 'shared/utils'
+// import { addKey, values } from 'shared/utils'
 
 export class Order {
   datePlaced: number
@@ -41,24 +42,22 @@ export class OrderService {
   ) { }
 
   async placeOrder(order: Order) {
-    const result = await this.http.post<string>('/orders', order).toPromise()
+    const result = await this.http.post<{ success: boolean, userId: string }>('/api/order', order).toPromise()
     this.shoppingCartService.clearCart()  // this should be a transaction
     return result
   }
-  // placeOrder(order: Order) {
-  //   const result = this.db.list('/orders').push(order).then(
-  //     () => { this.shoppingCartService.clearCart() },
-  //     (err) => { console.error('There was a problem with the order: ', err) }
-  //   )
-  //   return result
-  // }
 
-  getOrders() {
-    return this.http.get<{[key: string]: Order}>('/orders').map(addKey).map(values)
+  getAllOrders() {
+    return this.http.get<string[][]>('/api/order/allOrders')
   }
 
-  getOrdersByUser(userId: string): Observable<Order[]> {
-    return this.http.get<KeyedObj<Order>>('/api/orders/' + userId )
-      .map(addKey).map(values)
+  getOrdersByUser(): Observable<Order[]> {
+    return this.http.get<string[]>('/api/order/myOrders')
+      .map(sOrders => {
+        const orders = sOrders.map(sOrder => {
+          return JSON.parse(sOrder) as Order
+        })
+        return orders
+      })
   }
 }

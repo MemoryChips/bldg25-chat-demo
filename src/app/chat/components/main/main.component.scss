@@ -1,0 +1,48 @@
+@import "../_chat-settings.scss";
+
+.chat-display-options {
+  display: flex;
+  align-items: flex-end;
+  .node{
+    justify-content: center;
+  }
+}
+
+.chat-activator {
+  position: relative;
+  pointer-events: all;
+}
+
+.chat-controller{
+  display: flex;
+  margin: $node-controller-margin;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  flex-direction: row-reverse;
+  pointer-events:none;
+}
+
+// .node {
+//   margin: $node-margin;
+//   // margin: 1px 1px 1px 1px;
+//   height: 2.5rem;
+//   padding: 8px 4px 4px 14px;
+//   background-color: $off-black;
+//   color: $dark-gray;
+//   border-left: 1px;
+//   min-width: 2.5rem;
+//   &.expanded {
+//     width: $node-width;
+//   }
+//   // &.is-collapsed {
+//   //   padding: 0;
+//   // }
+//   &:hover {
+//     background-color: $dark-gray;
+//     border: 1px solid black;
+//     color: $light-gray;
+//   }
+//   pointer-events:all;
+// }

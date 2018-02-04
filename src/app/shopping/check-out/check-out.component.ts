@@ -18,10 +18,6 @@ export class CheckOutComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    // const cart$ = await this.shippingCartService.getCart()
-    // this.subscriptions = [
-    //   cart$.subscribe(cart => this.cart = cart),
-    // ]
     this.subscriptions = [
       this.shoppingCartService.cart$.subscribe(cart => this.cart = cart),
     ]

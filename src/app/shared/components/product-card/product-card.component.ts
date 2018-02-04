@@ -23,10 +23,4 @@ export class ProductCardComponent implements OnInit {
     this.cartService.updateItemQuantity(this.product, q)
   }
 
-  // getQuantity() {
-  //   if (!this.cart) return 0
-  //   const item = this.cart.items[this.product.key]
-  //   return item ? item.quantity : 0
-  // }
-
 }

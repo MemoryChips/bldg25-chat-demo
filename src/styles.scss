@@ -52,3 +52,7 @@ h1, h2, h3 {
 .form-control:focus {
   border-color: $theme-color;
 }
+
+.nav-item {
+  cursor: pointer;
+}

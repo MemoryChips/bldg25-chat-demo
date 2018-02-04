@@ -14,11 +14,10 @@ export class AppComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    // private userService: UserService,
     private router: Router
   ) {
     this.auth.user$.subscribe(_user => {
-      // if (!user) return
+      // TODO: Why is this important?
       // this.userService.saveUser(user)  // ensures we have the update name in the database
       const returnUrl = localStorage.getItem('returnUrl')
       if (!returnUrl) return

@@ -1,0 +1,27 @@
+@import "../_chat-settings.scss";
+
+.message-label {
+  font-weight: bold;
+  color: $message-label-color;
+  white-space: nowrap;
+  vertical-align: top;
+  padding-right: 0.5rem;
+}
+
+.message-info {
+  font-size: 0.5rem;
+  font-family: Roboto, Arial, sans-serif;
+  color: $message-info-color;
+}
+
+.message {
+  padding-left: 1rem;
+  padding-right: 0;
+}
+
+.message-read {
+  color: $message-read-color;
+}
+.message-not-read {
+  color: $message-notread-color;
+}

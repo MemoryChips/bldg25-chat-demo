@@ -11,6 +11,8 @@ export class AdminOrdersComponent {
   orders$: Observable<Order[]>
 
   constructor(orderService: OrderService) {
-    this.orders$ = orderService.getOrders()
+    this.orders$ = orderService.getAllOrders().map((orderArrays: string[][]) => {
+      return [].concat.apply([], orderArrays).map(order => JSON.parse(order) as Order)
+    })
   }
 }

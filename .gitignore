@@ -43,3 +43,6 @@ Thumbs.db
 
 temp.ts
 server/keys
+
+# database files
+dump.rdb

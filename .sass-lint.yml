@@ -27,7 +27,7 @@ rules:
   no-ids: 2
   no-important: 2
   hex-notation:
-    - 2
+    - 0
     -
       style: uppercase
   indentation:

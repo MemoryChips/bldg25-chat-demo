@@ -1,11 +1,9 @@
 import * as express from 'express'
 import {
-  createShoppingCart,
+  putShoppingCart,
   getShoppingCart,
-  deleteShoppingCartItem,
-  getShoppingCartItem,
   deleteShoppingCart,
-  putShoppingCartItem
+  createShoppingCart,
 } from './shopping-cart-api'
 
 export const shoppingCartRouter = express.Router()
@@ -16,9 +14,7 @@ shoppingCartRouter.use((req, _res, next) => {
 })
 
 shoppingCartRouter
-  .put('/item', putShoppingCartItem)
-  .get('/item/:id', getShoppingCartItem)
-  .delete('/item', deleteShoppingCartItem)
+  .post('/', createShoppingCart)
   .get('/:id', getShoppingCart)
+  .put('/', putShoppingCart)
   .delete('/:id', deleteShoppingCart)
-  .put('/', createShoppingCart)

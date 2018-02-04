@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-// import { AngularFireDatabase } from 'angularfire2/database'
 import 'rxjs/add/operator/take'
 import { Observable } from 'rxjs/Observable'
 import { Product } from 'shared/services/product.service'
@@ -59,6 +58,7 @@ export class ShoppingCartService {
   constructor(private http: HttpClient) {
     this.getCart().then(b => {
       console.log('cart is loaded: ', b)
+      console.log('cart is now: ', this.cart)
     })
   }
 
@@ -69,60 +69,57 @@ export class ShoppingCartService {
   }
 
   async updateItemQuantity(product: Product, change: number = 1) {
-    const cartId = await this.getCartId()
-    // const cart = await this.getCart()
+    if (!this.cart.items[product.key]) { this.cart.items[product.key] = { quantity: 0, product } }
     const item = this.cart.items[product.key]
     const quantity = (item ? item.quantity : 0) + change
     if (quantity <= 0) {
-      this.http.delete(`/api/shopping-carts/item?cartid=${cartId}&key=${product.key}`)
-        .subscribe((uCart) => {
-          console.log(`Item removed from cart result ${uCart}:`, cartId, product.key)
-          this.setNewCart(uCart)
-        })
+      delete this.cart.items[product.key]
     } else {
-      const updateItem: Item = {
-        product: product,
-        quantity,
-        key: product.key
-      }
-      this.http.put<Cart>('/api/shopping-carts/item', { cartId, updateItem })
-        .subscribe((uCart) => {
-          console.log('Item put into cart:', uCart)
-          this.setNewCart(uCart)
-        })
+      this.cart.items[product.key].quantity = quantity
     }
+    this.subject.next(this.cart)
+    return this.getCartId().then(cartId => {
+      return this.http.put<boolean>('/api/shopping-carts', { cartId, cart: this.cart }).subscribe(_success => {
+        console.log('cart updated: ', _success)
+        console.log('cart is now: ', this.cart)
+      })
+    })
   }
 
-  // TODO: Have backend return a new empty cart
   async checkOut() {
     // TODO: Add checkout stuff here
     this.clearCart()
   }
 
-  // TODO: Have backend return a new empty cart
   async clearCart() {
     const cartId = await this.getCartId()
-    this.http.delete<string>(`/api/shopping-carts/${cartId}`)
-      .subscribe((newCartId) => {
-        console.log('Cart cleared:', cartId)
-        this.setCartId(newCartId)
-        this.getCart()
+    this.http.delete<{success: boolean}>(`/api/shopping-carts/${cartId}`)
+      .subscribe((resp) => {
+        if (resp.success) {
+          console.log('Cart cleared:', cartId)
+          localStorage.removeItem('cartId')
+          this.getCartId().then(_cartId => {
+            this.getCart().then((success) => {
+              console.log(`New cart setup: ${success}`)
+            })
+        })
+        } else {
+          console.log('Unable to clear cart.')
+        }
       })
   }
 
   private async getCart(): Promise<boolean> {
     const cartId = await this.getCartId()
-    this.http.get<any>(`/api/shopping-carts/${cartId}`)
-      // .map(cart => new Cart(cart ? cart.items || {} : {}))
-      .subscribe(c => {
+    return this.http.get<Cart>(`/api/shopping-carts/${cartId}`)
+      .toPromise().then((c) => {
         this.setNewCart(c)
-        // this.cart = c
+        return true
       })
-    return true
   }
 
   private async createCartDb() {
-    return this.http.put<string>('/api/shopping-carts', {}).toPromise()
+    return this.http.post<string>('/api/shopping-carts', { newCart: new Cart() }).toPromise()
   }
 
   private setCartId(id: string) {

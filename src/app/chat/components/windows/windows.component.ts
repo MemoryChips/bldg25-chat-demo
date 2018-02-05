@@ -29,8 +29,8 @@ export class WindowsComponent implements OnInit, OnDestroy {
       this.chatMessageService.chatStore.openRoomIds$.subscribe((roomIds: string[]) => {
         this.openRoomIds = roomIds
         console.log('New open rooms:', this.openRoomIds)
-        if (roomIds.length > 0) {
-          this.numRooms = roomIds.length
+        if (this.openRoomIds.length > 0) {
+          this.numRooms = this.openRoomIds.length
           this.atLeastOneRoom = true
         } else { this.atLeastOneRoom = false }
       })

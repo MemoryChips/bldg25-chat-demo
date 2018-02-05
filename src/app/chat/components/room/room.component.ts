@@ -51,7 +51,7 @@ export class RoomComponent implements AfterViewInit, AfterViewChecked, OnInit, O
   // private roomState = ROOM_STATES.Idle
   private updateScroll: boolean
   private theMessageList: Message[] = []
-  private theParticipants: ChatUser[]
+  private theParticipants: string[]
   public messagesReadTime = 10
 
   private subscriptions: Array<any> = []

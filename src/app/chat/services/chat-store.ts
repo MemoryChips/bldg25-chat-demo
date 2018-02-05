@@ -29,8 +29,8 @@ export class ChatStore {
   private chatUserListSubject = new BehaviorSubject<ChatUserList>(undefined)
   chatUserList$: Observable<ChatUserList> = this.chatUserListSubject.asObservable().filter(list => !!list)
 
-  private roomListSubject = new BehaviorSubject<RoomList>(undefined)
-  roomList$: Observable<RoomList> = this.roomListSubject.asObservable().filter(rs => !!rs)
+  roomListSubject$ = new BehaviorSubject<RoomList>(undefined)
+  roomList$: Observable<RoomList> = this.roomListSubject$.asObservable().filter(rs => !!rs)
 
   private meSubject = new BehaviorSubject<ChatUser>(undefined)
   me$: Observable<ChatUser> = this.meSubject.asObservable().filter(me => !!me)
@@ -63,8 +63,13 @@ export class ChatStore {
   setChatUserList(newChatUserList: ChatUserList) { this.chatUserListSubject.next(newChatUserList) }
 
   setRoomList(newRoomList: RoomList) {
-    this.roomList = newRoomList
-    this.roomListSubject.next(newRoomList)
+    this.roomList = { ...newRoomList }
+    this.roomListSubject$.next(newRoomList)
+  }
+
+  upDateRoom(newRoom: Room) {
+    this.roomList[newRoom.id] = newRoom
+    this.setRoomList(this.roomList)
   }
 
   toggleRoomListOption() {
@@ -92,8 +97,8 @@ export class ChatStore {
 // Test Data Below here
 
 const testMe: ChatUser = {
-  id: 'dummyId',
-  name: 'Dumdum',
+  id: 'h8kluhg4ryvjcwkgtre',
+  name: 'MrAdmin',
   isAdmin: false
 }
 
@@ -136,7 +141,7 @@ const message3: Message = {
 }
 const room1: Room = {
   id: 'roomId1',
-  chatUsers: [testMe, user1],
+  chatUsers: [testMe.id, user1.id],
   messages: [message1, message2],
   open: true,
   created: 1517514703601,
@@ -145,7 +150,7 @@ const room1: Room = {
 }
 const room2: Room = {
   id: 'roomId2',
-  chatUsers: [testMe, user2],
+  chatUsers: [testMe.id, user2.id],
   messages: [message3],
   open: true,
   created: 1517514703601,

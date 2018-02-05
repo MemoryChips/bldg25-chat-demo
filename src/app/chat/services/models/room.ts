@@ -1,4 +1,4 @@
-import { ChatUser } from './chat-user'
+// import { ChatUser } from './chat-user'
 export interface RoomList {
   rooms: {
     [roomId: string]: Room
@@ -12,7 +12,7 @@ export enum ROOM_TYPES { Named, Lobby, OneToOne, Private }
 
 export interface Room {
   id: string
-  chatUsers: ChatUser[]
+  chatUsers: string[]
   messages: Message[]
   open: boolean
   created: number

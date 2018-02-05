@@ -14,7 +14,6 @@ export class RoomCardComponent implements OnInit, OnDestroy {
   @Input() roomId: string
   room: Room
   me: ChatUser
-  someData = 'this is some data'
 
   private subscriptions: Subscription[] = []
 
@@ -26,9 +25,8 @@ export class RoomCardComponent implements OnInit, OnDestroy {
     console.log('Room Card init called with: ', this.roomId)
     this.subscriptions = [
       this.chatMessageService.chatStore.roomListSubject$.subscribe((rl) => {
-        console.log(this.someData)
-        debugger
-        if (rl && rl.rooms[this.roomId] !== this.room) {
+        const theRoom = rl.rooms[this.roomId]
+        if (rl && theRoom !== this.room) {
           this.room = rl.rooms[this.roomId]
         }
       }),

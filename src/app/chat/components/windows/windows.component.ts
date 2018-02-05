@@ -9,13 +9,17 @@ import { ChatMessageService } from 'app/chat/services/chat-message.service'
 })
 export class WindowsComponent implements OnInit, OnDestroy {
 
-  public atLeastOneRoom: boolean
-  public stateOpen = true
-  private subscriptions: Array<any> = []
+  atLeastOneRoom = false
+  stateOpen = true
 
   localUser: ChatUser
   openRoomIds: string[]
-  containerWidth = '500px'
+  // openRoomIds = ['room1', 'romm2']
+  containerWidth = '600px'
+  numRooms = 0
+
+  private subscriptions: Array<any> = []
+
   constructor(
     private chatMessageService: ChatMessageService,
   ) { }
@@ -23,8 +27,10 @@ export class WindowsComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.subscriptions = [
       this.chatMessageService.chatStore.openRoomIds$.subscribe((roomIds: string[]) => {
-        console.log('New open rooms:', roomIds)
+        this.openRoomIds = roomIds
+        console.log('New open rooms:', this.openRoomIds)
         if (roomIds.length > 0) {
+          this.numRooms = roomIds.length
           this.atLeastOneRoom = true
         } else { this.atLeastOneRoom = false }
       })

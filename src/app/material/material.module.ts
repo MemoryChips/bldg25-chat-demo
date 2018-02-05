@@ -13,7 +13,7 @@ import {
   MatSnackBarModule,
   MatExpansionModule,
   MatTabsModule,
-  MatGridListModule
+  MatGridListModule,
 } from '@angular/material'
 
 const matModules = [

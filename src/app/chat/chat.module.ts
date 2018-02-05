@@ -18,7 +18,8 @@ import { UserListComponent } from './components/user-list/user-list.component'
 import { UserListRowComponent } from './components/user-list-row/user-list-row.component'
 import { CompositeMessageComponent } from './components/composite-message/composite-message.component'
 import 'rxjs/add/operator/filter';
-import { TabsComponent } from './components/tabs/tabs.component'
+import { TabsComponent } from './components/tabs/tabs.component';
+import { RoomCardComponent } from './components/room-card/room-card.component'
 
 @NgModule({
 
@@ -42,7 +43,8 @@ import { TabsComponent } from './components/tabs/tabs.component'
     UserListComponent,
     UserListRowComponent,
     CompositeMessageComponent,
-    TabsComponent
+    TabsComponent,
+    RoomCardComponent
   ],
 
   exports: [

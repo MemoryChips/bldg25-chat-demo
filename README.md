@@ -26,6 +26,7 @@ ng g c chat/components/Main -d
 ng g c chat/components/Windows -d
 ng g c chat/components/Activator -d
 ng g c chat/components/Tabs -d
+ng g c chat/components/RoomCard -d
 ```
 
 ## Deployment Notes

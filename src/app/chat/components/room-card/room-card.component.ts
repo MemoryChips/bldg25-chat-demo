@@ -13,8 +13,8 @@ import { CompositeMessage } from '../composite-message/composite_message'
 export class RoomCardComponent implements OnInit, OnDestroy {
 
   @Input() roomId: string
+  @Input() localUser: ChatUser
   room: Room
-  me: ChatUser
   compositeMessages: Array<CompositeMessage> = []
 
   private subscriptions: Subscription[] = []
@@ -33,14 +33,13 @@ export class RoomCardComponent implements OnInit, OnDestroy {
           this.compositeMessages = this.buildCompositeMessages()
         }
       }),
-      this.chatMessageService.chatStore.me$
-        .subscribe((me) => {
-          debugger
-          if (me) {
-            console.log('me updated to me: ', me)
-            this.me = me
-          }
-        })
+      // this.chatMessageService.chatStore.meSubject$
+      //   .subscribe((me) => {
+      //     if (me) {
+      //       console.log('me updated to me: ', me)
+      //       this.localUser = me
+      //     }
+      //   })
       // this.chatMessageService.chatStore.chatUserList$
       //   .subscribe((cUsers) => {
       //     this.users = cUsers.chatUsers
@@ -68,7 +67,8 @@ export class RoomCardComponent implements OnInit, OnDestroy {
           previousMessage.chatUserId !== message.chatUserId))
       ) {
         let ownerName = 'Me' // set ownerName here
-        if (this.me.id !== message.chatUserId) { ownerName = message.chatUserId }
+        // TODO: get user list and set ownerName to name
+        if (this.localUser.id !== message.chatUserId) { ownerName = message.chatUserId }
         currentCompositeMessage = new CompositeMessage({ ownerId: message.chatUserId, ownerName })
         newCompMessages.push(currentCompositeMessage)
       }

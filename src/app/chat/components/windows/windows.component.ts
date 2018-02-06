@@ -14,7 +14,6 @@ export class WindowsComponent implements OnInit, OnDestroy {
 
   localUser: ChatUser
   openRoomIds: string[]
-  // openRoomIds = ['room1', 'romm2']
   containerWidth = '600px'
   numRooms = 0
 
@@ -26,7 +25,7 @@ export class WindowsComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.subscriptions = [
-      this.chatMessageService.chatStore.openRoomIds$.subscribe((roomIds: string[]) => {
+      this.chatMessageService.chatStore.openRoomIdsSubject$.subscribe((roomIds: string[]) => {
         this.openRoomIds = roomIds
         console.log('New open rooms:', this.openRoomIds)
         if (this.openRoomIds.length > 0) {

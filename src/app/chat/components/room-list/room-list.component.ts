@@ -26,11 +26,12 @@ export class RoomListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions = [
-      this.chatMessageService.chatStore.me$.subscribe((me) => {
-        this.localUserId = me.id
+      this.chatMessageService.chatStore.meSubject$.subscribe((me) => {
+        if (me) { this.localUserId = me.id }
       }),
-      this.chatMessageService.chatStore.roomList$
+      this.chatMessageService.chatStore.roomListSubject$
         .map((rooms) => {
+          if (!rooms) { return [] }
           return values(rooms.rooms).sort((a, b) => {
             if (a.id < b.id) { return -1 }
             if (a.id > b.id) { return 1 }

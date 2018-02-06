@@ -74,7 +74,8 @@ export class RoomComponent implements AfterViewInit, AfterViewChecked, OnInit, O
     // is it possible to subscribe to only my room?
     // const theRoom$ = this.ngRedux.select(['roomListState', 'rooms', this.roomId])
     this.subscriptions = [
-      this.chatMessageService.chatStore.roomList$.subscribe((roomList) => {
+      this.chatMessageService.chatStore.roomListSubject$.subscribe((roomList) => {
+        if (!roomList) { return console.log('Room list erro. No Room List found.')}
         const theRoom = roomList.rooms[this.roomId]
         // theRoom$.subscribe((theRoom: Room) => {
         // this.roomState = ROOM_STATES.idle;

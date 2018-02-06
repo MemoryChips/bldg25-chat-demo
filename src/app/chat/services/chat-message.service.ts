@@ -25,7 +25,6 @@ export class ChatMessageService {
           name: newUser.userName,
           isAdmin: newUser.roles.includes('ADMIN')
         }
-        debugger
         this.chatStore.setMe(newMe)
       }
     })

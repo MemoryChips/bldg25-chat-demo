@@ -1,5 +1,4 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { Observable } from 'rxjs/Observable'
 import { RoomList, Room, Message, ROOM_TYPES } from './models/room'
 import { ChatUser } from './models/chat-user'
 import 'rxjs/add/operator/filter'
@@ -26,20 +25,20 @@ const initChatUserList: ChatUserList = {
 
 export class ChatStore {
 
-  private chatUserListSubject = new BehaviorSubject<ChatUserList>(undefined)
-  chatUserList$: Observable<ChatUserList> = this.chatUserListSubject.asObservable().filter(list => !!list)
+  chatUserListSubject$ = new BehaviorSubject<ChatUserList>(undefined)
+  // chatUserList$: Observable<ChatUserList> = this.chatUserListSubject$.asObservable().filter(list => !!list)
 
   roomListSubject$ = new BehaviorSubject<RoomList>(undefined)
-  roomList$: Observable<RoomList> = this.roomListSubject$.asObservable().filter(rs => !!rs)
+  // roomList$: Observable<RoomList> = this.roomListSubject$.asObservable().filter(rs => !!rs)
 
   meSubject$ = new BehaviorSubject<ChatUser>(undefined)
-  me$: Observable<ChatUser> = this.meSubject$.asObservable().filter(me => !!me)
+  // me$: Observable<ChatUser> = this.meSubject$.asObservable().filter(me => !!me)
 
-  private openRoomIdsSubject = new BehaviorSubject<string[]>(undefined)
-  openRoomIds$: Observable<string[]> = this.openRoomIdsSubject.asObservable().filter(rs => !!rs)
+  openRoomIdsSubject$ = new BehaviorSubject<string[]>(undefined)
+  // openRoomIds$: Observable<string[]> = this.openRoomIdsSubject.asObservable().filter(rs => !!rs)
 
-  private showOpenRoomsSubject = new BehaviorSubject<boolean>(undefined)
-  showOpenRooms$: Observable<boolean> = this.showOpenRoomsSubject.asObservable().filter(s => !!s)
+  showOpenRoomsSubject$ = new BehaviorSubject<boolean>(undefined)
+  // showOpenRooms$: Observable<boolean> = this.showOpenRoomsSubject$.asObservable().filter(s => !!s)
   private showOpenRooms: boolean
 
   private openRoomIds: string[] = []
@@ -51,16 +50,16 @@ export class ChatStore {
     iRoomList = initRoomList,
   ) {
     this.meSubject$.next(iMe)
-    this.chatUserListSubject.next(iChatUserList)
+    this.chatUserListSubject$.next(iChatUserList)
     this.setRoomList(iRoomList)
     this.setOpenRoomIds([])
     this.showOpenRooms = false
-    this.showOpenRoomsSubject.next(this.showOpenRooms)
+    this.showOpenRoomsSubject$.next(this.showOpenRooms)
   }
 
   setMe(newMe: ChatUser) { this.meSubject$.next(newMe) }
 
-  setChatUserList(newChatUserList: ChatUserList) { this.chatUserListSubject.next(newChatUserList) }
+  setChatUserList(newChatUserList: ChatUserList) { this.chatUserListSubject$.next(newChatUserList) }
 
   setRoomList(newRoomList: RoomList) {
     this.roomList = { ...newRoomList }
@@ -74,12 +73,12 @@ export class ChatStore {
 
   toggleRoomListOption() {
     this.showOpenRooms = !this.showOpenRooms
-    this.showOpenRoomsSubject.next(this.showOpenRooms)
+    this.showOpenRoomsSubject$.next(this.showOpenRooms)
   }
 
   setOpenRoomIds(newOpenRoomIds: string[]) {
     this.openRoomIds = newOpenRoomIds
-    this.openRoomIdsSubject.next(newOpenRoomIds)
+    this.openRoomIdsSubject$.next(newOpenRoomIds)
   }
 
   openRoom(id: string) {

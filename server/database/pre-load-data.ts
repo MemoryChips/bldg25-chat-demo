@@ -3,6 +3,8 @@
 import * as redis from 'redis'
 const redisClient = redis.createClient({ host: 'localhost', port: 6379 })
 
+redisClient.auth('bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ')
+
 redisClient.on('ready', function () {
   console.log('Redis is ready')
 })

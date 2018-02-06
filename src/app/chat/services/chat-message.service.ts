@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core'
-import { AuthService } from 'app/auth/auth.service'
+import { AuthService, AppUser } from 'app/auth/auth.service'
 import { ChatStore, testChatStore } from './chat-store'
+// TODO: is there a better way to do this?
+import { ChatUser } from 'app/chat/services/models/chat-user'  // this must be provided by host application
 
 @Injectable()
 export class ChatMessageService {
@@ -14,6 +16,17 @@ export class ChatMessageService {
         this.connectChat()
       } else {
         if (this.chatConnection) { this.chatConnection.close() }
+      }
+    })
+    this.auth.userSubject$.subscribe((newUser: AppUser) => {
+      if (newUser) {
+        const newMe: ChatUser = {
+          id: newUser.id,
+          name: newUser.userName,
+          isAdmin: newUser.roles.includes('ADMIN')
+        }
+        debugger
+        this.chatStore.setMe(newMe)
       }
     })
     this.chatStore = testChatStore

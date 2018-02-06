@@ -32,8 +32,8 @@ export class ChatStore {
   roomListSubject$ = new BehaviorSubject<RoomList>(undefined)
   roomList$: Observable<RoomList> = this.roomListSubject$.asObservable().filter(rs => !!rs)
 
-  private meSubject = new BehaviorSubject<ChatUser>(undefined)
-  me$: Observable<ChatUser> = this.meSubject.asObservable().filter(me => !!me)
+  meSubject$ = new BehaviorSubject<ChatUser>(undefined)
+  me$: Observable<ChatUser> = this.meSubject$.asObservable().filter(me => !!me)
 
   private openRoomIdsSubject = new BehaviorSubject<string[]>(undefined)
   openRoomIds$: Observable<string[]> = this.openRoomIdsSubject.asObservable().filter(rs => !!rs)
@@ -50,7 +50,7 @@ export class ChatStore {
     iChatUserList = initChatUserList,
     iRoomList = initRoomList,
   ) {
-    this.meSubject.next(iMe)
+    this.meSubject$.next(iMe)
     this.chatUserListSubject.next(iChatUserList)
     this.setRoomList(iRoomList)
     this.setOpenRoomIds([])
@@ -58,7 +58,7 @@ export class ChatStore {
     this.showOpenRoomsSubject.next(this.showOpenRooms)
   }
 
-  setMe(newMe: ChatUser) { this.meSubject.next(newMe) }
+  setMe(newMe: ChatUser) { this.meSubject$.next(newMe) }
 
   setChatUserList(newChatUserList: ChatUserList) { this.chatUserListSubject.next(newChatUserList) }
 

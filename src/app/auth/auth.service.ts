@@ -27,9 +27,10 @@ export interface Credentials {
 @Injectable()
 export class AuthService {
 
-  private subject = new BehaviorSubject<AppUser>(undefined)
+  userSubject$ = new BehaviorSubject<AppUser>(undefined)
+  user$: Observable<AppUser> = this.userSubject$.asObservable().filter(user => !!user)
+
   returnUrl = '/'
-  user$: Observable<AppUser> = this.subject.asObservable().filter(user => !!user)
   isLoggedIn$: Observable<boolean> = this.user$.map(user => !!user.id)
   isLoggedOut$: Observable<boolean> = this.isLoggedIn$.map(isLoggedIn => !isLoggedIn)
   chatConnection: WebSocket
@@ -46,7 +47,7 @@ export class AuthService {
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
     this.http.get<AppUser>('/api/auth/user-me')
       .subscribe((user) => {
-        this.subject.next(user.id ? user : ANONYMOUS_USER)
+        this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
       }
     )
     // this.isLoggedIn$.subscribe((isLoggedIn) => {
@@ -70,7 +71,7 @@ export class AuthService {
     return this.http.post('/api/auth/logout', null)
       .shareReplay()
       .do(_user => {
-        this.subject.next(ANONYMOUS_USER)
+        this.userSubject$.next(ANONYMOUS_USER)
         this.router.navigateByUrl('/home')
       })
   }
@@ -90,7 +91,7 @@ export class AuthService {
   signUp(credentials: Credentials) {
     return this.http.post<AppUser>('/api/auth/signup', credentials)
       .shareReplay()
-      .do(user => this.subject.next(user))
+      .do(user => this.userSubject$.next(user))
   }
 
   login(credentials: Credentials) {
@@ -98,7 +99,7 @@ export class AuthService {
     return this.http.post<AppUser>('/api/auth/login', credentials)
       .shareReplay()
       .do(user => {
-        this.subject.next(user)
+        this.userSubject$.next(user)
       })
   }
 
@@ -106,7 +107,7 @@ export class AuthService {
     this.preLogin()
     return this.http.get<AppUser>('/api/auth/social-login/' + provider)
       .shareReplay()
-      .do(user => this.subject.next(user))
+      .do(user => this.userSubject$.next(user))
   }
 
 }

@@ -7,6 +7,8 @@
 ```bash
 npm start # ng serve
 npm run start-redisdb # start development redis server
+# optional start redis server with unique path to executable
+/home/rob/redis-4.0.8/src/redis-server ./server/database/redis.conf
 # run debugger version of server setup in vs-code of server
 # OR run server from command line:
 npm run start-server # start express server written in typescript

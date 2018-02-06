@@ -33,13 +33,11 @@ export class WindowsComponent implements OnInit, OnDestroy {
           this.numRooms = this.openRoomIds.length
           this.atLeastOneRoom = true
         } else { this.atLeastOneRoom = false }
-      })
-      // this.openRoomIds$.subscribe((roomIds: string[]) => {
-      //   console.log('New open rooms:', roomIds)
-      //   if (roomIds.length > 0) {
-      //     this.atLeastOneRoom = true
-      //   } else { this.atLeastOneRoom = false }
-      // })
+      }),
+      this.chatMessageService.chatStore.meSubject$.subscribe((me: ChatUser) => {
+        this.localUser = me
+        console.log('New local user in windows comp:', this.localUser.id)
+      }),
     ]
   }
 

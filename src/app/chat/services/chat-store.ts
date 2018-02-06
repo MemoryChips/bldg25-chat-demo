@@ -26,23 +26,17 @@ const initChatUserList: ChatUserList = {
 export class ChatStore {
 
   chatUserListSubject$ = new BehaviorSubject<ChatUserList>(undefined)
-  // chatUserList$: Observable<ChatUserList> = this.chatUserListSubject$.asObservable().filter(list => !!list)
 
+  private roomList: RoomList
   roomListSubject$ = new BehaviorSubject<RoomList>(undefined)
-  // roomList$: Observable<RoomList> = this.roomListSubject$.asObservable().filter(rs => !!rs)
 
   meSubject$ = new BehaviorSubject<ChatUser>(undefined)
-  // me$: Observable<ChatUser> = this.meSubject$.asObservable().filter(me => !!me)
-
-  openRoomIdsSubject$ = new BehaviorSubject<string[]>(undefined)
-  // openRoomIds$: Observable<string[]> = this.openRoomIdsSubject.asObservable().filter(rs => !!rs)
-
-  showOpenRoomsSubject$ = new BehaviorSubject<boolean>(undefined)
-  // showOpenRooms$: Observable<boolean> = this.showOpenRoomsSubject$.asObservable().filter(s => !!s)
-  private showOpenRooms: boolean
 
   private openRoomIds: string[] = []
-  private roomList: RoomList
+  openRoomIdsSubject$ = new BehaviorSubject<string[]>(undefined)
+
+  private showOpenRooms: boolean
+  showOpenRoomsSubject$ = new BehaviorSubject<boolean>(undefined)
 
   constructor(
     iMe = initMe,

@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { RoomList, Room, Message, ROOM_TYPES } from './models/room'
+import { Room, Message, ROOM_TYPES } from './models/room'
 import { ChatUser } from './models/chat-user'
 import 'rxjs/add/operator/filter'
 
@@ -9,81 +9,101 @@ const initMe: ChatUser = {
   isAdmin: false
 }
 
-const initRoomList: RoomList = {
-  rooms: {},
-  // openRoomIds: [],
-  // showOpenRooms: false
-}
-
 interface ChatUserState {
-  chatUsers: ChatUser[]
+  chatUsers: ChatUser[],
+  me: ChatUser
 }
 
 const initChatUserState: ChatUserState = {
-  chatUsers: []
+  chatUsers: [],
+  me: initMe
+}
+
+const initRoomState: RoomState = {
+  rooms: {},
+  openRoomIds: [],
+  showOpenRooms: false
+}
+
+interface RoomState {
+  rooms: { [roomId: string]: Room }
+  openRoomIds: string[]
+  showOpenRooms: boolean
 }
 
 export class ChatStore {
 
+  private chatUserState: ChatUserState
   chatUserState$ = new BehaviorSubject<ChatUserState>(undefined)
-  me$ = new BehaviorSubject<ChatUser>(undefined)
+  // me$ = new BehaviorSubject<ChatUser>(undefined)
 
-  private roomList: RoomList
-  roomListSubject$ = new BehaviorSubject<RoomList>(undefined)
+  private roomState: RoomState
+  roomState$ = new BehaviorSubject<RoomState>(undefined)
 
-  private openRoomIds: string[] = []
-  openRoomIdsSubject$ = new BehaviorSubject<string[]>(undefined)
+  // private openRoomIds: string[] = []
+  // openRoomIdsSubject$ = new BehaviorSubject<string[]>(undefined)
 
-  private showOpenRooms: boolean
-  showOpenRoomsSubject$ = new BehaviorSubject<boolean>(undefined)
+  // private showOpenRooms: boolean
+  // showOpenRoomsSubject$ = new BehaviorSubject<boolean>(undefined)
 
   constructor(
-    iMe = initMe,
-    iChatUserList = initChatUserState,
-    iRoomList = initRoomList,
+    // iMe = initMe,
+    iChatUserState = initChatUserState,
+    iRoomState = initRoomState,
   ) {
-    this.me$.next(iMe)
-    this.chatUserState$.next(iChatUserList)
-    this.setRoomList(iRoomList)
-    this.setOpenRoomIds([])
-    this.showOpenRooms = false
-    this.showOpenRoomsSubject$.next(this.showOpenRooms)
+    // this.me$.next(iMe)
+    this.setChatUserState(iChatUserState)
+    this.setRoomState(iRoomState)
+    // this.setOpenRoomIds([])
+    // this.showOpenRooms = false
+    // this.showOpenRoomsSubject$.next(this.showOpenRooms)
   }
 
-  setMe(newMe: ChatUser) { this.me$.next(newMe) }
+  setMe(newMe: ChatUser) {
+    const nextChatUserState = {...this.chatUserState}
+    nextChatUserState.me = newMe
+    this.setChatUserState(nextChatUserState)
+  }
 
-  setChatUserList(newChatUserList: ChatUserState) { this.chatUserState$.next(newChatUserList) }
+  setChatUserState(newChatUserState: ChatUserState) {
+    this.chatUserState = newChatUserState
+    this.chatUserState$.next(newChatUserState)
+  }
 
-  setRoomList(newRoomList: RoomList) {
-    this.roomList = newRoomList
-    this.roomListSubject$.next(newRoomList)
+  private setRoomState(newRoomList: RoomState) {
+    this.roomState = newRoomList
+    this.roomState$.next(newRoomList)
   }
 
   upDateRoom(newRoom: Room) {
-    const newRooms: { [roomId: string]: Room } = {...this.roomList.rooms}
+    const newRooms: { [roomId: string]: Room } = {...this.roomState.rooms}
     newRooms.rooms[newRoom.id] = newRoom
-    const newRoomList = { ...this.roomList }
+    const newRoomList = { ...this.roomState }
     newRoomList.rooms = newRooms
-    this.setRoomList(newRoomList)
+    this.setRoomState(newRoomList)
   }
 
   toggleRoomListOption() {
-    this.showOpenRooms = !this.showOpenRooms
-    this.showOpenRoomsSubject$.next(this.showOpenRooms)
+    const nextRoomState = { ...this.roomState }
+    nextRoomState.showOpenRooms = !nextRoomState.showOpenRooms
+    this.setRoomState(nextRoomState)
+    // this.showOpenRooms = !this.showOpenRooms
+    // this.showOpenRoomsSubject$.next(this.showOpenRooms)
   }
 
   setOpenRoomIds(newOpenRoomIds: string[]) {
-    this.openRoomIds = newOpenRoomIds
-    this.openRoomIdsSubject$.next(newOpenRoomIds)
+    const nextRoomState = { ...this.roomState }
+    nextRoomState.openRoomIds = newOpenRoomIds
+    this.setRoomState(nextRoomState)
   }
 
   openRoom(id: string) {
-    if (!this.openRoomIds.includes(id)) {
-      const newOpenRoomIds = [id, ...this.openRoomIds]
-      this.setOpenRoomIds(newOpenRoomIds)
-      // const mRoom: Room = { ...this.roomList.rooms[id] }
-      // mRoom.open = true
-      // this.roomList.rooms[id] = mRoom
+    if (!this.roomState.openRoomIds.includes(id)) {
+      // this.setOpenRoomIds(newOpenRoomIds)
+      const nextRoomState = { ...this.roomState }
+      const newOpenRoomIds = [id, ...nextRoomState.openRoomIds]
+      nextRoomState.openRoomIds = newOpenRoomIds
+      this.setRoomState(nextRoomState)
     }
   }
 
@@ -114,7 +134,8 @@ const testChatUserList: ChatUserState = {
     user1,
     user2,
     testMe
-  ]
+  ],
+  me: testMe
 }
 const message1: Message = {
   // id: 'messageId1',
@@ -153,13 +174,15 @@ const room2: Room = {
   description: 'Room2'
 }
 
-const testRoomList: RoomList = {
+const testRoomState: RoomState = {
   rooms: {
     'roomId1': room1,
     'roomId2': room2
-  }
+  },
+  showOpenRooms: false,
+  openRoomIds: []
 }
 
 // end test data
 
-export const testChatStore = new ChatStore(testMe, testChatUserList, testRoomList)
+export const testChatStore = new ChatStore(testChatUserList, testRoomState)

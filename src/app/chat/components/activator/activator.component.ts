@@ -52,15 +52,17 @@ export class ActivatorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._subscriptions = [
-      this.chatMessageService.chatStore.showOpenRoomsSubject$.subscribe((show) => {
-        this.showOnlyOpenRooms = show
-      }),
-      this.chatMessageService.chatStore.openRoomIdsSubject$.subscribe((list) => {
-        this.numOpenRooms = list.length || 0
-      }),
-      this.chatMessageService.chatStore.roomListSubject$.subscribe((roomList) => {
-        if (roomList) {
-          this.numRooms = Object.keys(roomList.rooms).length || 0 // map object to values
+      // this.chatMessageService.chatStore.showOpenRoomsSubject$.subscribe((show) => {
+      //   this.showOnlyOpenRooms = show
+      // }),
+      // this.chatMessageService.chatStore.openRoomIdsSubject$.subscribe((list) => {
+      //   this.numOpenRooms = list.length || 0
+      // }),
+      this.chatMessageService.chatStore.roomState$.subscribe((roomState) => {
+        if (roomState) {
+          this.numRooms = Object.keys(roomState.rooms).length || 0 // map object to values
+          this.showOnlyOpenRooms = roomState.showOpenRooms
+          this.numOpenRooms = roomState.openRoomIds.length
         }
       }),
       this.chatMessageService.chatStore.chatUserState$.subscribe((chatUserList) => {

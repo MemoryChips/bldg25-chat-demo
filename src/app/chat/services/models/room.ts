@@ -1,12 +1,3 @@
-// import { ChatUser } from './chat-user'
-export interface RoomList {
-  rooms: {
-    [roomId: string]: Room
-  }
-  // openRoomIds: string[]
-  // showOpenRooms: boolean
-}
-
 export enum ROOM_LAYOUTS { OneToOne, Small, Large }
 export enum ROOM_TYPES { Named, Lobby, OneToOne, Private }
 

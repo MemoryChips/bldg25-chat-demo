@@ -15,8 +15,8 @@ export class OptionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.chatMessageService.chatStore.showOpenRoomsSubject$.subscribe((b: boolean) => {
-      console.log('Show only open rooms option is now', b)
+    this.chatMessageService.chatStore.roomState$.subscribe((rs) => {
+      console.log('Show only open rooms option is now', rs.showOpenRooms)
     })
   }
 

@@ -25,17 +25,17 @@ export class WindowsComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.subscriptions = [
-      this.chatMessageService.chatStore.openRoomIdsSubject$.subscribe((roomIds: string[]) => {
-        this.openRoomIds = roomIds
+      this.chatMessageService.chatStore.roomState$.subscribe((rs) => {
+        this.openRoomIds = rs.openRoomIds
         console.log('New open rooms:', this.openRoomIds)
         if (this.openRoomIds.length > 0) {
           this.numRooms = this.openRoomIds.length
           this.atLeastOneRoom = true
         } else { this.atLeastOneRoom = false }
       }),
-      this.chatMessageService.chatStore.me$.subscribe((me: ChatUser) => {
-        this.localUser = me
-        console.log('New local user in windows comp:', this.localUser.id)
+      this.chatMessageService.chatStore.chatUserState$.subscribe((chatUserState) => {
+        this.localUser = chatUserState.me
+        console.log('New local user id in windows comp:', this.localUser.id)
       }),
     ]
   }

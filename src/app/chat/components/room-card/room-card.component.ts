@@ -26,7 +26,7 @@ export class RoomCardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('Room Card init called with: ', this.roomId)
     this.subscriptions = [
-      this.chatMessageService.chatStore.roomListSubject$.subscribe((rl) => {
+      this.chatMessageService.chatStore.roomState$.subscribe((rl) => {
         const theRoom = rl.rooms[this.roomId]
         if (rl && theRoom !== this.room) {
           this.room = rl.rooms[this.roomId]

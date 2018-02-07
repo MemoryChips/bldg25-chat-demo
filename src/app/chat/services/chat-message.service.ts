@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { AuthService, AppUser } from 'app/auth/auth.service'
-import { ChatStore, testChatStore } from './chat-store'
+import { ChatStore, testChatUserState, testRoomState } from './chat-store'
 // TODO: is there a better way to do this?
 import { ChatUser } from 'app/chat/services/models/chat-user'  // this must be provided by host application
 
@@ -13,8 +13,10 @@ export class ChatMessageService {
   constructor(private auth: AuthService) {
     this.auth.isLoggedIn$.subscribe((isLoggedIn) => {
       if (isLoggedIn) {
+        this.chatStore.setLoggedIn()
         this.connectChat()
       } else {
+        this.chatStore.setLoggedIn(false)
         if (this.chatConnection) { this.chatConnection.close() }
       }
     })
@@ -23,13 +25,20 @@ export class ChatMessageService {
         const newMe: ChatUser = {
           id: newUser.id,
           name: newUser.userName,
-          isAdmin: newUser.roles.includes('ADMIN')
+          isAdmin: newUser.roles.includes('ADMIN'),
+          // isLoggedIn: newUser.isLoggedIn
         }
         this.chatStore.setMe(newMe)
+        if (newMe.id) {
+          // TODO: setup connection to backend to get chat store updates for three store items
+          this.chatStore.setChatUserState(testChatUserState)
+          this.chatStore.setRoomState(testRoomState)
+        }
+        // } else { this.chatStore.reset() }
       }
     })
-    this.chatStore = testChatStore
-    // setup connection to backend to get chat store updates for three store items
+    this.chatStore = new ChatStore()
+    // this.chatStore = testChatStore
   }
 
   private connectChat() {

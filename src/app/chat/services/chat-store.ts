@@ -1,22 +1,18 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Room, Message, ROOM_TYPES } from './models/room'
-import { ChatUser } from './models/chat-user'
+import { ChatUser, initMe } from './models/chat-user'
 import 'rxjs/add/operator/filter'
-
-const initMe: ChatUser = {
-  id: '',
-  name: '',
-  isAdmin: false
-}
 
 interface ChatUserState {
   chatUsers: ChatUser[],
   me: ChatUser
+  isLoggedIn: boolean
 }
 
 const initChatUserState: ChatUserState = {
   chatUsers: [],
-  me: initMe
+  me: initMe,
+  isLoggedIn: false,
 }
 
 const initRoomState: RoomState = {
@@ -59,9 +55,20 @@ export class ChatStore {
     // this.showOpenRoomsSubject$.next(this.showOpenRooms)
   }
 
+  reset() {
+    this.setChatUserState(initChatUserState)
+    this.setRoomState(initRoomState)
+  }
+
   setMe(newMe: ChatUser) {
     const nextChatUserState = {...this.chatUserState}
     nextChatUserState.me = newMe
+    this.setChatUserState(nextChatUserState)
+  }
+
+  setLoggedIn(b = true) {
+    const nextChatUserState = {...this.chatUserState}
+    nextChatUserState.isLoggedIn = b
     this.setChatUserState(nextChatUserState)
   }
 
@@ -70,7 +77,7 @@ export class ChatStore {
     this.chatUserState$.next(newChatUserState)
   }
 
-  private setRoomState(newRoomList: RoomState) {
+  setRoomState(newRoomList: RoomState) {
     this.roomState = newRoomList
     this.roomState$.next(newRoomList)
   }
@@ -135,14 +142,15 @@ const student: ChatUser = {
   isAdmin: false
 }
 
-const testChatUserList: ChatUserState = {
+export const testChatUserState: ChatUserState = {
   chatUsers: [
     user1,
     user2,
     testMe,
     student
   ],
-  me: testMe
+  me: testMe,
+  isLoggedIn: true
 }
 const message1: Message = {
   // id: 'messageId1',
@@ -181,7 +189,7 @@ const room2: Room = {
   description: 'Room2'
 }
 
-const testRoomState: RoomState = {
+export const testRoomState: RoomState = {
   rooms: {
     'roomId1': room1,
     'roomId2': room2
@@ -192,4 +200,4 @@ const testRoomState: RoomState = {
 
 // end test data
 
-export const testChatStore = new ChatStore(testChatUserList, testRoomState)
+// export const testChatStore = new ChatStore(testChatUserList, testRoomState)

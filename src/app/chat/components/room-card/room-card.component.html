@@ -1,9 +1,21 @@
 <mat-card class="example-card">
-  <mat-card-header>
+  <mat-toolbar>
     <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>{{ room.description }}</mat-card-title>
+    <span>{{ room.description }}</span>
+    <span>{{ participants }}</span>
+    <span class="example-spacer"></span>
+    <i class="example-icon fa fa-window-minimize fa-1" *ngIf="!minimized"></i>
+    <i class="example-icon fa fa-window-close"></i>
+    <mat-icon class="example-icon">favorite</mat-icon>
+    <mat-icon class="example-icon">delete</mat-icon>
+  </mat-toolbar>
+  <!-- <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>
+      <span>{{ room.description }}</span>
+    </mat-card-title>
     <mat-card-subtitle> {{ participants }} </mat-card-subtitle>
-  </mat-card-header>
+  </mat-card-header> -->
   <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
   <mat-card-content>
     <!-- <div class="row content" *ngIf="!minimized"> -->

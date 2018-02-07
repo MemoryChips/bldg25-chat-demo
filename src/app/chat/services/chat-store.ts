@@ -172,7 +172,7 @@ const message3: Message = {
 }
 const room1: Room = {
   id: 'roomId1',
-  chatUsers: [testMe.id, user1.id],
+  chatUsers: [testMe, user1],
   messages: [message1, message2],
   // open: true,
   created: 1517514703601,
@@ -181,7 +181,7 @@ const room1: Room = {
 }
 const room2: Room = {
   id: 'roomId2',
-  chatUsers: [testMe.id, user2.id],
+  chatUsers: [testMe, user2],
   messages: [message3],
   // open: true,
   created: 1517514703601,

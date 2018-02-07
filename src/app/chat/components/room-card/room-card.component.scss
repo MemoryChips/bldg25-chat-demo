@@ -1,5 +1,13 @@
 @import "../_chat-settings.scss";
 
+.example-icon {
+  padding: 0 14px;
+  color: blue
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
 .example-card {
   width: 100%;
 }

@@ -17,6 +17,7 @@ export class RoomCardComponent implements OnInit, OnDestroy {
   room: Room
   compositeMessages: Array<CompositeMessage> = []
   participants = 'loading...'
+  minimized = false
 
   private subscriptions: Subscription[] = []
 
@@ -32,20 +33,9 @@ export class RoomCardComponent implements OnInit, OnDestroy {
         if (rl && theRoom !== this.room) {
           this.room = rl.rooms[this.roomId]
           this.compositeMessages = this.buildCompositeMessages()
-          this.participants = this.biuldPaticipants()
+          this.participants = this.biuldParticipants()
         }
       }),
-      // this.chatMessageService.chatStore.meSubject$
-      //   .subscribe((me) => {
-      //     if (me) {
-      //       console.log('me updated to me: ', me)
-      //       this.localUser = me
-      //     }
-      //   })
-      // this.chatMessageService.chatStore.chatUserList$
-      //   .subscribe((cUsers) => {
-      //     this.users = cUsers.chatUsers
-      //   })
     ]
   }
 
@@ -55,8 +45,14 @@ export class RoomCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private biuldPaticipants(): string {
-    return 'built parts'
+  private biuldParticipants(): string {
+    let pats = 'You'
+    this.room.chatUsers.forEach(c => {
+      if (c.id !== this.localUser.id) {
+        pats = `${c.name}, ${pats}`
+      }
+    })
+    return pats
   }
   // private buildCompositeMessages(messages: Array<Message>): Array<CompositeMessage> {
   private buildCompositeMessages(): Array<CompositeMessage> {

@@ -51,7 +51,7 @@ export class RoomComponent implements AfterViewInit, AfterViewChecked, OnInit, O
   // private roomState = ROOM_STATES.Idle
   private updateScroll: boolean
   private theMessageList: Message[] = []
-  private theParticipants: string[]
+  public theParticipants: string[]
   public messagesReadTime = 10
 
   private subscriptions: Array<any> = []
@@ -82,9 +82,9 @@ export class RoomComponent implements AfterViewInit, AfterViewChecked, OnInit, O
         // this.layout = ROOM_LAYOUTS.oneToOne;
         if (theRoom) {
           // Check for participant update
-          if (this.theParticipants !== theRoom.chatUsers) {
-            this.theParticipants = theRoom.chatUsers
-          }
+          // if (this.theParticipants !== theRoom.chatUsers) {
+          //   this.theParticipants = theRoom.chatUsers
+          // }
           // Check for message update
           if (this.theMessageList !== theRoom.messages) {
             console.log('Updating messages for this room: ', this.roomId)

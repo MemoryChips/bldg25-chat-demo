@@ -129,11 +129,18 @@ const user2: ChatUser = {
   isAdmin: false
 }
 
+const student: ChatUser = {
+  id: '8unutuvhuc7jcwihhyk',
+  name: 'Ms Student',
+  isAdmin: false
+}
+
 const testChatUserList: ChatUserState = {
   chatUsers: [
     user1,
     user2,
-    testMe
+    testMe,
+    student
   ],
   me: testMe
 }

@@ -1,12 +1,11 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core'
-// import { TabsDirective } from '../tab/tabs.directive'
 import { TabsDirective } from '../tab/tabs.directive'
-// import { select, select$ } from '@angular-redux/store';
 import { ChatMessageService } from '../../services/chat-message.service'
 // import { ChatUser } from '../../services/models/chat-user'
 // import { Room } from '../../services/models/room'
 // import { Observable } from 'rxjs/Observable'
 import { Subscription } from 'rxjs/Subscription'
+import { ChatUser } from 'app/chat/services/models/chat-user'
 // import { Room, sortRooms } from '../models/room';
 
 export enum ActivatorTabs {
@@ -28,10 +27,6 @@ export class ActivatorComponent implements OnInit, OnDestroy {
 
   @ViewChild(TabsDirective) tabsDirective: TabsDirective
 
-  // @select$(['roomListState', 'rooms'], sortRooms) rooms$: Observable<Room[]>;
-  // @select(['roomListState', 'openRoomIds']) openRoomIds$: Observable<string[]>;
-  // @select(['userState', 'usersList']) users$: Observable<User[]>;
-  // @select(['roomListState', 'showOnlyOpenRooms']) showOnlyOpenRooms$: Observable<boolean>;
   numRooms: number
   numOpenRooms: number
   numUsers: number
@@ -39,6 +34,7 @@ export class ActivatorComponent implements OnInit, OnDestroy {
   openState = false
   showOnlyOpenRooms = false
   showOpenRooms = false
+  me: ChatUser
 
   ActivatorTabs: Object = ActivatorTabs
 
@@ -52,21 +48,16 @@ export class ActivatorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._subscriptions = [
-      // this.chatMessageService.chatStore.showOpenRoomsSubject$.subscribe((show) => {
-      //   this.showOnlyOpenRooms = show
-      // }),
-      // this.chatMessageService.chatStore.openRoomIdsSubject$.subscribe((list) => {
-      //   this.numOpenRooms = list.length || 0
-      // }),
       this.chatMessageService.chatStore.roomState$.subscribe((roomState) => {
         if (roomState) {
-          this.numRooms = Object.keys(roomState.rooms).length || 0 // map object to values
+          this.numRooms = Object.keys(roomState.rooms).length || 0
           this.showOnlyOpenRooms = roomState.showOpenRooms
           this.numOpenRooms = roomState.openRoomIds.length
         }
       }),
-      this.chatMessageService.chatStore.chatUserState$.subscribe((chatUserList) => {
-        this.numUsers = chatUserList.chatUsers.length
+      this.chatMessageService.chatStore.chatUserState$.subscribe((chatUserState) => {
+        this.numUsers = chatUserState.chatUsers.length
+        this.me = chatUserState.me
       }),
     ]
   }
@@ -79,7 +70,7 @@ export class ActivatorComponent implements OnInit, OnDestroy {
     // prevent dblclick text selection
     window.getSelection().removeAllRanges()
     event.preventDefault()
-    this.openState = !this.openState
+    if (this.me.id) {this.openState = !this.openState}
   }
 
   toggleOptions() {

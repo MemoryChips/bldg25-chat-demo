@@ -1,4 +1,4 @@
-<div class="row" *ngIf="!openState">
+<div class="row" *ngIf="!openState && me.id">
   <button mat-button color="primary" (click)="toggleActivator($event)">
     <i class="fa fa-chevron-left fa-1x fa-center"></i>
     Chat
@@ -26,7 +26,7 @@
         </mat-panel-title>
         <mat-panel-description>
           <!-- CLICK HERE TO CHAT -->
-          {{panelOpenState ? 'Welcome' : 'CLICK HERE TO CHAT'}}
+          {{panelOpenState ? 'Welcome ' + me.name : 'CLICK HERE TO CHAT'}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <!-- <p>I'm visible because I am open</p> -->

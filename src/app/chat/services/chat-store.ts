@@ -11,26 +11,25 @@ const initMe: ChatUser = {
 
 const initRoomList: RoomList = {
   rooms: {},
-  // openRoomIndexes: [],
+  // openRoomIds: [],
   // showOpenRooms: false
 }
 
-interface ChatUserList {
+interface ChatUserState {
   chatUsers: ChatUser[]
 }
 
-const initChatUserList: ChatUserList = {
+const initChatUserState: ChatUserState = {
   chatUsers: []
 }
 
 export class ChatStore {
 
-  chatUserListSubject$ = new BehaviorSubject<ChatUserList>(undefined)
+  chatUserState$ = new BehaviorSubject<ChatUserState>(undefined)
+  me$ = new BehaviorSubject<ChatUser>(undefined)
 
   private roomList: RoomList
   roomListSubject$ = new BehaviorSubject<RoomList>(undefined)
-
-  meSubject$ = new BehaviorSubject<ChatUser>(undefined)
 
   private openRoomIds: string[] = []
   openRoomIdsSubject$ = new BehaviorSubject<string[]>(undefined)
@@ -40,29 +39,32 @@ export class ChatStore {
 
   constructor(
     iMe = initMe,
-    iChatUserList = initChatUserList,
+    iChatUserList = initChatUserState,
     iRoomList = initRoomList,
   ) {
-    this.meSubject$.next(iMe)
-    this.chatUserListSubject$.next(iChatUserList)
+    this.me$.next(iMe)
+    this.chatUserState$.next(iChatUserList)
     this.setRoomList(iRoomList)
     this.setOpenRoomIds([])
     this.showOpenRooms = false
     this.showOpenRoomsSubject$.next(this.showOpenRooms)
   }
 
-  setMe(newMe: ChatUser) { this.meSubject$.next(newMe) }
+  setMe(newMe: ChatUser) { this.me$.next(newMe) }
 
-  setChatUserList(newChatUserList: ChatUserList) { this.chatUserListSubject$.next(newChatUserList) }
+  setChatUserList(newChatUserList: ChatUserState) { this.chatUserState$.next(newChatUserList) }
 
   setRoomList(newRoomList: RoomList) {
-    this.roomList = { ...newRoomList }
+    this.roomList = newRoomList
     this.roomListSubject$.next(newRoomList)
   }
 
   upDateRoom(newRoom: Room) {
-    this.roomList[newRoom.id] = newRoom
-    this.setRoomList(this.roomList)
+    const newRooms: { [roomId: string]: Room } = {...this.roomList.rooms}
+    newRooms.rooms[newRoom.id] = newRoom
+    const newRoomList = { ...this.roomList }
+    newRoomList.rooms = newRooms
+    this.setRoomList(newRoomList)
   }
 
   toggleRoomListOption() {
@@ -79,9 +81,9 @@ export class ChatStore {
     if (!this.openRoomIds.includes(id)) {
       const newOpenRoomIds = [id, ...this.openRoomIds]
       this.setOpenRoomIds(newOpenRoomIds)
-      const mRoom: Room = { ...this.roomList.rooms[id] }
-      mRoom.open = true
-      this.roomList.rooms[id] = mRoom
+      // const mRoom: Room = { ...this.roomList.rooms[id] }
+      // mRoom.open = true
+      // this.roomList.rooms[id] = mRoom
     }
   }
 
@@ -107,7 +109,7 @@ const user2: ChatUser = {
   isAdmin: false
 }
 
-const testChatUserList: ChatUserList = {
+const testChatUserList: ChatUserState = {
   chatUsers: [
     user1,
     user2,
@@ -136,7 +138,7 @@ const room1: Room = {
   id: 'roomId1',
   chatUsers: [testMe.id, user1.id],
   messages: [message1, message2],
-  open: true,
+  // open: true,
   created: 1517514703601,
   type: ROOM_TYPES.OneToOne,
   description: 'Room1'
@@ -145,7 +147,7 @@ const room2: Room = {
   id: 'roomId2',
   chatUsers: [testMe.id, user2.id],
   messages: [message3],
-  open: true,
+  // open: true,
   created: 1517514703601,
   type: ROOM_TYPES.OneToOne,
   description: 'Room2'

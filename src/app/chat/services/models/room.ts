@@ -14,7 +14,7 @@ export interface Room {
   id: string
   chatUsers: string[]
   messages: Message[]
-  open: boolean
+  // open: boolean
   created: number
   type: ROOM_TYPES
   description: string

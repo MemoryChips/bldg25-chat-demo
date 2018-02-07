@@ -33,7 +33,7 @@ export class WindowsComponent implements OnInit, OnDestroy {
           this.atLeastOneRoom = true
         } else { this.atLeastOneRoom = false }
       }),
-      this.chatMessageService.chatStore.meSubject$.subscribe((me: ChatUser) => {
+      this.chatMessageService.chatStore.me$.subscribe((me: ChatUser) => {
         this.localUser = me
         console.log('New local user in windows comp:', this.localUser.id)
       }),

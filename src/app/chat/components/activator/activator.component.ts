@@ -63,7 +63,7 @@ export class ActivatorComponent implements OnInit, OnDestroy {
           this.numRooms = Object.keys(roomList.rooms).length || 0 // map object to values
         }
       }),
-      this.chatMessageService.chatStore.chatUserListSubject$.subscribe((chatUserList) => {
+      this.chatMessageService.chatStore.chatUserState$.subscribe((chatUserList) => {
         this.numUsers = chatUserList.chatUsers.length
       }),
     ]

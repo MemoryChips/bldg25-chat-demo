@@ -26,7 +26,7 @@ export class RoomListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions = [
-      this.chatMessageService.chatStore.meSubject$.subscribe((me) => {
+      this.chatMessageService.chatStore.me$.subscribe((me) => {
         if (me) { this.localUserId = me.id }
       }),
       this.chatMessageService.chatStore.roomListSubject$

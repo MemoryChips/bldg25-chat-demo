@@ -25,10 +25,10 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions = [
-      this.chatMessageService.chatStore.meSubject$.subscribe((me) => {
+      this.chatMessageService.chatStore.me$.subscribe((me) => {
         if (me) { this.localUser = me }
       }),
-      this.chatMessageService.chatStore.chatUserListSubject$
+      this.chatMessageService.chatStore.chatUserState$
         // TODO: sort users by name
         // .map((rooms) => {
         //   return values(rooms.rooms).sort((a, b) => {

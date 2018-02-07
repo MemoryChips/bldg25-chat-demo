@@ -2,16 +2,10 @@
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>{{ room.description }}</mat-card-title>
-    <mat-card-subtitle> Participants here </mat-card-subtitle>
+    <mat-card-subtitle> {{ participants }} </mat-card-subtitle>
   </mat-card-header>
   <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
   <mat-card-content>
-    <p>
-      {{ roomId }}
-    </p>
-    <p>
-      Messages here
-    </p>
     <!-- <div class="row content" *ngIf="!minimized"> -->
     <div class="row">
       <!-- <div class="col small messages expand"> -->

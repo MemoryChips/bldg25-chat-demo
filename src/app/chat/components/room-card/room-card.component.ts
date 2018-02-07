@@ -16,6 +16,7 @@ export class RoomCardComponent implements OnInit, OnDestroy {
   @Input() localUser: ChatUser
   room: Room
   compositeMessages: Array<CompositeMessage> = []
+  participants = 'loading...'
 
   private subscriptions: Subscription[] = []
 
@@ -31,6 +32,7 @@ export class RoomCardComponent implements OnInit, OnDestroy {
         if (rl && theRoom !== this.room) {
           this.room = rl.rooms[this.roomId]
           this.compositeMessages = this.buildCompositeMessages()
+          this.participants = this.biuldPaticipants()
         }
       }),
       // this.chatMessageService.chatStore.meSubject$
@@ -53,6 +55,9 @@ export class RoomCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  private biuldPaticipants(): string {
+    return 'built parts'
+  }
   // private buildCompositeMessages(messages: Array<Message>): Array<CompositeMessage> {
   private buildCompositeMessages(): Array<CompositeMessage> {
     const messages = this.room.messages

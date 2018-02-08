@@ -1,67 +1,32 @@
-<mat-card class="example-card">
-  <mat-toolbar>
-    <div mat-card-avatar class="example-header-image"></div>
-    <span>{{ room.description }}</span>
-    <span>{{ participants }}</span>
-    <span class="example-spacer"></span>
-    <i class="example-icon fa fa-window-minimize fa-1" *ngIf="!minimized"></i>
-    <i class="example-icon fa fa-window-close"></i>
-    <mat-icon class="example-icon">favorite</mat-icon>
-    <mat-icon class="example-icon">delete</mat-icon>
-  </mat-toolbar>
-  <!-- <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>
-      <span>{{ room.description }}</span>
-    </mat-card-title>
-    <mat-card-subtitle> {{ participants }} </mat-card-subtitle>
-  </mat-card-header> -->
-  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-  <mat-card-content>
-    <!-- <div class="row content" *ngIf="!minimized"> -->
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <!-- Navbar content -->
+  <div class="container">
+    <h4 class="card-title">{{ room.description }}</h4>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item active">
+        <button type="button" class="btn btn-primary" (click)="minimize()">Minimize</button>
+      </li>
+      <li class="nav-item active">
+        <button type="button" class="btn btn-primary" (click)="close()">Close</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="card">
+  <div class="card-body">
+    <p class="card-text">{{ participants }}</p>
     <div class="row">
-      <!-- <div class="col small messages expand"> -->
-      <!-- <div class="col messages"> -->
       <div class="col">
-        <form (ngSubmit)="submitMessage(newMessageForm)" novalidate autocomplete="off" #newMessageForm="ngForm">
-          <!-- <div class="messages-frame" #messagesFrame> -->
-          <div #messagesFrame>
-            <!-- <div class="message-row message" *ngIf="compositeMessages.length===0"> -->
-            <div *ngIf="compositeMessages.length===0">
-              <p>There are no messages yet.</p>
-              <p>Why don't you start the conversation?</p>
-              <!-- <div class="spacer-1rem"></div> -->
-            </div>
-            <div *ngIf="compositeMessages.length&gt;0">
-              <!-- <div class="message-row" *ngFor="let compositeMessage of compositeMessages; let i = index"> -->
-              <div *ngFor="let compositeMessage of compositeMessages; let i = index">
-                <chat-composite-message [compositeMessage]="compositeMessage" [messagesReadTime]="messagesReadTime"></chat-composite-message>
-              </div>
-            </div>
-          </div>
-          <!-- <div class="input-group message-text"> -->
-          <!-- <div>
-            <input class="input-group-field" type="text" name="newMessageText" #messagesInput autofocus required #newMessageInput="ngModel"
-              ngModel>
-            <div class="input-group-button">
-              <button class="button small" type="submit">Send</button>
-            </div>
-          </div> -->
-        </form>
-      </div>
-      <!-- <div class="column small-4" *ngIf="showParticipantColumn()">
-        <div class="participants">
-          <h4>Participants</h4>
-          <div *ngIf="theParticipants?.length===0">No users</div>
-          <div class="user-row row" *ngFor="let user of theParticipants; let i = index">
-            <div class="column small-12" [ngClass]="{'logged-in': user.loggedIn}">{{ user.name }}</div>
+        <div *ngIf="compositeMessages.length===0">
+          <p>There are no messages yet.</p>
+          <p>Why don't you start the conversation?</p>
+        </div>
+        <div *ngIf="compositeMessages.length">
+          <div *ngFor="let compositeMessage of compositeMessages; let i = index">
+            <chat-composite-message [compositeMessage]="compositeMessage" [messagesReadTime]="messagesReadTime"></chat-composite-message>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button>
-  </mat-card-actions>
-</mat-card>
+  </div>
+</div>

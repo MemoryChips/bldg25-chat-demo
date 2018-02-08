@@ -45,6 +45,15 @@ export class RoomCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  close() {
+    console.log('close clicked')
+    this.chatMessageService.chatStore.closeRoom(this.roomId)
+  }
+
+  minimize() {
+    console.log('minimize clicked')
+  }
+
   private biuldParticipants(): string {
     let pats = 'You'
     this.room.chatUsers.forEach(c => {

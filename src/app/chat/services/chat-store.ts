@@ -114,6 +114,18 @@ export class ChatStore {
     }
   }
 
+  closeRoom(id: string) {
+    if (this.roomState.openRoomIds.includes(id)) {
+      // this.setOpenRoomIds(newOpenRoomIds)
+      const nextRoomState = { ...this.roomState }
+      const newOpenRoomIds = [...nextRoomState.openRoomIds]
+      const index = newOpenRoomIds.indexOf(id)
+      newOpenRoomIds.splice(index, 1)
+      nextRoomState.openRoomIds = newOpenRoomIds
+      this.setRoomState(nextRoomState)
+    }
+  }
+
 }
 
 // Test Data Below here

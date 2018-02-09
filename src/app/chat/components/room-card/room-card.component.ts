@@ -50,8 +50,9 @@ export class RoomCardComponent implements OnInit, OnDestroy {
     this.chatMessageService.chatStore.closeRoom(this.roomId)
   }
 
-  minimize() {
+  toggleMinimize() {
     console.log('minimize clicked')
+    this.minimized = !this.minimized
   }
 
   private biuldParticipants(): string {

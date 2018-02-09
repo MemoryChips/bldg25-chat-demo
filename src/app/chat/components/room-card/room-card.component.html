@@ -1,9 +1,14 @@
 <div class="card example-card">
   <div class="card-body">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-      <h5 class="my-0 mr-md-auto font-weight-normal">{{ room.description }}</h5>
-      <a class="btn btn-outline-primary" (click)="minimize()">Minimize</a>
-      <a class="btn btn-outline-primary" (click)="close()">Close</a>
+      <h6 class="my-0 mr-md-auto font-weight-normal">{{ room.description }}</h6>
+      <a (click)="toggleMinimize()">
+        <i class="fa fa-window-restore fa-1" *ngIf="minimized"></i>
+        <i class="fa fa-window-minimize fa-1" *ngIf="!minimized"></i>
+      </a>
+      <a (click)="close()">
+        <i class="fa fa-times fa-1"></i>
+      </a>
     </div>
     <p class="card-text">{{ participants }}</p>
     <div class="row">

@@ -1,5 +1,12 @@
 <!-- <div class="row container" *ngIf="atLeastOneRoom"> -->
-<div class="row" *ngIf="atLeastOneRoom" [style.width]="containerWidth">
+<!-- <div class="row" *ngIf="atLeastOneRoom" [style.width]="containerWidth">
+  <div class="col" *ngFor="let roomId of openRoomIds">
+    <chat-room-card [roomId]="roomId" [localUser]="localUser"></chat-room-card>
+  </div>
+  <div *ngIf="(i + 1) % 2 === 0" class="w-100"></div>
+</div> -->
+<div class="row container chat-windows" [style.width]="windowsWidth()" *ngIf="atLeastOneRoom">
+<!-- <div class="row" *ngIf="atLeastOneRoom" [style.width]="containerWidth"> -->
   <div class="col" *ngFor="let roomId of openRoomIds">
     <chat-room-card [roomId]="roomId" [localUser]="localUser"></chat-room-card>
   </div>

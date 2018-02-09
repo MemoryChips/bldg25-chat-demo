@@ -6,7 +6,7 @@ class RedisDatabase {
 
   constructor() {
     console.log('Instance of redis database created.')
-    // bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
+    // AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
     this.redisClient = redis.createClient({ host: 'localhost', port: 6379 })
     const authorized = this.redisClient.auth('bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ')
     console.log(`Authorization attempt: ${authorized}`)

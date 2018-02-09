@@ -14,8 +14,8 @@ export class WindowsComponent implements OnInit, OnDestroy {
 
   localUser: ChatUser
   openRoomIds: string[]
-  containerWidth = '600px'
-  numRooms = 0
+  // containerWidth = '300px'
+  // numRooms = 0
 
   private subscriptions: Array<any> = []
 
@@ -29,7 +29,7 @@ export class WindowsComponent implements OnInit, OnDestroy {
         this.openRoomIds = rs.openRoomIds
         console.log('New open rooms:', this.openRoomIds)
         if (this.openRoomIds.length > 0) {
-          this.numRooms = this.openRoomIds.length
+          // this.numRooms = this.openRoomIds.length
           this.atLeastOneRoom = true
         } else { this.atLeastOneRoom = false }
       }),
@@ -50,4 +50,7 @@ export class WindowsComponent implements OnInit, OnDestroy {
     this.stateOpen = !this.stateOpen
   }
 
+  windowsWidth() {
+    const width = 300 * this.openRoomIds.length
+    return `${width}px` }
 }

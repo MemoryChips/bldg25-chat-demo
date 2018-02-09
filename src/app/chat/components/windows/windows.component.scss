@@ -1,40 +1,12 @@
 @import "../_chat-settings.scss";
 $chat-room-margin: 0px 0.25rem 0 0;
 
-chat-room {
-  display: inline-block;
-  margin: $chat-room-margin;
-  // width: 24rem;
-  max-width: 30rem;
-  height: 100%;
-  border: none;
-  pointer-events: all;
-  position: relative;
+.chat-windows {
+  align-items: flex-end;
+  margin-bottom: 1px;
 }
-
-chat-room.minimized {
-  max-width: 24rem;
-}
-
-chat-room ::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 8px;
-  background-color: #dddddd;
-}
-
-chat-room ::-webkit-scrollbar-thumb {
-  border-radius: 0px;
-  background-color: rgba(0,0,0,.25);
-  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.25);
-  box-shadow: 0 0 1px rgba(255,255,255,.25);
-}
-
-// .chat-windows {
-//   align-items: flex-end;
-//   margin-bottom: 1px;
-// }
 .container {
-  width: 500px;
+  width: 750px;
 }
 .tile {
   background: lightblue;

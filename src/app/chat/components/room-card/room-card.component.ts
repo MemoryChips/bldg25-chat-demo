@@ -5,6 +5,8 @@ import { Room, Message } from 'app/chat/services/models/room'
 import { ChatUser } from 'app/chat/services/models/chat-user'
 import { CompositeMessage } from '../composite-message/composite_message'
 
+import { NgForm } from '@angular/forms'
+
 @Component({
   selector: 'chat-room-card',
   templateUrl: './room-card.component.html',
@@ -45,13 +47,28 @@ export class RoomCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  submitMessage(f: NgForm) {
+
+    // this.roomState = ROOM_STATES.Sending;
+    // this.roomService.sendMessage(this.roomId, f.value.newMessageText).subscribe((data) => {
+    //   f.resetForm();
+    //   this.renderer.invokeElementMethod(this.vc.nativeElement, 'focus');
+    // }, (err) => {
+    //   console.error('Error submitting message: ', err);
+    // });
+    // // turn on locked to end when a message is sent
+    // this.lockedToEnd = true;
+    // return false;
+    console.log('submit message', f.value.newMessageText)
+  }
+
   close() {
-    console.log('close clicked')
+    // console.log('close clicked')
     this.chatMessageService.chatStore.closeRoom(this.roomId)
   }
 
   toggleMinimize() {
-    console.log('minimize clicked')
+    // console.log('minimize clicked')
     this.minimized = !this.minimized
   }
 

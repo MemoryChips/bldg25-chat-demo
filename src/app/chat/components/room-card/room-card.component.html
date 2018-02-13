@@ -1,15 +1,34 @@
 <div class="card example-card">
+  <div class="container bg-light">
+    <!-- NAVS -->
+    <ul class="nav nav-pills bg-success">
+      <li class="nav-item">
+        <h6 class="d-inline font-weight-bold">{{ room.description }}</h6>
+      </li>
+      <li class="nav-item ml-auto">
+        <a class="nav-link" (click)="toggleMinimize()">
+          <i class="fa fa-window-restore" *ngIf="minimized"></i>
+          <i class="fa fa-window-minimize" *ngIf="!minimized"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a  class="nav-link" (click)="close()">
+          <i class="fa fa-times fa-1"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h6 class="my-0 mr-md-auto font-weight-normal">{{ room.description }}</h6>
+    <a (click)="toggleMinimize()">
+      <i class="fa fa-window-restore fa-1" *ngIf="minimized"></i>
+      <i class="fa fa-window-minimize fa-1" *ngIf="!minimized"></i>
+    </a>
+    <a (click)="close()">
+      <i class="fa fa-times fa-1"></i>
+    </a>
+  </div> -->
   <div class="card-body">
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-      <h6 class="my-0 mr-md-auto font-weight-normal">{{ room.description }}</h6>
-      <a (click)="toggleMinimize()">
-        <i class="fa fa-window-restore fa-1" *ngIf="minimized"></i>
-        <i class="fa fa-window-minimize fa-1" *ngIf="!minimized"></i>
-      </a>
-      <a (click)="close()">
-        <i class="fa fa-times fa-1"></i>
-      </a>
-    </div>
     <p class="card-text">{{ participants }}</p>
     <div class="row" *ngIf="!minimized">
       <div class="col">

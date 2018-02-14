@@ -1,5 +1,21 @@
 @import "../_chat-settings.scss";
 
+// Chat room styling
+.row-chat {
+  background: #f4f4f4;
+  height: auto;
+}
+
+.item-chat {
+  border: 1px solid #333;
+  width: 270px;
+  height: auto;
+}
+
+.message-area {
+  height: 300px;
+}
+
 .chat-display-options {
   display: flex;
   align-items: flex-end;
@@ -22,6 +38,10 @@
   padding: 0;
   flex-direction: row-reverse;
   pointer-events:none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 // .node {

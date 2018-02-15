@@ -44,8 +44,17 @@ export class ChatMessageService {
   private connectChat() {
     this.chatConnection = new WebSocket('ws://localhost:4200/api-ws')
     this.chatConnection.onmessage = (m) => {
-      debugger
-      console.log('Server: ' + m.data)
+      try {
+        const message = JSON.parse(m.data)
+        if (message.type === 'user_list') {
+          console.log('Received new user list')
+          console.log('Server: ' + message.payload)
+        } else {
+          console.log('Unrecognized message received: ', m.data)
+        }
+      } catch (error) {
+        console.error('Message received from server is not in JSON format: ', m.data)
+      }
     }
     window.setTimeout(() => {
       this.chatConnection.send('timer message')

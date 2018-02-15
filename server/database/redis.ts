@@ -21,6 +21,14 @@ class RedisDatabase {
     return this.getItem('categories')
   }
 
+  getUser(userId: string) {
+    return redisdb.getItem(`user:${userId}`).then(user => {
+      const rUser = { userId, ...JSON.parse(user) }
+      delete rUser.passwordDigest
+      return rUser
+    })
+  }
+
   getItem(key: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.redisClient.get(key, (_err, item) => {

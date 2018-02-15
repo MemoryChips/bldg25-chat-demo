@@ -1,4 +1,5 @@
-import { addWebSocketServer } from './web-socket-server'
+// import { addWebSocketServer } from './web-socket-server'
+import { ChatWebSocketServer } from './web-socket-server'
 import * as express from 'express'
 import * as http from 'http'
 import { retrieveUserIdFromRequest } from './auth/mware/get-user'
@@ -8,7 +9,8 @@ import { productRouter } from './product/product-routes'
 import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 const bodyParser = require('body-parser')
-import cookieParser = require('cookie-parser')
+// import cookieParser = require('cookie-parser')
+import * as cookieParser from 'cookie-parser'
 
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
@@ -16,7 +18,10 @@ const app: express.Application = express()
 const server = http.createServer(app)
 const serverInfo = 'HTTP Server running at http://localhost:'
 
-addWebSocketServer(server)
+// addWebSocketServer(server)
+const chatServer = new ChatWebSocketServer(server)
+const info = chatServer.options
+console.log(info)
 
 app.use(cookieParser())
 app.use(retrieveUserIdFromRequest)

@@ -43,7 +43,10 @@ export class ChatMessageService {
 
   private connectChat() {
     this.chatConnection = new WebSocket('ws://localhost:4200/api-ws')
-    this.chatConnection.onmessage = (m) => { console.log('Server: ' + m.data) }
+    this.chatConnection.onmessage = (m) => {
+      debugger
+      console.log('Server: ' + m.data)
+    }
     window.setTimeout(() => {
       this.chatConnection.send('timer message')
     }, 1000)

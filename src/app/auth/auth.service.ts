@@ -28,6 +28,8 @@ export interface Credentials {
 export class AuthService {
 
   userSubject$ = new BehaviorSubject<AppUser>(undefined)
+  // TODO: is asObservabel reeallt needed
+  // user$: Observable<AppUser> = this.userSubject$.filter(user => !!user)
   user$: Observable<AppUser> = this.userSubject$.asObservable().filter(user => !!user)
 
   returnUrl = '/'

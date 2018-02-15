@@ -17,7 +17,7 @@ function getCookiesMap(cookiesString): { [key: string]: string } {
     }, {})
 }
 
-function verifyClient(info, done) {
+function defaultVerifyClient(info, done) {
   const cookies = getCookiesMap(info.req.headers.cookie)
   const jwt = cookies.SESSIONID
   if (!jwt) {
@@ -53,10 +53,10 @@ export class ChatWebSocketServer extends WebSocket.Server {
   private activeUsers: ActiveUsers = {}
   private activeUsers$ = new BehaviorSubject<ActiveUsers>(this.activeUsers)
 
-  constructor(server: http.Server | https.Server) {
+  constructor(server: http.Server | https.Server, verifyClient = defaultVerifyClient) {
     super({
       server,
-      verifyClient: verifyClient
+      verifyClient
     })
     this.on('connection', this.connect)
     this.activeUsers$.subscribe(aUsers => {

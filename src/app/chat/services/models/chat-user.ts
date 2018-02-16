@@ -2,12 +2,16 @@ export interface ChatUser {
   id: string
   name: string
   isAdmin: boolean
-  // isLoggedIn: boolean
+  roles: string[]
+}
+
+export interface ChatUsers {
+  [id: string]: ChatUser
 }
 
 export const initMe: ChatUser = {
   id: '',
   name: '',
   isAdmin: false,
-  // isLoggedIn: false
+  roles: []
 }

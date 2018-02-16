@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { AuthService, AppUser } from 'app/auth/auth.service'
-import { ChatStore, testChatUserState, testRoomState } from './chat-store'
+import { ChatStore } from './chat-store'
 // TODO: is there a better way to do this?
-import { ChatUser } from 'app/chat/services/models/chat-user'  // this must be provided by host application
+import { ChatUser, ChatUsers } from 'app/chat/services/models/chat-user'  // this must be provided by host application
 
 @Injectable()
 export class ChatMessageService {
@@ -26,14 +26,14 @@ export class ChatMessageService {
           id: newUser.id,
           name: newUser.userName,
           isAdmin: newUser.roles.includes('ADMIN'),
-          // isLoggedIn: newUser.isLoggedIn
+          roles: newUser.roles
         }
         this.chatStore.setMe(newMe)
-        if (newMe.id) {
-          // TODO: setup connection to backend to get chat store updates for three store items
-          this.chatStore.setChatUserState(testChatUserState)
-          this.chatStore.setRoomState(testRoomState)
-        }
+        // if (newMe.id) {
+        //   // TODO: setup connection to backend to get chat store updates for three store items
+        //   this.chatStore.setChatUserState(testChatUserState)
+        //   this.chatStore.setRoomState(testRoomState)
+        // }
         // } else { this.chatStore.reset() }
       }
     })
@@ -49,6 +49,8 @@ export class ChatMessageService {
         if (message.type === 'user_list') {
           console.log('Received new user list')
           console.log('Server: ' + message.payload)
+          const chatUsers: ChatUsers = message.payload
+          this.chatStore.setChatUsers(chatUsers)
         } else {
           console.log('Unrecognized message received: ', m.data)
         }

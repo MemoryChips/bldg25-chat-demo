@@ -1,16 +1,16 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Room, Message, ROOM_TYPES } from './models/room'
-import { ChatUser, initMe } from './models/chat-user'
+import { ChatUser, ChatUsers, initMe } from './models/chat-user'
 import 'rxjs/add/operator/filter'
 
-interface ChatUserState {
-  chatUsers: ChatUser[],
+export interface ChatUserState {
+  chatUsers: ChatUsers,
   me: ChatUser
   isLoggedIn: boolean
 }
 
 const initChatUserState: ChatUserState = {
-  chatUsers: [],
+  chatUsers: {},
   me: initMe,
   isLoggedIn: false,
 }
@@ -70,6 +70,12 @@ export class ChatStore {
     const nextChatUserState = {...this.chatUserState}
     nextChatUserState.isLoggedIn = b
     this.setChatUserState(nextChatUserState)
+  }
+
+  setChatUsers(cUsers: ChatUsers) {
+    const nCUS = { ...this.chatUserState }
+    nCUS.chatUsers = cUsers
+    this.setChatUserState(nCUS)
   }
 
   setChatUserState(newChatUserState: ChatUserState) {
@@ -133,34 +139,44 @@ export class ChatStore {
 const testMe: ChatUser = {
   id: 'h8kluhg4ryvjcwkgtre',
   name: 'MrAdmin',
-  isAdmin: false
+  isAdmin: false,
+  roles: ['STUDENT']
 }
 
 const user1: ChatUser = {
   id: 'userId1',
   name: 'user one',
-  isAdmin: false
+  isAdmin: false,
+  roles: ['STUDENT']
 }
 
 const user2: ChatUser = {
   id: 'userId2',
   name: 'user two',
-  isAdmin: false
+  isAdmin: false,
+  roles: ['STUDENT']
 }
 
 const student: ChatUser = {
   id: '8unutuvhuc7jcwihhyk',
   name: 'Ms Student',
-  isAdmin: false
+  isAdmin: false,
+  roles: ['STUDENT']
 }
 
 export const testChatUserState: ChatUserState = {
-  chatUsers: [
-    user1,
-    user2,
-    testMe,
-    student
-  ],
+  chatUsers: {
+    [user1.id]: user1,
+    [user2.id]: user1,
+    [testMe.id]: user1,
+    [student.id]: user1,
+  },
+  // chatUsers: [
+  //   user1,
+  //   user2,
+  //   testMe,
+  //   student
+  // ],
   me: testMe,
   isLoggedIn: true
 }

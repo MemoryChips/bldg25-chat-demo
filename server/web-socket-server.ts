@@ -5,6 +5,7 @@ import * as WebSocket from 'ws'
 import { decodeJwt } from './auth/security'
 import { redisdb } from './database/redis'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { DbUser } from './auth/models/user'
 
 function getCookiesMap(cookiesString): { [key: string]: string } {
   return cookiesString.split(';')
@@ -34,14 +35,15 @@ function defaultVerifyClient(info, done) {
   }
 }
 
-interface ActiveUser {
+export interface ChatUser {
   userName: string
   roles: string[]
   loginTime: number
+  isAdmin: boolean
 }
 
-interface ActiveUsers {
-  [id: string]: ActiveUser
+export interface ChatUsers {
+  [id: string]: ChatUser
 }
 
 interface Message {
@@ -50,8 +52,8 @@ interface Message {
 }
 export class ChatWebSocketServer extends WebSocket.Server {
 
-  private activeUsers: ActiveUsers = {}
-  private activeUsers$ = new BehaviorSubject<ActiveUsers>(this.activeUsers)
+  private activeUsers: ChatUsers = {}
+  private activeUsers$ = new BehaviorSubject<ChatUsers>(this.activeUsers)
 
   constructor(server: http.Server | https.Server, verifyClient = defaultVerifyClient) {
     super({
@@ -68,11 +70,12 @@ export class ChatWebSocketServer extends WebSocket.Server {
 
   private connect(ws: WebSocket, req: Request) {
     const id = req['userId']
-    redisdb.getUser(id).then(dbUser => {
-      const activeUser: ActiveUser = {
+    redisdb.getUser(id).then((dbUser: DbUser) => {
+      const activeUser: ChatUser = {
         userName: dbUser.userName,
         roles: dbUser.roles,
-        loginTime: new Date().getTime()
+        loginTime: new Date().getTime(),
+        isAdmin: dbUser.roles.includes('ADMIN')
       }
       this.activeUsers[id] = activeUser
       this.activeUsers$.next(this.activeUsers)

@@ -49,7 +49,6 @@ export class AuthService {
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
     this.http.get<AppUser>('/api/auth/user-me')
       .subscribe((user) => {
-        debugger
         this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
       }
       )

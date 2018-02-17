@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Subscription } from 'rxjs/Subscription'
 import { ChatUser } from '../../services/models/chat-user'
 import { ChatMessageService } from '../../services/chat-message.service'
+import { values, addId } from '../../../shared/utils'
 
 @Component({
   selector: 'chat-user-list',
@@ -21,7 +22,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   constructor(
     private chatMessageService: ChatMessageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.subscriptions = [
@@ -37,8 +38,9 @@ export class UserListComponent implements OnInit, OnDestroy {
         //     return 0
         //   })
         // })
-        .subscribe((cUsers) => {
-          this.users = cUsers.chatUsers
+        .subscribe((cUS) => {
+          const usersWithId = addId<ChatUser>(cUS.chatUsers)
+          this.users = values<ChatUser>(usersWithId)
         })
     ]
   }

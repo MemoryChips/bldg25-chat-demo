@@ -10,6 +10,15 @@ export function addKey<T>(obj: KeyedObj<T>) {
   return obj
 }
 
+// TODO: can this be combined with above
+export interface IdedObj<T> {
+  [id: string]: T
+}
+export function addId<T>(obj: IdedObj<T>) {
+  Object.keys(obj).forEach((key) => { obj[key]['id'] = key })
+  return obj
+}
+
 // decorate class to unsubscribe looking at all properties
 export function AutoUnsubscribe(constructor) {
   const original = constructor.prototype.ngOnDestroy

@@ -48,8 +48,9 @@ export class ChatMessageService {
         const message = JSON.parse(m.data)
         if (message.type === 'user_list') {
           console.log('Received new user list')
-          console.log('Server: ' + message.payload)
-          const chatUsers: ChatUsers = message.payload
+          const payload = JSON.parse(message.payload)
+          console.log('Server: ' + payload)
+          const chatUsers: ChatUsers = payload
           this.chatStore.setChatUsers(chatUsers)
         } else {
           console.log('Unrecognized message received: ', m.data)

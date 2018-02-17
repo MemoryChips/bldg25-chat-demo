@@ -56,7 +56,7 @@ export class ActivatorComponent implements OnInit, OnDestroy {
         }
       }),
       this.chatMessageService.chatStore.chatUserState$.subscribe((chatUserState) => {
-        this.numUsers = chatUserState.chatUsers.length
+        this.numUsers = Object.keys(chatUserState.chatUsers).length
         this.me = chatUserState.me
       }),
     ]
@@ -70,7 +70,7 @@ export class ActivatorComponent implements OnInit, OnDestroy {
     // prevent dblclick text selection
     window.getSelection().removeAllRanges()
     event.preventDefault()
-    if (this.me.id) {this.openState = !this.openState}
+    if (this.me.id) { this.openState = !this.openState }
   }
 
   toggleOptions() {

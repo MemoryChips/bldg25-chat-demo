@@ -19,15 +19,15 @@ export function createUser(req: Request, res: Response) {
   let errors = []
   errors = validatePassword(signUpInfo.password)
   redisdb.keyExists(`user:email:${signUpInfo.email}`).then(exists => {
-    if (exists) {errors.push('Email already in use.')}
+    if (exists) { errors.push('Email already in use.') }
     if (errors.length > 0) {
       res.status(400).json({ errors })
     } else {
       createUserAndSession(res, signUpInfo)
-      .catch((err) => {
-        console.log('Error creating new user', err)
-        res.sendStatus(500)
-      })
+        .catch((err) => {
+          console.log('Error creating new user', err)
+          res.sendStatus(500)
+        })
     }
   })
 }
@@ -36,7 +36,7 @@ export function getJwtUser(req: Req, res: Response) {
   if (req.user) {
     const userId = req.user.sub
     redisdb.getItem(`user:${userId}`).then(user => {
-      const rUser = { userId, ...JSON.parse(user) }
+      const rUser = { id: userId, ...JSON.parse(user) }
       delete rUser.passwordDigest
       res.status(200).json(rUser)
     }).catch(err => {
@@ -114,7 +114,7 @@ export async function login(req: Request, res: Response) {
   if (!userId) { return res.status(403).send('email not found') }
 
   const sUser = await redisdb.getItem(`user:${userId}`)
-  const user: User = {id: userId, ...JSON.parse(sUser)}
+  const user: User = { id: userId, ...JSON.parse(sUser) }
   if (!user) { return res.status(500).send('Server error. User record not found.') }
 
   const isPasswordValid = await argon2.verify(user.passwordDigest, credentials.password)

@@ -49,9 +49,10 @@ export class AuthService {
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
     this.http.get<AppUser>('/api/auth/user-me')
       .subscribe((user) => {
+        debugger
         this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
       }
-    )
+      )
     // this.isLoggedIn$.subscribe((isLoggedIn) => {
     //   if (isLoggedIn) {
     //     this.connectChat()
@@ -78,7 +79,7 @@ export class AuthService {
       })
   }
 
-  getReturnUrl() {return this.returnUrl}
+  getReturnUrl() { return this.returnUrl }
   setReturnUrl(url: string) {
     localStorage.setItem('returnUrl', this.returnUrl)
     this.returnUrl = url

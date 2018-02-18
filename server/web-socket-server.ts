@@ -65,6 +65,7 @@ export class ChatWebSocketServer extends WebSocket.Server {
       // TODO: llimit how often this is broadcasat but
       // be sure that the new client gets the aUsers list
       this.broadcast(JSON.stringify(aUsers))
+      console.log(`Number of Active users: ${Object.keys(this.activeUsers).length}`)
     })
   }
 
@@ -94,8 +95,8 @@ export class ChatWebSocketServer extends WebSocket.Server {
     ws.on('close', (message: string) => {
       console.log(`close event received from ${id}: ${message}`)
       delete this.activeUsers[id]
-      console.log('Active users:')
-      Object.keys(this.activeUsers).forEach(key => console.log(key))
+      console.log(`Number of Active users: ${Object.keys(this.activeUsers).length}`)
+      // Object.keys(this.activeUsers).forEach(key => console.log(key))
       this.activeUsers$.next(this.activeUsers)
     })
 

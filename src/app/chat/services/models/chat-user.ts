@@ -1,8 +1,10 @@
 export interface ChatUser {
+  // email: string,
   id: string
-  name: string
-  isAdmin: boolean
   roles: string[]
+  userName: string
+  isAdmin: boolean
+  loginTime: number
 }
 
 export interface ChatUsers {
@@ -10,8 +12,10 @@ export interface ChatUsers {
 }
 
 export const initMe: ChatUser = {
+  // email: '',
   id: '',
-  name: '',
+  roles: [],
+  userName: '',
   isAdmin: false,
-  roles: []
+  loginTime: 0
 }

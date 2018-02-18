@@ -76,7 +76,7 @@ export class RoomCardComponent implements OnInit, OnDestroy {
     let pats = 'You'
     this.room.chatUsers.forEach(c => {
       if (c.id !== this.localUser.id) {
-        pats = `${c.name}, ${pats}`
+        pats = `${c.userName}, ${pats}`
       }
     })
     return pats

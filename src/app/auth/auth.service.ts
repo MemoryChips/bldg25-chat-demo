@@ -4,18 +4,24 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { HttpClient } from '@angular/common/http'
 
-export interface AppUser {
+// application user must have the properties for ChatUser
+import { ChatUser } from '../chat/services/models/chat-user'
+export interface AppUser extends ChatUser {
   email: string,
-  id: undefined,
-  roles: string[],
-  userName: string,
-  isAdmin?: boolean,
+  // id: string,
+  // roles: string[],
+  // userName: string,
+  // isAdmin: boolean,
+  // loginTime: number
 }
+
 export const ANONYMOUS_USER: AppUser = {
-  id: undefined,
-  email: undefined,
+  email: 'guest',
+  id: '',   // keep this falsey
+  roles: [],
   userName: 'anonymous',
-  roles: []
+  isAdmin: false,
+  loginTime: 0
 }
 
 export interface Credentials {
@@ -50,24 +56,8 @@ export class AuthService {
     this.http.get<AppUser>('/api/auth/user-me')
       .subscribe((user) => {
         this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
-      }
-      )
-    // this.isLoggedIn$.subscribe((isLoggedIn) => {
-    //   if (isLoggedIn) {
-    //     this.connectChat()
-    //   } else {
-    //     if (this.chatConnection) { this.chatConnection.close() }
-    //   }
-    // })
+      })
   }
-
-  // private connectChat() {
-  //   this.chatConnection = new WebSocket('ws://localhost:4200/api-ws')
-  //   this.chatConnection.onmessage = (m) => { console.log('Server: ' + m.data) }
-  //   window.setTimeout(() => {
-  //     this.chatConnection.send('timer message')
-  //   }, 1000)
-  // }
 
   logout(): Observable<any> {
     return this.http.post('/api/auth/logout', null)

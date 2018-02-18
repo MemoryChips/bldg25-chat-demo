@@ -24,9 +24,11 @@ export class ChatMessageService {
       if (newUser) {
         const newMe: ChatUser = {
           id: newUser.id,
-          name: newUser.userName,
+          userName: newUser.userName,
           isAdmin: newUser.roles.includes('ADMIN'),
-          roles: newUser.roles
+          roles: newUser.roles,
+          loginTime: newUser.loginTime,
+          // email: newUser.email
         }
         this.chatStore.setMe(newMe)
         // if (newMe.id) {

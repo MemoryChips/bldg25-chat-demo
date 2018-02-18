@@ -96,6 +96,7 @@ export class ChatWebSocketServer extends WebSocket.Server {
       delete this.activeUsers[id]
       console.log('Active users:')
       Object.keys(this.activeUsers).forEach(key => console.log(key))
+      this.activeUsers$.next(this.activeUsers)
     })
 
     // send immediatly a feedback to the incoming connection

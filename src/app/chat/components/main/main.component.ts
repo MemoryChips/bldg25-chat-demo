@@ -9,7 +9,7 @@ import { ChatMessageService } from 'app/chat/services/chat-message.service'
 export class MainComponent implements OnInit {
 
   isLoggedIn = false
-  showMockUp = false
+  showMockUp = true
 
   constructor(
     private chatMessageService: ChatMessageService

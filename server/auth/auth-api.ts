@@ -123,7 +123,8 @@ export async function login(req: Request, res: Response) {
   const sessionToken = await createSessionToken(user)
   const csrfToken = await createCsrfToken()
   console.log('Login successful')
-  res.cookie('SESSIONID', sessionToken, { httpOnly: true })
+  const age24hrs = 24 * 60 * 60 * 1000
+  res.cookie('SESSIONID', sessionToken, { maxAge: age24hrs, httpOnly: true })
   res.cookie('XSRF-TOKEN', csrfToken)
   res.status(200).json({ id: user.id, email: user.email, roles: user.roles, userName: user.userName })
 }

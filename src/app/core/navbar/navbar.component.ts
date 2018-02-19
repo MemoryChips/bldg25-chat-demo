@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isLoggedIn = false
   cart: Cart
   development = ''
+  collapse = true
 
   private subscriptions: Subscription[]
 

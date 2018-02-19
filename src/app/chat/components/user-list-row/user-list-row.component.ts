@@ -16,6 +16,9 @@ export class UserListRowComponent implements OnInit {
   @Input() user: ChatUser
   public isMouseover = false
   public isLocalUser = false
+  // < img src= "https://www.gravatar.com/avatar/0552e84a05a43a28eb321641d31c63ed?s=40" />
+  public avatar = ''   // use md5 on email even if email is unreal
+
 
   // private subscriptions: Subscription[] = []
 

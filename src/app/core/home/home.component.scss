@@ -1,0 +1,9 @@
+$light-overlay: rgba(0, 0, 0, 0.7);
+
+.home-section {
+  background: no-repeat url('../../../assets/pexels-photo-869258-compress.jpg');
+}
+
+.light-overlay {
+  background-color: $light-overlay;
+}

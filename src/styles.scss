@@ -34,20 +34,20 @@ h1, h2, h3 {
   color: #FFF;
 }
 
-.btn-primary {
-  background-color: $theme-color;
-  border-color: $theme-color;
-}
+// .btn-primary {
+//   background-color: $theme-color;
+//   border-color: $theme-color;
+// }
 
-.btn-primary:hover {
-  background-color: $theme-color-hover;
-  border-color: $theme-color-hover;
-}
+// .btn-primary:hover {
+//   background-color: $theme-color-hover;
+//   border-color: $theme-color-hover;
+// }
 
-.btn-primary.disabled, .btn-primary:disabled {
-  background-color: $theme-color;
-  border-color: $theme-color;
-}
+// .btn-primary.disabled, .btn-primary:disabled {
+//   background-color: $theme-color;
+//   border-color: $theme-color;
+// }
 
 .form-control:focus {
   border-color: $theme-color;

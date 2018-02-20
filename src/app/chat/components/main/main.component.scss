@@ -1,5 +1,5 @@
 @import "../_chat-settings.scss";
-
+$font-size: 30px;
 // Chat room styling
 .row-chat {
   background: #f4f4f4;
@@ -10,10 +10,39 @@
   border: 1px solid #333;
   width: 270px;
   height: auto;
+  opacity: 0.8;
 }
 
 .message-area {
   height: 300px;
+}
+
+// user styling
+.item-user {
+  border: 1px solid #333;
+  width: 270px;
+  height: auto;
+  opacity: 0.8;
+}
+
+.fa-user {
+  color: $loggedInColor;
+  background: white;
+  padding: 1px;
+  border-radius: 3px;
+  font-size: $font-size;
+}
+
+.fa-user-plus {
+  color: $loggedOutColor;
+  background: white;
+  padding: 1px;
+  border-radius: 3px;
+  font-size: $font-size;
+}
+
+.add-button {
+  width: 100%
 }
 
 .user-area {

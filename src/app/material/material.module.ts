@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core'
-
+import { CdkTableModule } from '@angular/cdk/table'
 import {
   MatButtonModule,
   MatToolbarModule,
@@ -29,7 +29,8 @@ const matModules = [
   MatSnackBarModule,
   MatExpansionModule,
   MatTabsModule,
-  MatGridListModule
+  MatGridListModule,
+  CdkTableModule
 ]
 
 @NgModule({

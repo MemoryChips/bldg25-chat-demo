@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { Observable } from 'rxjs/Observable'
-
+import { Router } from '@angular/router'
 import { DataTableConfig, DataTableService } from 'ng5-data-table' // for prod
 
+import { Observable } from 'rxjs/Observable'
 import { Subscription } from 'rxjs/Subscription'
 
 import { Product, ProductService } from '../../shared/services/product.service'
@@ -20,7 +20,8 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   private _subscriptions: Subscription[] = []
   constructor(
     private productService: ProductService,
-    private dataTableService: DataTableService
+    private dataTableService: DataTableService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -51,8 +52,12 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   }
 
   // custom features:
-  productClicked(product) {
-    alert(product.title)
+  editProductClicked(product) {
+    this.router.navigate(['admin/products', product.key])
+  }
+
+  copyProductClicked(product: Product) {
+    this.router.navigate(['admin/products/copy', product.key])
   }
 
 }

@@ -23,8 +23,8 @@
           <i>Actions</i>
         </ng-template>
         <ng-template #dataTableCell let-item="item">
-          <button (click)="productClicked(item)" class="btn btn-sm btn-default">Edit</button>
-          <button (click)="productClicked(item)" class="btn btn-sm btn-default">Copy</button>
+          <button (click)="editProductClicked(item)" class="btn btn-sm btn-default">Edit</button>
+          <button (click)="copyProductClicked(item)" class="btn btn-sm btn-default">Copy</button>
         </ng-template>
       </data-table-column>
     </data-table>

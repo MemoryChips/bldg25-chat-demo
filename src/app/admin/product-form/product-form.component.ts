@@ -17,6 +17,7 @@ export class ProductFormComponent implements OnInit {
   product: Product = {title: '', price: null, imageUrl: '', category: null}
   key: string
   buttonText = 'Save'
+  newProduct = false
 
   constructor(
     private router: Router,
@@ -24,14 +25,18 @@ export class ProductFormComponent implements OnInit {
     private ps: ProductService
   ) {
     this.categories$ = ps.getCategories()
+    this.newProduct = this.route.snapshot.routeConfig.path.includes('copy')
     this.key = this.route.snapshot.paramMap.get('id')
     if (this.key) {
-      this.ps.get(this.key).take(1).subscribe(p => this.product = p)
+      this.ps.get(this.key).take(1).subscribe((p) => {
+        this.product = { ...p }
+        if (this.newProduct) delete this.product.key
+      })
     }
   }
 
   save(product) {
-    if (this.key) {
+    if (!this.newProduct) {
       this.ps.update(this.key, product).toPromise().then((_success) => {
         console.log(`update success: ${_success}`)
         this.router.navigate(['/admin/products'])
@@ -53,7 +58,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.key) { this.buttonText = 'Create' }
+    if (this.newProduct) { this.buttonText = 'Create' }
   }
 
 }

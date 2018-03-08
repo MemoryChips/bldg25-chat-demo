@@ -21,6 +21,7 @@ import { DataTableModule } from 'ng5-data-table'
     SharedModule,
     MaterialModule,
     RouterModule.forChild([
+      { path: 'admin/products/copy/:id', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
       { path: 'admin/products/new', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
       { path: 'admin/products/:id', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
       { path: 'admin/products', component: AdminProductsComponent, canActivate: [AuthGuard, AdminGuard] },

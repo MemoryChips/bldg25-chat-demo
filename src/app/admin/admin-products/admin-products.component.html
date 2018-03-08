@@ -3,15 +3,18 @@
 <div class="prod-container">
 
   <div style="margin: auto; max-width: 900px;">
+
     <data-table [tableId]="tableId">
+      <data-table-column
+        property="title"
+        header="Title">
+      </data-table-column>
       <data-table-column width="55px" [resizable]="true" header="URL">
         <ng-template #dataTableCell let-item="item">
           <div class="thumbnail" [style.backgroundImage]="'url(' + item.imageUrl +')'"></div>
         </ng-template>
       </data-table-column>
       <data-table-column property="category" header="Category" sortable="true">
-      </data-table-column>
-      <data-table-column property="title" header="Title">
       </data-table-column>
       <data-table-column property="price" [sortable]="true" header="Price ($)">
         <ng-template #dataTableCell let-item="item">
@@ -28,15 +31,7 @@
         </ng-template>
       </data-table-column>
     </data-table>
-    <div>
-      <div>
-        <b>Selected:</b>
-        <span>{{ selectedRowIds.length }}</span>
-      </div>
-      <div *ngFor="let selected of selectedRowIds">
-        <span>{{ selected }}</span>
-      </div>
-    </div>
+
   </div>
 
 </div>

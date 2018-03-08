@@ -34,9 +34,6 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
       },
       tableConfig: {
         header: true,
-        multiSelect: true,
-        selectColumn: true,
-        selectOnRowClick: true,
       }
     }
     this.tableId = this.dataTableService.createDataTableState(partialConfig, data$)

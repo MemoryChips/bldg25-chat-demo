@@ -11,9 +11,11 @@ import { AdminProductsComponent } from './admin-products/admin-products.componen
 import { AdminGuard } from './admin.guard'
 import { ProductFormComponent } from './product-form/product-form.component'
 import { BroadcastMessageComponent } from '../chat/components/broadcast-message/broadcast-message.component'
+import { DataTableModule } from 'ng5-data-table'
 
 @NgModule({
   imports: [
+    DataTableModule,
     CommonModule,
     FormsModule,
     SharedModule,

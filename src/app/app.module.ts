@@ -22,6 +22,7 @@ import { HomeComponent } from './core/home/home.component'
 import { MaterialModule } from './material/material.module'
 import { SharedModule } from './shared/shared.module'
 import { ChatModule } from './chat/chat.module'
+import { DataTableModule } from 'ng5-data-table'
 
 import 'rxjs/add/operator/toPromise'
 import 'rxjs/add/operator/switchMap'
@@ -38,6 +39,7 @@ import 'rxjs/add/observable/of'
     AppComponent,
   ],
   imports: [
+    DataTableModule,
     BrowserModule,
     SharedModule,
     ShoppingModule,

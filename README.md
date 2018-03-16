@@ -19,6 +19,11 @@ pug client/src/app/chat/activator/activator.component.pug -P
 pug *.pug -P  # cd to directory
 ```
 
+```bash
+npm i /home/rob/Documents/Training-GreenLanternOnly/ng5-data-table-lib/ng5-data-table-0.2.1.tgz
+```
+
+
 ### CLI commands
 ```bash
 # edit .angular-cli.json to change app to chat for prefix

@@ -12,6 +12,7 @@ import { AdminGuard } from './admin.guard'
 import { ProductFormComponent } from './product-form/product-form.component'
 import { BroadcastMessageComponent } from '../chat/components/broadcast-message/broadcast-message.component'
 import { DataTableModule } from 'ng5-data-table'
+import { ActionComponent } from './admin-products/action/action.component'
 
 @NgModule({
   imports: [
@@ -33,7 +34,11 @@ import { DataTableModule } from 'ng5-data-table'
     AdminProductsComponent,
     AdminOrdersComponent,
     ProductFormComponent,
+    ActionComponent,
     // BroadcastMessageComponent,
+  ],
+  entryComponents: [
+    ActionComponent,
   ],
   providers: [
     AdminGuard,

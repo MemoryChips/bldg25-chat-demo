@@ -28,7 +28,8 @@ export class ChatMessageService {
           isAdmin: newUser.roles.includes('ADMIN'),
           roles: newUser.roles,
           loginTime: newUser.loginTime,
-          // email: newUser.email
+          email: newUser.email,
+          active: newUser.active
         }
         this.chatStore.setMe(newMe)
         // if (newMe.id) {

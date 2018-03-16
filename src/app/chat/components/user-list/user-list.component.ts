@@ -12,20 +12,17 @@ import { values, addId } from '../../../shared/utils'
 
 export class UserListComponent implements OnInit, OnDestroy {
 
-  // @select(['userState', 'localUser']) localUser$: Observable<User>
-  // @select(['userState', 'usersList']) users$: Observable<User[]>
-
   localUser: ChatUser
   users: ChatUser[]
 
-  private subscriptions: Subscription[] = []
+  private _subscriptions: Subscription[] = []
 
   constructor(
     private chatMessageService: ChatMessageService
   ) { }
 
   ngOnInit() {
-    this.subscriptions = [
+    this._subscriptions = [
       this.chatMessageService.chatStore.chatUserState$.subscribe((cus) => {
         if (cus) { this.localUser = cus.me }
       }),
@@ -38,6 +35,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         //     return 0
         //   })
         // })
+        // TODO: filter local user name OR add (You) to name
+        // .filter((rooms) => {
+        //   return <not me in cus.me>
+        // })
         .subscribe((cUS) => {
           const usersWithId = addId<ChatUser>(cUS.chatUsers)
           this.users = values<ChatUser>(usersWithId)
@@ -46,7 +47,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    for (const subscription of this.subscriptions) {
+    for (const subscription of this._subscriptions) {
       subscription.unsubscribe()
     }
   }

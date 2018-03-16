@@ -21,7 +21,8 @@ export const ANONYMOUS_USER: AppUser = {
   roles: [],
   userName: 'anonymous',
   isAdmin: false,
-  loginTime: 0
+  loginTime: 0,
+  active: false,
 }
 
 export interface Credentials {

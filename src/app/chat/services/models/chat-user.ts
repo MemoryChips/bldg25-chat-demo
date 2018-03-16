@@ -1,10 +1,11 @@
 export interface ChatUser {
-  // email: string,
+  email: string,
   id: string
   roles: string[]
   userName: string
   isAdmin: boolean
   loginTime: number
+  active: boolean  // Some activity in the last 15 mins?
 }
 
 export interface ChatUsers {
@@ -12,10 +13,11 @@ export interface ChatUsers {
 }
 
 export const initMe: ChatUser = {
-  // email: '',
+  email: '',
   id: '',
   roles: [],
   userName: '',
   isAdmin: false,
-  loginTime: 0
+  loginTime: 0,
+  active: true
 }

@@ -1,4 +1,5 @@
 import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core'
+import { Router } from '@angular/router'
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material'
 import { DomSanitizer } from '@angular/platform-browser'
 import { ProductService, Product } from '../../shared/services/product.service'
@@ -21,17 +22,18 @@ export class AdminProductsComponent implements OnInit, AfterViewInit {
   // private _subscriptions: Subscription[] = []
   constructor(
     private productService: ProductService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private router: Router
   ) {
     this.dataSource = new MatTableDataSource<Product>([])
   }
 
   ngOnInit() {
-    const data = this.productService.getListStatic()
+    // const data = this.productService.getListStatic()
     this.productService.getList().subscribe(products => {
       console.log(products)
-      // this.dataSource.data = products
-      this.dataSource.data = data
+      this.dataSource.data = products
+      // this.dataSource.data = data
     })
   }
 
@@ -57,10 +59,12 @@ export class AdminProductsComponent implements OnInit, AfterViewInit {
 
   productEditClicked(item: Product) {
     console.log(`Edit requested for ${item.title} with id ${item.key}`)
+    this.router.navigate(['admin/products', item.key])
   }
 
   productCopyClicked(item) {
     console.log(`Copy requested for ${item.title}`)
+    this.router.navigate(['admin/products/copy', item.key])
   }
 
   productDeleteClicked(item) {

@@ -11,6 +11,7 @@ export class ChatMessageService {
   chatStore: ChatStore
 
   constructor(private auth: AuthService) {
+    this.chatStore = new ChatStore()
     this.auth.isLoggedIn$.subscribe((isLoggedIn) => {
       if (isLoggedIn) {
         this.chatStore.setLoggedIn()
@@ -40,7 +41,6 @@ export class ChatMessageService {
         // } else { this.chatStore.reset() }
       }
     })
-    this.chatStore = new ChatStore()
     // this.chatStore = testChatStore
   }
 

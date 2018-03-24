@@ -1,8 +1,15 @@
-import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core'
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  AfterViewInit,
+  OnDestroy
+} from '@angular/core'
 import { Router } from '@angular/router'
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material'
 import { DomSanitizer } from '@angular/platform-browser'
 import { ProductService, Product } from '../../shared/services/product.service'
+import { Subscription } from 'rxjs/Subscription'
 /**
  * @title Table with pagination
  */
@@ -11,7 +18,8 @@ import { ProductService, Product } from '../../shared/services/product.service'
   templateUrl: './admin-products.component.html',
   styleUrls: ['./admin-products.component.scss']
 })
-export class AdminProductsComponent implements OnInit, AfterViewInit {
+export class AdminProductsComponent
+  implements OnInit, AfterViewInit, OnDestroy {
   // displayedColumns = ['key', 'category', 'title', 'price', 'imageUrl']
   displayedColumns = ['title', 'action', 'category', 'price', 'image-url']
   dataSource: MatTableDataSource<Product>
@@ -19,7 +27,7 @@ export class AdminProductsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator
   @ViewChild(MatSort) sort: MatSort
 
-  // private _subscriptions: Subscription[] = []
+  private _subscriptions: Subscription[] = []
   constructor(
     private productService: ProductService,
     private domSanitizer: DomSanitizer,
@@ -30,11 +38,12 @@ export class AdminProductsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // const data = this.productService.getListStatic()
-    this.productService.getList().subscribe(products => {
-      console.log(products)
-      this.dataSource.data = products
-      // this.dataSource.data = data
-    })
+    this._subscriptions = [
+      this.productService.getList().subscribe(products => {
+        this.dataSource.data = products
+        // this.dataSource.data = data
+      })
+    ]
   }
 
   /**
@@ -44,6 +53,10 @@ export class AdminProductsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
     this.dataSource.sort = this.sort
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.forEach(s => s.unsubscribe())
   }
 
   applyFilter(filterValue: string) {
@@ -68,6 +81,8 @@ export class AdminProductsComponent implements OnInit, AfterViewInit {
   }
 
   productDeleteClicked(item) {
-    console.log(`Delete requested for ${item.title}`)
+    console.log(
+      `Delete requested for ${item.title} - this method is not complete.`
+    )
   }
 }

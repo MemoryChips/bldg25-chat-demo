@@ -91,7 +91,7 @@ export class ChatStore {
 
   upDateRoom(newRoom: Room) {
     const newRooms: { [roomId: string]: Room } = { ...this.roomState.rooms }
-    newRooms.rooms[newRoom.id] = newRoom
+    newRooms[newRoom.id] = newRoom
     const newRoomList = { ...this.roomState }
     newRoomList.rooms = newRooms
     this.setRoomState(newRoomList)

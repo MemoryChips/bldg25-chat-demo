@@ -10,23 +10,17 @@
 <div *ngIf="openState" class="activator">
   <mat-accordion>
     <!-- <mat-expansion-panel [expanded]="true"> -->
-    <mat-expansion-panel
-      [expanded]="true"
-      (opened)="panelOpenState = true"
-      (closed)="panelOpenState = false">
+    <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <button
-          class="button-small"
-          color="primary"
-          (click)="toggleActivator($event)">
+          <button class="button-small" color="primary" (click)="toggleActivator($event)">
             <i class="fa fa-chevron-right fa-1x fa-center"></i>
             <!-- Chat -->
           </button>
         </mat-panel-title>
         <mat-panel-description>
           <!-- CLICK HERE TO CHAT -->
-          {{panelOpenState ? 'Welcome ' + me.name : 'CLICK HERE TO CHAT'}}
+          {{panelOpenState ? 'Welcome ' + me.userName : 'CLICK HERE TO CHAT'}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <!-- <p>I'm visible because I am open</p> -->

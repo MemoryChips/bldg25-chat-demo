@@ -1,37 +1,76 @@
-<h1 class="text-center">Product and Services List</h1>
+<div class="my-4 mx-auto product-container mat-elevation-z8">
+  <h1 class="text-center mt-3">Product and Services List</h1>
 
-<div class="prod-container">
-
-  <div style="margin: auto; max-width: 900px;">
-
-    <data-table [tableId]="tableId">
-      <!-- <data-table-column
-        property="title"
-        header="Title">
-      </data-table-column>
-      <data-table-column width="55px" [resizable]="true" header="URL">
-        <ng-template #dataTableCell let-item="item">
-          <div class="thumbnail" [style.backgroundImage]="'url(' + item.imageUrl +')'"></div>
-        </ng-template>
-      </data-table-column>
-      <data-table-column property="category" header="Category" sortable="true">
-      </data-table-column>
-      <data-table-column property="price" [sortable]="true" header="Price ($)">
-        <ng-template #dataTableCell let-item="item">
-          <span>{{ item.price | currency:'USD':'symbol' }}</span>
-        </ng-template>
-      </data-table-column>
-      <data-table-column header="Actions">
-        <ng-template #dataTableHeader let-item="item">
-          <i>Actions</i>
-        </ng-template>
-        <ng-template #dataTableCell let-item="item">
-          <button (click)="editProductClicked(item)" class="btn btn-sm btn-default">Edit</button>
-          <button (click)="copyProductClicked(item)" class="btn btn-sm btn-default">Copy</button>
-        </ng-template>
-      </data-table-column> -->
-    </data-table>
-
+  <div class="product-header">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
   </div>
 
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Key Column -->
+    <ng-container matColumnDef="key">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.key}} </mat-cell>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <div class="button-row">
+          <button (click)="productEditClicked(item)" class="btn btn-sm btn-primary mx-1">Edit</button>
+          <button (click)="productCopyClicked(item)" class="btn btn-sm btn-info mx-1">Copy</button>
+          <button (click)="productDeleteClicked(item)" class="btn btn-sm btn-danger mx-1">Delete</button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action-material">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div class="button-row">
+          <!-- <button mat-raised-button>Basic</button> -->
+          <button mat-raised-button color="primary">Edit</button>
+          <button mat-raised-button color="accent">Copy</button>
+          <!-- <button mat-raised-button color="warn">Warn</button> -->
+          <!-- <button-raised mat-button disabled>Disabled</button> -->
+          <a mat-button-raised routerLink=".">Link</a>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Category Column -->
+    <ng-container matColumnDef="category">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.price | currency:'USD':'symbol' }} </mat-cell>
+    </ng-container>
+
+    <!-- Image Column -->
+    <ng-container matColumnDef="image-url">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <!-- <mat-cell *matCellDef="let element" class="thumbnail" [style.backgroundImage]="element.imageUrl">x</mat-cell> -->
+      <mat-cell *matCellDef="let element" [style.backgroundImage]="sanitize(element.imageUrl)"></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+  </mat-paginator>
 </div>

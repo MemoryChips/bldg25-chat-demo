@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { ChatMessageService } from 'app/chat/services/chat-message.service'
+import { ChatMessageService } from '../../services/chat-message.service'
 
 @Component({
   selector: 'chat-main',
@@ -7,18 +7,14 @@ import { ChatMessageService } from 'app/chat/services/chat-message.service'
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-
   isLoggedIn = false
   showMockUp = false
 
-  constructor(
-    private chatMessageService: ChatMessageService
-  ) { }
+  constructor(private chatMessageService: ChatMessageService) {}
 
   ngOnInit() {
     this.chatMessageService.chatStore.chatUserState$.subscribe(s => {
       this.isLoggedIn = s.isLoggedIn
     })
   }
-
 }

@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core'
-import { AuthService, AppUser } from 'app/auth/auth.service'
+import { AuthService, AppUser } from '../../auth/auth.service'
 import { ChatStore } from './chat-store'
 // TODO: is there a better way to do this?
-import { ChatUser, ChatUsers } from 'app/chat/services/models/chat-user'  // this must be provided by host application
+import { ChatUser, ChatUsers } from 'app/chat/services/models/chat-user' // this must be provided by host application
 
 @Injectable()
 export class ChatMessageService {
-
   private chatConnection: WebSocket
   chatStore: ChatStore
 
   constructor(private auth: AuthService) {
     this.chatStore = new ChatStore()
-    this.auth.isLoggedIn$.subscribe((isLoggedIn) => {
+    this.auth.isLoggedIn$.subscribe(isLoggedIn => {
       if (isLoggedIn) {
         this.chatStore.setLoggedIn()
         this.connectChat()
       } else {
         this.chatStore.setLoggedIn(false)
-        if (this.chatConnection) { this.chatConnection.close() }
+        if (this.chatConnection) {
+          this.chatConnection.close()
+        }
       }
     })
     this.auth.userSubject$.subscribe((newUser: AppUser) => {
@@ -46,7 +47,7 @@ export class ChatMessageService {
 
   private connectChat() {
     this.chatConnection = new WebSocket('ws://localhost:4200/api-ws')
-    this.chatConnection.onmessage = (m) => {
+    this.chatConnection.onmessage = m => {
       try {
         const message = JSON.parse(m.data)
         if (message.type === 'user_list') {
@@ -59,7 +60,10 @@ export class ChatMessageService {
           console.log('Unrecognized message received: ', m.data)
         }
       } catch (error) {
-        console.error('Message received from server is not in JSON format: ', m.data)
+        console.error(
+          'Message received from server is not in JSON format: ',
+          m.data
+        )
       }
     }
     window.setTimeout(() => {
@@ -74,5 +78,4 @@ export class ChatMessageService {
   requestChat(_userId: string) {
     console.log(`TODO: Chat request with userid received: ${_userId} `)
   }
-
 }

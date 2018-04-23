@@ -4,26 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { HttpClient } from '@angular/common/http'
 
-// application user must have the properties for ChatUser
-// import { ChatUser } from '../chat/services/models/chat-user'
-// export interface AppUser extends ChatUser {
-//   email: string,
-//   // id: string,
-//   // roles: string[],
-//   // userName: string,
-//   // isAdmin: boolean,
-//   // loginTime: number
-// }
-
-// export const ANONYMOUS_USER: AppUser = {
-//   email: 'guest',
-//   id: '',   // keep this falsey
-//   roles: [],
-//   userName: 'anonymous',
-//   isAdmin: false,
-//   loginTime: 0,
-//   active: false,
-// }
+// Must be added to application
+import { ChatLoginService } from 'bldg25-chat'
 
 export interface Credentials {
   userName?: string
@@ -76,7 +58,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private chatLoginService: ChatLoginService
   ) {
     console.log('Auth service created.')
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
@@ -90,6 +73,8 @@ export class AuthService {
       .post('/api/auth/logout', null)
       .shareReplay()
       .do(_user => {
+        // this must be added to alert chat that the user is logged in
+        this.chatLoginService.setLoggedInState(false)
         this.userSubject$.next(ANONYMOUS_USER)
         this.router.navigateByUrl('/home')
       })
@@ -123,6 +108,8 @@ export class AuthService {
       .shareReplay()
       .do(user => {
         this.userSubject$.next(user)
+        // this must be added to alert chat that the user is logged in
+        this.chatLoginService.setLoggedInState(true)
       })
   }
 

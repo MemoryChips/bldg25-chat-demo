@@ -36,3 +36,35 @@ export async function createCsrfToken() {
   const token = await randomBytes(32).then(bytes => bytes.toString('hex'))
   return token
 }
+
+// Required by chat-server
+export function defaultVerifyClient(info, done) {
+  const cookies = getCookiesMap(info.req.headers.cookie)
+  const jwToken = cookies.SESSIONID
+  if (!jwToken) {
+    console.log('jwt is missing in a websocket connection attempt')
+    done(false, 403, 'Forbidden')
+  } else {
+    decodeJwt(jwToken)
+      .then(_decodedJwt => {
+        info.req['userId'] = _decodedJwt.sub // currently only saving the userId on req
+        done(_decodedJwt.sub)
+      })
+      .catch(err => {
+        console.log(err)
+        done(false, 403, 'Forbidden - invalid jwt')
+      })
+  }
+}
+
+function getCookiesMap(cookiesString): { [key: string]: string } {
+  return cookiesString
+    .split(';')
+    .map(function(cookieString) {
+      return cookieString.trim().split('=')
+    })
+    .reduce(function(acc, curr) {
+      acc[curr[0]] = curr[1]
+      return acc
+    }, {})
+}

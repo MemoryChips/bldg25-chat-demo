@@ -46,3 +46,8 @@ server/keys
 
 # database files
 dump.rdb
+
+# for now ignore chat-server files
+chat-server
+
+# ignore chat files added for debug

@@ -1,8 +1,0 @@
-<div
-  class="d-flex flex-wrap flex-row-reverse my-flex-container align-items-end"
-  *ngIf="atLeastOneRoom">
-  <div class="p-2 my-flex-item" *ngFor="let roomId of openRoomIds">
-    <chat-room-card [roomId]="roomId" [localUser]="localUser"></chat-room-card>
-  </div>
-  <div *ngIf="(i + 1) % 2 === 0" class="w-100"></div>
-</div>

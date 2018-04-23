@@ -10,38 +10,58 @@ import { AdminOrdersComponent } from './admin-orders/admin-orders.component'
 import { AdminProductsComponent } from './admin-products/admin-products.component'
 import { AdminGuard } from './admin.guard'
 import { ProductFormComponent } from './product-form/product-form.component'
-import { BroadcastMessageComponent } from '../chat/components/broadcast-message/broadcast-message.component'
-import { DataTableModule } from 'ng5-data-table'
+// import { BroadcastMessageComponent } from '../chat/components/broadcast-message/broadcast-message.component'
+// import { DataTableModule } from 'ng5-data-table'
 import { ActionComponent } from './admin-products/action/action.component'
 
 @NgModule({
   imports: [
-    DataTableModule,
+    // DataTableModule,
     CommonModule,
     FormsModule,
     SharedModule,
     MaterialModule,
     RouterModule.forChild([
-      { path: 'admin/products/copy/:id', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
-      { path: 'admin/products/new', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
-      { path: 'admin/products/:id', component: ProductFormComponent, canActivate: [AuthGuard, AdminGuard] },
-      { path: 'admin/products', component: AdminProductsComponent, canActivate: [AuthGuard, AdminGuard] },
-      { path: 'admin/orders', component: AdminOrdersComponent, canActivate: [AuthGuard, AdminGuard] },
-      { path: 'admin/broadcastMessage', component: BroadcastMessageComponent, canActivate: [AuthGuard, AdminGuard] },
+      {
+        path: 'admin/products/copy/:id',
+        component: ProductFormComponent,
+        canActivate: [AuthGuard, AdminGuard]
+      },
+      {
+        path: 'admin/products/new',
+        component: ProductFormComponent,
+        canActivate: [AuthGuard, AdminGuard]
+      },
+      {
+        path: 'admin/products/:id',
+        component: ProductFormComponent,
+        canActivate: [AuthGuard, AdminGuard]
+      },
+      {
+        path: 'admin/products',
+        component: AdminProductsComponent,
+        canActivate: [AuthGuard, AdminGuard]
+      },
+      {
+        path: 'admin/orders',
+        component: AdminOrdersComponent,
+        canActivate: [AuthGuard, AdminGuard]
+      }
+      // {
+      //   path: 'admin/broadcastMessage',
+      //   component: BroadcastMessageComponent,
+      //   canActivate: [AuthGuard, AdminGuard]
+      // }
     ])
   ],
   declarations: [
     AdminProductsComponent,
     AdminOrdersComponent,
     ProductFormComponent,
-    ActionComponent,
+    ActionComponent
     // BroadcastMessageComponent,
   ],
-  entryComponents: [
-    ActionComponent,
-  ],
-  providers: [
-    AdminGuard,
-  ]
+  entryComponents: [ActionComponent],
+  providers: [AdminGuard]
 })
-export class AdminModule { }
+export class AdminModule {}

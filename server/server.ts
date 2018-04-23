@@ -1,5 +1,5 @@
 // import { addWebSocketServer } from './web-socket-server'
-import { ChatWebSocketServer } from './web-socket-server'
+// import { ChatWebSocketServer } from './web-socket-server'
 import * as express from 'express'
 import * as http from 'http'
 import { retrieveUserIdFromRequest } from './auth/mware/get-user'
@@ -19,16 +19,18 @@ const server = http.createServer(app)
 const serverInfo = 'HTTP Server running at http://localhost:'
 
 // addWebSocketServer(server)
-const chatServer = new ChatWebSocketServer(server)
-const info = chatServer.options
-console.log(info)
+// const chatServer = new ChatWebSocketServer(server)
+// const info = chatServer.options
+// console.log(info)
 
 app.use(cookieParser())
 app.use(retrieveUserIdFromRequest)
 app.use(bodyParser.json())
 
 // for serving in production
-if (process.env.PROD) { app.use(express.static(__dirname + '/dist')) }
+if (process.env.PROD) {
+  app.use(express.static(__dirname + '/dist'))
+}
 
 // for product images
 // http://localhost:9000/api/image-files/avocado.jpg

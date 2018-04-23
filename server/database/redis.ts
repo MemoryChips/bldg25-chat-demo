@@ -1,31 +1,205 @@
 import * as redis from 'redis'
+import { DbUser } from '../auth/models/user'
+
+export const USERS = 'users'
+export const USER_EMAIL = 'user:email'
 
 class RedisDatabase {
-
   private redisClient: redis.RedisClient
 
   constructor() {
     console.log('Instance of redis database created.')
     // AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
     this.redisClient = redis.createClient({ host: 'localhost', port: 6379 })
-    const authorized = this.redisClient.auth('bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ')
+    const authorized = this.redisClient.auth(
+      'bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ'
+    )
     console.log(`Authorization: ${authorized}`)
   }
 
+  quit() {
+    this.redisClient.quit()
+  }
+
   uniqueId() {
-    return Math.random().toString(36).substring(2)
-      + (new Date()).getTime().toString(36)
+    return (
+      Math.random()
+        .toString(36)
+        .substring(2) + new Date().getTime().toString(36)
+    )
   }
 
-  getCategories(): Promise<string> {
-    return this.getItem('categories')
+  flushDb() {
+    return new Promise((resolve, reject) => {
+      this.redisClient.flushdb((_err, result) => {
+        if (_err) reject(_err)
+        console.log(`Resulat of database flush: ${result}`)
+        resolve(result)
+      })
+    })
+  }
+  getUserById(userId: string): Promise<DbUser> {
+    // first check for exists
+    return this._userExistsById(userId).then(exists => {
+      if (exists) {
+        // console.log('user exists')
+        return this._getUserById(userId)
+      } else {
+        return null
+      }
+    })
   }
 
-  getUser(userId: string) {
-    return redisdb.getItem(`user:${userId}`).then(user => {
-      const rUser = { userId, ...JSON.parse(user) }
-      delete rUser.passwordDigest
-      return rUser
+  private _getUserById(userId: string): Promise<DbUser> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hget(USERS, userId, (_err, sUser) => {
+        if (_err) reject(_err)
+        const rUser: DbUser = JSON.parse(sUser)
+        resolve(rUser)
+      })
+    })
+  }
+
+  getUserId(email: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
+        if (_err) return reject(_err)
+        resolve(index)
+      })
+    })
+  }
+
+  getUserByEmail(email: string): Promise<DbUser> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
+        if (_err) return reject(_err)
+        resolve(index)
+      })
+    }).then((index: string) => {
+      return this.getUserById(index)
+    })
+  }
+
+  private _userExistsById(userId: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hexists(USERS, userId, (_err, exists) => {
+        if (_err) reject(_err)
+        if (exists > 1) {
+          console.log(`*** ERROR *** multiple email links for ${userId}`)
+        }
+        resolve(exists > 0)
+      })
+    })
+  }
+
+  userExists(email: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hexists(USER_EMAIL, email, (_err, exists) => {
+        if (_err) reject(_err)
+        if (exists > 1) {
+          console.log(`*** ERROR *** multiple email links for ${email}`)
+        }
+        resolve(exists > 0)
+      })
+    })
+  }
+
+  getAllUsers(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hgetall(USERS, (_err, sUsers) => {
+        if (_err) reject(_err)
+        const users = {}
+        Object.keys(sUsers).forEach(key => {
+          users[key] = JSON.parse(sUsers[key])
+          delete users[key].passwordDigest
+        })
+        resolve(users)
+      })
+    })
+  }
+
+  private _deleteEmailIndex(email: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hdel(USER_EMAIL, email, (_err, numDeleted) => {
+        if (_err) reject(_err)
+        if (numDeleted > 1) {
+          console.log(
+            `*** WARNING *** deleted multiple email links for ${email}`
+          )
+        }
+        resolve(numDeleted)
+      })
+    })
+  }
+
+  private _deleteUserRecord(index: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hdel(USERS, index, (_err, numDeleted) => {
+        if (_err) reject(_err)
+        if (numDeleted > 1) {
+          console.log(
+            `*** ERROR *** deleted multiple user records for ${index}`
+          )
+        }
+        resolve(numDeleted)
+      })
+    })
+  }
+
+  private _createUser(dbUser: DbUser): Promise<boolean> {
+    // let createdUserId = ''
+    return redisdb
+      ._createHashItem(USERS, JSON.stringify(dbUser))
+      .then(userId => {
+        // createdUserId = userId
+        return redisdb._createHashItem(USER_EMAIL, userId, dbUser.email)
+      })
+      .then(userEmail => {
+        // const newDbUser = console.log(dbUser)
+        // console.log(createdUserId)
+        return userEmail === dbUser.email
+      })
+  }
+
+  createUser(dbUser: DbUser): Promise<boolean> {
+    return this.userExists(dbUser.email).then(exists => {
+      if (exists) return false
+      else return this._createUser(dbUser)
+    })
+  }
+
+  deleteUser(email: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
+        if (_err) return reject(_err)
+        this._deleteEmailIndex(email)
+        resolve(index)
+      })
+    }).then((index: string) => {
+      return this._deleteUserRecord(index)
+        .then(number => number)
+        .catch(err => {
+          console.log(err)
+          return 0
+        })
+    })
+  }
+
+  private _createHashItem(
+    type: string,
+    value = '',
+    uid: string = null
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!uid) uid = this.uniqueId()
+      this.redisClient.hset(type, uid, value, (_err, itemsCreated) => {
+        if (_err) reject(_err)
+        if (itemsCreated === 1) resolve(uid)
+        else {
+          console.log('Other than 1 item created: ', itemsCreated)
+          reject('not created')
+        }
+      })
     })
   }
 
@@ -38,54 +212,11 @@ class RedisDatabase {
     })
   }
 
-  getKeys(keyPattern: string): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-      this.redisClient.keys(keyPattern, (_err, keys) => {
-        if (_err) reject(_err)
-        resolve(keys)
-      })
-    })
-  }
-
-  keyExists(key: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.redisClient.exists(key, (_err, numkeys) => {
-        if (_err) reject(_err)
-        resolve(numkeys > 0)
-      })
-    })
-  }
-
   setItem(key: string, value: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.redisClient.set(key, value, (_err, _ok) => {
         if (_err) reject(_err)
         resolve(true)
-      })
-    })
-  }
-
-  addSetItem(key: string, value: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.redisClient.sadd(key, value, (_err, _ok) => {
-        if (_err) reject(_err)
-        resolve(true)
-      })
-    })
-  }
-
-  getSmembers(key: string): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-      this.redisClient.smembers(key, (_err, items) => {
-        if (_err) reject(_err)
-        else {
-          this.redisClient.mget(items, (_err2, mItems) => {
-            if (_err2) reject(_err)
-            else {
-              resolve(mItems)
-            }
-          })
-        }
       })
     })
   }
@@ -129,6 +260,44 @@ class RedisDatabase {
     })
   }
 
+  addSetItem(key: string, value: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.sadd(key, value, (_err, _ok) => {
+        if (_err) reject(_err)
+        resolve(true)
+      })
+    })
+  }
+
+  getSmembers(key: string): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.smembers(key, (_err, items) => {
+        if (_err) reject(_err)
+        else {
+          this.redisClient.mget(items, (_err2, mItems) => {
+            if (_err2) reject(_err)
+            else {
+              resolve(mItems)
+            }
+          })
+        }
+      })
+    })
+  }
+
+  getKeys(keyPattern: string): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.keys(keyPattern, (_err, keys) => {
+        if (_err) reject(_err)
+        resolve(keys)
+      })
+    })
+  }
 }
 
 export const redisdb = new RedisDatabase()
+
+// required by chat server
+export function getAppUserById(id: string) {
+  return redisdb.getUserById(id)
+}

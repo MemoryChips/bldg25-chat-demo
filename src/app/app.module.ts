@@ -21,8 +21,9 @@ import { SignupComponent } from './auth/signup/signup.component'
 import { HomeComponent } from './core/home/home.component'
 import { MaterialModule } from './material/material.module'
 import { SharedModule } from './shared/shared.module'
-import { ChatModule } from './chat/chat.module'
-import { DataTableModule } from 'ng5-data-table'
+// import { DataTableModule } from 'ng5-data-table'
+
+import { ChatModule } from 'bldg25-chat'
 
 import 'rxjs/add/operator/toPromise'
 import 'rxjs/add/operator/switchMap'
@@ -35,18 +36,19 @@ import 'rxjs/add/operator/first'
 import 'rxjs/add/observable/of'
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
-    DataTableModule,
+    // DataTableModule,
     BrowserModule,
     SharedModule,
     ShoppingModule,
     AdminModule,
     CoreModule,
     AuthModule,
-    ChatModule,
+    ChatModule.forRoot({
+      name: 'Miss Marple',
+      webSocketServerUrl: 'ws://localhost:4202/api-ws'
+    }),
     NgbModule.forRoot(),
     BrowserAnimationsModule,
     MaterialModule,
@@ -61,7 +63,7 @@ import 'rxjs/add/observable/of'
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'signup', component: SignupComponent },
+      { path: 'signup', component: SignupComponent }
     ])
   ],
   providers: [
@@ -71,4 +73,4 @@ import 'rxjs/add/observable/of'
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

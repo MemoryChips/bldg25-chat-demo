@@ -8,8 +8,8 @@ export interface KeyedObj<T> {
   [key: string]: T
 }
 
-const catUrl = 'http://localhost:9003/image-files/cat.jpg'
-const dogUrl = 'http://localhost:9003/image-files/dog.jpg'
+const catUrl = 'http://localhost:9001/image-files/cat.jpg'
+const dogUrl = 'http://localhost:9001/image-files/dog.jpg'
 
 // Password10
 const passwordDigest =

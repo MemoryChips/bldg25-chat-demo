@@ -47,8 +47,8 @@ import 'rxjs/add/observable/of'
     CoreModule,
     AuthModule,
     ChatModule.forRoot({
-      name: 'Miss Marple',
-      webSocketServerUrl: 'ws://localhost:4202/api-ws'
+      name: 'Sherlock Holmes',
+      webSocketServerUrl: 'ws://localhost:4200/api-ws'
     }),
     NgbModule.forRoot(),
     BrowserAnimationsModule,

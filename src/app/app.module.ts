@@ -24,6 +24,7 @@ import { SharedModule } from './shared/shared.module'
 // import { DataTableModule } from 'ng5-data-table'
 
 import { ChatModule } from 'bldg25-chat'
+// import { ChatModule } from './chat/chat.module' // for debug should remove this
 
 import 'rxjs/add/operator/toPromise'
 import 'rxjs/add/operator/switchMap'

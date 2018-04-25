@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http'
 
 // Must be added to application
 import { ChatLoginService } from 'bldg25-chat'
+// import { ChatLoginService } from '../chat/chat.module' // for debug should remove this
 
 export interface Credentials {
   userName?: string

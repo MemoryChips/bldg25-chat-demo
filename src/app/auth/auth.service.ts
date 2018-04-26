@@ -74,7 +74,7 @@ export class AuthService {
       .post('/api/auth/logout', null)
       .shareReplay()
       .do(_user => {
-        // this must be added to alert chat that the user is logged in
+        // this must be added to alert chat that the user is logged out
         this.chatLoginService.setLoggedInState(false)
         this.userSubject$.next(ANONYMOUS_USER)
         this.router.navigateByUrl('/home')

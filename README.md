@@ -1,9 +1,14 @@
 # Chat5
 
+## TODO: Urgent
+
+1.  Fix problems in logout when token is expired. Also, reconnect when token is expired.
+
 ## Development Notes
 
-- git clone; npm install
-- install redis server
+* git clone; npm install
+* install redis server
+
 ```bash
 npm start # ng serve
 npm run start-redisdb # start development redis server
@@ -23,8 +28,8 @@ pug *.pug -P  # cd to directory
 npm i /home/rob/Documents/Training-GreenLanternOnly/ng5-data-table-lib/ng5-data-table-0.2.1.tgz
 ```
 
-
 ### CLI commands
+
 ```bash
 # edit .angular-cli.json to change app to chat for prefix
 ng g c chat/components/BroadcastMessage -d
@@ -38,26 +43,29 @@ ng g c chat/components/RoomCard -d
 
 ## Deployment Notes
 
-1. Minification
-2. Uglification
-3. Bundling
-4. Dead code elimination
-5. AOT compilation
+1.  Minification
+2.  Uglification
+3.  Bundling
+4.  Dead code elimination
+5.  AOT compilation
 
-- navbar background color changed to blue in development
+* navbar background color changed to blue in development
+
 ```bash
 ng build --prod
 ```
 
 ### Deployment Options
-1. GitHub Pages - no backend
-2. Firebase - front and backend
-3. Heroku - custom backend
+
+1.  GitHub Pages - no backend
+2.  Firebase - front and backend
+3.  Heroku - custom backend
 
 #### Heroku
-1. Create account on Heroku
-2. Download Heroku cli
-3. Setup process.env.PORT .REDISHOST etc to configure redisdb and server.ts
+
+1.  Create account on Heroku
+2.  Download Heroku cli
+3.  Setup process.env.PORT .REDISHOST etc to configure redisdb and server.ts
 
 ```bash
 heroku --version
@@ -85,7 +93,9 @@ heroku open # shortcut to go to webpage
   "npm": "x.x.x"
 }
 ```
+
 #### Setup on Github
+
 ```bash
 # - create repo
 # - git remote add origin...
@@ -96,7 +106,9 @@ ngh --no-silent # maybe run with sudo
 ```
 
 #### Setup on Firebase
-- create app in google firebase site
+
+* create app in google firebase site
+
 ```bash
 npm i -g firebase-tools
 firebase login # opens a browser window
@@ -117,7 +129,6 @@ ng build --prod
 firebase deploy
 #
 ```
-
 
 ## Firebase
 
@@ -143,18 +154,20 @@ Currently firebase is locked to version 4.8.0 in the client. Review the need for
 
 ## Install Redis on Linux Mint
 
-1. download tar ball and unzip in somewhere in home dir from https://redis.io/
-2. make
-3. make test
-4. cd /home/rob/redis-4.0.6/src/
-6. Add redis to your path so scripts can find it
-5. npm run start-redisdb
-5. redis-cli
+1.  download tar ball and unzip in somewhere in home dir from https://redis.io/
+2.  make
+3.  make test
+4.  cd /home/rob/redis-4.0.6/src/
+5.  Add redis to your path so scripts can find it
+6.  npm run start-redisdb
+7.  redis-cli
 
 ### install redis client for node
-1. npm i redis
+
+1.  npm i redis
 
 ## Preload data
+
 Upload pre-load.json to firebase
 
 ## Angular CLI setup

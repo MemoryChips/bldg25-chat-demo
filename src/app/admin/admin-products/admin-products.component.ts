@@ -75,7 +75,7 @@ export class AdminProductsComponent
     this.router.navigate(['admin/products', item.key])
   }
 
-  productCopyClicked(item: any) {
+  productCopyClicked(item: Product) {
     console.log(`Copy requested for ${item.title}`)
     this.router.navigate(['admin/products/copy', item.key])
   }

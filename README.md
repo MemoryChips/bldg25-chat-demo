@@ -2,6 +2,7 @@
 
 ## TODO: Urgent
 
+1.  Fix navbar issue with using ngbdropdown
 1.  Scrub any's in these files:
 
 * auth-api.ts
@@ -10,9 +11,7 @@
 * get-user.ts
 * order-api.ts
 * admin-products.ts
-* product-form.ts
-* auth.guard.ts
-* login.component.ts
+
 * utils.ts
 * product.service.ts
 

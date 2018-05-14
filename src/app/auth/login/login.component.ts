@@ -73,8 +73,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   submitLogin() {
     this.authService.login(this.credentials).subscribe(
-      (_user: any) => {
-        console.log('Success! Redirecting now...', _user)
+      (_user: AppUser) => {
+        console.log('Login Success! Redirecting now...', _user)
         this.routeToRedirect()
       },
       (err: any) => {

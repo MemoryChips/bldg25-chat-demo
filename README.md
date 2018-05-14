@@ -169,7 +169,7 @@ Currently firebase is locked to version 4.8.0 in the client. Review the need for
 
 ## Install Redis on Linux Mint
 
-1.  download tar ball and unzip in somewhere in home dir from https://redis.io/
+1.  download redis tar ball and unzip in somewhere in home dir from [Redis.io](https://redis.io/)
 2.  make
 3.  make test
 4.  cd /home/rob/redis-4.0.6/src/

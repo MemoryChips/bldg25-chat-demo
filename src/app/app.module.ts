@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { CustomFormsModule } from 'ng2-validation'
 
 // import { environment } from '../environments/environment'
@@ -21,20 +21,8 @@ import { SignupComponent } from './auth/signup/signup.component'
 import { HomeComponent } from './core/home/home.component'
 import { MaterialModule } from './material/material.module'
 import { SharedModule } from './shared/shared.module'
-// import { DataTableModule } from 'ng5-data-table'
 
 import { ChatModule } from 'bldg25-chat'
-// import { ChatModule } from './chat/chat.module' // for debug should remove this
-
-import 'rxjs/add/operator/toPromise'
-import 'rxjs/add/operator/switchMap'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/shareReplay'
-import 'rxjs/add/operator/do'
-import 'rxjs/add/operator/filter'
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/first'
-import 'rxjs/add/observable/of'
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,7 +41,7 @@ import 'rxjs/add/observable/of'
       reconnectInterval: 5000,
       reconnectAttempts: 6
     }),
-    NgbModule.forRoot(),
+    // NgbModule.forRoot(),
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,

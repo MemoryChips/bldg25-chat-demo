@@ -1,9 +1,13 @@
 import { Router } from '@angular/router'
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { AuthService } from '../../auth/auth.service'
 import { Cart } from '../../shared/services/shopping-cart.service'
-import { OrderService, Order, Shipping } from '../../shared/services/order.service'
+import {
+  OrderService,
+  Order,
+  Shipping
+} from '../../shared/services/order.service'
 
 @Component({
   selector: 'app-shipping-form',
@@ -28,7 +32,9 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userSubscription = this.authService.user$.subscribe(user => this.userId = user.id)
+    this.userSubscription = this.authService.user$.subscribe(
+      user => (this.userId = user.id)
+    )
   }
 
   ngOnDestroy() {

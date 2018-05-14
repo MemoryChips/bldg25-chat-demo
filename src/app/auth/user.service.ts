@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 import { AppUser } from 'app/auth/auth.service'
 import { HttpClient } from '@angular/common/http'
 
 @Injectable()
 export class UserService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   saveUser(user: AppUser) {
     this.http.put('/api/user/' + user.id, user).subscribe(_user => {
@@ -17,5 +16,4 @@ export class UserService {
   getUser(uid: string): Observable<AppUser> {
     return this.http.get<AppUser>('/api/user/' + uid)
   }
-
 }

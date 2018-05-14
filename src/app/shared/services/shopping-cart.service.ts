@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core'
-import 'rxjs/add/operator/take'
-import { Observable } from 'rxjs/Observable'
+// import 'rxjs/add/operator/take'
+import { Observable, BehaviorSubject } from 'rxjs'
+import { filter } from 'rxjs/operators'
+
 import { Product } from 'shared/services/product.service'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { HttpClient } from '@angular/common/http'
 
 export interface Item {
@@ -18,7 +19,7 @@ interface Items {
 export class Cart {
   dateCreated = new Date().getTime()
 
-  constructor(public items: Items = {}) { }
+  constructor(public items: Items = {}) {}
 
   get productIds(): string[] {
     return Object.keys(this.items)
@@ -30,14 +31,15 @@ export class Cart {
 
   get totalItemsCount() {
     let sum = 0
-    Object.keys(this.items).forEach(key => sum += this.items[key].quantity)
+    Object.keys(this.items).forEach(key => (sum += this.items[key].quantity))
     return sum
   }
 
   get totalPrice() {
     let sum = 0
-    Object.keys(this.items).forEach(key =>
-      sum += this.items[key].quantity * this.items[key].product.price)
+    Object.keys(this.items).forEach(
+      key => (sum += this.items[key].quantity * this.items[key].product.price)
+    )
     return sum
   }
 
@@ -45,15 +47,15 @@ export class Cart {
     const item = this.items[product.key]
     return item ? item.quantity : 0
   }
-
 }
 
 @Injectable()
 export class ShoppingCartService {
-
-  private subject = new BehaviorSubject<Cart>(undefined)
-  cart$: Observable<Cart> = this.subject.asObservable().filter(cart => !!cart)
-  private cart: Cart = undefined
+  private subject = new BehaviorSubject<Cart>(new Cart())
+  cart$: Observable<Cart> = this.subject
+    .asObservable()
+    .pipe(filter((cart: Cart) => !!cart))
+  private cart: Cart = new Cart()
 
   constructor(private http: HttpClient) {
     this.getCart().then(b => {
@@ -69,7 +71,9 @@ export class ShoppingCartService {
   }
 
   async updateItemQuantity(product: Product, change: number = 1) {
-    if (!this.cart.items[product.key]) { this.cart.items[product.key] = { quantity: 0, product } }
+    if (!this.cart.items[product.key]) {
+      this.cart.items[product.key] = { quantity: 0, product }
+    }
     const item = this.cart.items[product.key]
     const quantity = (item ? item.quantity : 0) + change
     if (quantity <= 0) {
@@ -79,10 +83,12 @@ export class ShoppingCartService {
     }
     this.subject.next(this.cart)
     return this.getCartId().then(cartId => {
-      return this.http.put<boolean>('/api/shopping-carts', { cartId, cart: this.cart }).subscribe(_success => {
-        console.log('cart updated: ', _success)
-        console.log('cart is now: ', this.cart)
-      })
+      return this.http
+        .put<boolean>('/api/shopping-carts', { cartId, cart: this.cart })
+        .subscribe(_success => {
+          console.log('cart updated: ', _success)
+          console.log('cart is now: ', this.cart)
+        })
     })
   }
 
@@ -93,16 +99,17 @@ export class ShoppingCartService {
 
   async clearCart() {
     const cartId = await this.getCartId()
-    this.http.delete<{success: boolean}>(`/api/shopping-carts/${cartId}`)
-      .subscribe((resp) => {
+    this.http
+      .delete<{ success: boolean }>(`/api/shopping-carts/${cartId}`)
+      .subscribe(resp => {
         if (resp.success) {
           console.log('Cart cleared:', cartId)
           localStorage.removeItem('cartId')
           this.getCartId().then(_cartId => {
-            this.getCart().then((success) => {
+            this.getCart().then(success => {
               console.log(`New cart setup: ${success}`)
             })
-        })
+          })
         } else {
           console.log('Unable to clear cart.')
         }
@@ -111,15 +118,19 @@ export class ShoppingCartService {
 
   private async getCart(): Promise<boolean> {
     const cartId = await this.getCartId()
-    return this.http.get<Cart>(`/api/shopping-carts/${cartId}`)
-      .toPromise().then((c) => {
+    return this.http
+      .get<Cart>(`/api/shopping-carts/${cartId}`)
+      .toPromise()
+      .then(c => {
         this.setNewCart(c)
         return true
       })
   }
 
   private async createCartDb() {
-    return this.http.post<string>('/api/shopping-carts', { newCart: new Cart() }).toPromise()
+    return this.http
+      .post<string>('/api/shopping-carts', { newCart: new Cart() })
+      .toPromise()
   }
 
   private setCartId(id: string) {
@@ -133,5 +144,4 @@ export class ShoppingCartService {
     this.setCartId(cartId)
     return cartId
   }
-
 }

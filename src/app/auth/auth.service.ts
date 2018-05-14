@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 import { ActivatedRoute, Router } from '@angular/router'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { BehaviorSubject } from 'rxjs'
+import { filter, map, shareReplay, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http'
 
 // Must be added to application
@@ -39,17 +40,17 @@ export const ANONYMOUS_USER: AppUser = {
 
 @Injectable()
 export class AuthService {
-  userSubject$ = new BehaviorSubject<AppUser>(undefined)
+  userSubject$ = new BehaviorSubject<AppUser>(ANONYMOUS_USER)
   // TODO: is asObservabel reeallt needed
   // user$: Observable<AppUser> = this.userSubject$.filter(user => !!user)
   user$: Observable<AppUser> = this.userSubject$
     .asObservable()
-    .filter(user => !!user)
+    .pipe(filter((user: AppUser) => !!user))
 
   returnUrl = '/'
-  isLoggedIn$: Observable<boolean> = this.user$.map(user => !!user.id)
-  isLoggedOut$: Observable<boolean> = this.isLoggedIn$.map(
-    isLoggedIn => !isLoggedIn
+  isLoggedIn$: Observable<boolean> = this.user$.pipe(map(user => !!user.id))
+  isLoggedOut$: Observable<boolean> = this.isLoggedIn$.pipe(
+    map(isLoggedIn => !isLoggedIn)
   )
   chatConnection: WebSocket
 
@@ -70,15 +71,15 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http
-      .post('/api/auth/logout', null)
-      .shareReplay()
-      .do(_user => {
+    return this.http.post('/api/auth/logout', null).pipe(
+      shareReplay(),
+      tap(_user => {
         // this must be added to alert chat that the user is logged out
         this.chatLoginService.setLoggedInState(false)
         this.userSubject$.next(ANONYMOUS_USER)
         this.router.navigateByUrl('/home')
       })
+    )
   }
 
   getReturnUrl() {
@@ -98,27 +99,25 @@ export class AuthService {
   signUp(credentials: Credentials) {
     return this.http
       .post<AppUser>('/api/auth/signup', credentials)
-      .shareReplay()
-      .do(user => this.userSubject$.next(user))
+      .pipe(shareReplay(), tap(user => this.userSubject$.next(user)))
   }
 
   login(credentials: Credentials) {
     this.preLogin()
-    return this.http
-      .post<AppUser>('/api/auth/login', credentials)
-      .shareReplay()
-      .do(user => {
+    return this.http.post<AppUser>('/api/auth/login', credentials).pipe(
+      shareReplay(),
+      tap(user => {
         this.userSubject$.next(user)
         // this must be added to alert chat that the user is logged in
         this.chatLoginService.setLoggedInState(true)
       })
+    )
   }
 
   socialLogin(provider: string) {
     this.preLogin()
     return this.http
       .get<AppUser>('/api/auth/social-login/' + provider)
-      .shareReplay()
-      .do(user => this.userSubject$.next(user))
+      .pipe(shareReplay(), tap(user => this.userSubject$.next(user)))
   }
 }

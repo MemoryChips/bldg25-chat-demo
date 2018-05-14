@@ -1,8 +1,8 @@
 import { Component } from '@angular/core'
-import 'rxjs/add/operator/switchMap'
 import { AuthService } from '../../auth/auth.service'
 import { OrderService, Order } from '../../shared/services/order.service'
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
+import { switchMap } from 'rxjs/operators'
 
 @Component({
   selector: 'app-my-orders',
@@ -12,10 +12,9 @@ import { Observable } from 'rxjs/Observable'
 export class MyOrdersComponent {
   orders$: Observable<Order[]>
 
-  constructor(
-    authService: AuthService,
-    orderService: OrderService
-  ) {
-    this.orders$ = authService.user$.switchMap(_u => orderService.getOrdersByUser())
+  constructor(authService: AuthService, orderService: OrderService) {
+    this.orders$ = authService.user$.pipe(
+      switchMap((_u: any) => orderService.getOrdersByUser())
+    )
   }
 }

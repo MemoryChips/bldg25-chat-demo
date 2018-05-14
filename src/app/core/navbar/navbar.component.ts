@@ -4,7 +4,7 @@ import {
   ShoppingCartService,
   Cart
 } from '../../shared/services/shopping-cart.service'
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks'
 import { environment } from 'environments/environment'
 

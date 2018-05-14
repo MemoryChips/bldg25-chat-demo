@@ -13,9 +13,9 @@ export interface Credentials {
   password: string
 }
 
-interface Req extends Request {
-  user: any
-}
+// interface Req extends Request {
+//   user: any
+// }
 interface SignUpInfo {
   email: string
   password: string
@@ -23,7 +23,7 @@ interface SignUpInfo {
 }
 export function createUser(req: Request, res: Response) {
   const signUpInfo: SignUpInfo = req.body
-  let errors = []
+  let errors: string[] = []
   errors = validatePassword(signUpInfo.password)
   redisdb.userExists(signUpInfo.email).then(exists => {
     if (exists) {
@@ -40,7 +40,7 @@ export function createUser(req: Request, res: Response) {
   })
 }
 
-export function getJwtUser(req: Req, res: Response) {
+export function getJwtUser(req: any, res: any) {
   if (req.user) {
     const userId: string = req.user.sub
     redisdb
@@ -76,7 +76,7 @@ export function getUser(req: Request, res: Response) {
   }
 }
 
-export function saveUser(req: Req, res: Response) {
+export function saveUser(req: any, res: any) {
   const userId = req.params.id
   redisdb.getUserById(userId).then(dbUser => {
     const userEmail = dbUser.email

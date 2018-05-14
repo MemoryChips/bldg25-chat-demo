@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { OrderService, Order } from '../../shared/services/order.service'
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 @Component({
   selector: 'app-admin-orders',
@@ -11,8 +12,12 @@ export class AdminOrdersComponent {
   orders$: Observable<Order[]>
 
   constructor(orderService: OrderService) {
-    this.orders$ = orderService.getAllOrders().map((orderArrays: string[][]) => {
-      return [].concat.apply([], orderArrays).map(order => JSON.parse(order) as Order)
-    })
+    this.orders$ = orderService.getAllOrders().pipe(
+      map((orderArrays: string[][]) => {
+        return [].concat
+          .apply([], orderArrays)
+          .map((sOrder: string) => JSON.parse(sOrder) as Order)
+      })
+    )
   }
 }

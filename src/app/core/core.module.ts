@@ -7,23 +7,16 @@ import { HomeComponent } from './home/home.component'
 import { NavbarComponent } from './navbar/navbar.component'
 import { SharedModule } from 'shared/shared.module'
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    NgbModule,
+    // NgbModule,
     RouterModule.forChild([])
   ],
-  declarations: [
-    NavbarComponent,
-    FooterComponent,
-    HomeComponent,
-  ],
-  exports: [
-    NavbarComponent,
-    FooterComponent
-  ]
+  declarations: [NavbarComponent, FooterComponent, HomeComponent],
+  exports: [NavbarComponent, FooterComponent]
 })
-export class CoreModule { }
+export class CoreModule {}

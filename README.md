@@ -2,6 +2,21 @@
 
 ## TODO: Urgent
 
+1.  Scrub any's in these files:
+
+* auth-api.ts
+* security.ts
+* authentication.ts and authorization.ts
+* get-user.ts
+* order-api.ts
+* admin-products.ts
+* product-form.ts
+* auth.guard.ts
+* login.component.ts
+* utils.ts
+* product.service.ts
+* my-orders.component.ts
+
 1.  Fix problems in logout when token is expired. Also, reconnect when token is expired.
 
 ## Development Notes

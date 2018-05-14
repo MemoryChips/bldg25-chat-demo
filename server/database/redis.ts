@@ -45,7 +45,7 @@ class RedisDatabase {
         // console.log('user exists')
         return this._getUserById(userId)
       } else {
-        return null
+        throw new Error('User not found')
       }
     })
   }
@@ -70,7 +70,7 @@ class RedisDatabase {
   }
 
   getUserByEmail(email: string): Promise<DbUser> {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
         if (_err) return reject(_err)
         resolve(index)
@@ -79,6 +79,17 @@ class RedisDatabase {
       return this.getUserById(index)
     })
   }
+
+  // getUserByEmail(email: string): Promise<DbUser> {
+  //   return new Promise((resolve, reject) => {
+  //     this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
+  //       if (_err) return reject(_err)
+  //       resolve(index)
+  //     })
+  //   }).then((index: string) => {
+  //     return this.getUserById(index)
+  //   })
+  // }
 
   private _userExistsById(userId: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -108,7 +119,7 @@ class RedisDatabase {
     return new Promise((resolve, reject) => {
       this.redisClient.hgetall(USERS, (_err, sUsers) => {
         if (_err) reject(_err)
-        const users = {}
+        const users: any = {}
         Object.keys(sUsers).forEach(key => {
           users[key] = JSON.parse(sUsers[key])
           delete users[key].passwordDigest
@@ -169,7 +180,7 @@ class RedisDatabase {
   }
 
   deleteUser(email: string): Promise<number> {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
         if (_err) return reject(_err)
         this._deleteEmailIndex(email)
@@ -188,7 +199,7 @@ class RedisDatabase {
   private _createHashItem(
     type: string,
     value = '',
-    uid: string = null
+    uid: string = ''
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       if (!uid) uid = this.uniqueId()
@@ -230,7 +241,7 @@ class RedisDatabase {
     })
   }
 
-  createItem(type: string, item = '', uid: string = null): Promise<string> {
+  createItem(type: string, item = '', uid: string = ''): Promise<string> {
     return new Promise((resolve, reject) => {
       if (!uid) uid = this.uniqueId()
       const id = `${type}:${uid}`
@@ -298,6 +309,6 @@ class RedisDatabase {
 export const redisdb = new RedisDatabase()
 
 // required by chat server
-export function getAppUserById(id: string) {
+export function getAppUserById(id: string): Promise<DbUser> {
   return redisdb.getUserById(id)
 }

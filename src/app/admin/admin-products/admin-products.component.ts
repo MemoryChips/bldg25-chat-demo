@@ -9,10 +9,10 @@ import { Router } from '@angular/router'
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material'
 import { DomSanitizer } from '@angular/platform-browser'
 import { ProductService, Product } from '../../shared/services/product.service'
-import { Subscription } from 'rxjs/Subscription'
-/**
- * @title Table with pagination
- */
+import { Subscription } from 'rxjs'
+
+// import { Item } from '../../shared/services/shopping-cart.service'
+
 @Component({
   selector: 'app-admin-products',
   templateUrl: './admin-products.component.html',
@@ -75,12 +75,12 @@ export class AdminProductsComponent
     this.router.navigate(['admin/products', item.key])
   }
 
-  productCopyClicked(item) {
+  productCopyClicked(item: any) {
     console.log(`Copy requested for ${item.title}`)
     this.router.navigate(['admin/products/copy', item.key])
   }
 
-  productDeleteClicked(item) {
+  productDeleteClicked(item: any) {
     console.log(
       `Delete requested for ${item.title} - this method is not complete.`
     )

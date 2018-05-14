@@ -1,7 +1,15 @@
 import { decodeJwt } from '../security'
 import { Request, Response, NextFunction } from 'express'
 
-export function retrieveUserIdFromRequest(req: Request, _res: Response, next: NextFunction) {
+interface RequestWithUser extends Request {
+  user: string
+}
+
+export function retrieveUserIdFromRequest(
+  req: RequestWithUser,
+  _res: Response,
+  next: NextFunction
+) {
   const jwt = req.cookies['SESSIONID']
   if (jwt) {
     handleSessionCookie(jwt, req)
@@ -15,7 +23,7 @@ export function retrieveUserIdFromRequest(req: Request, _res: Response, next: Ne
   }
 }
 
-async function handleSessionCookie(jwt: string, req: Request) {
+async function handleSessionCookie(jwt: string, req: RequestWithUser) {
   try {
     // const payload = await decodeJwt(jwt)
     // req['user'] = payload

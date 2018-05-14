@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { FormControl, Validators } from '@angular/forms'
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs'
 import { AuthService, Credentials, AppUser } from '../auth.service'
 import { Router } from '@angular/router'
 import { Unsubscribe } from 'shared/utils'
@@ -9,10 +9,9 @@ import { MatSnackBar } from '@angular/material'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
   user: AppUser
   isLoggedIn = false
   _subscriptions: Array<Subscription> = []
@@ -29,12 +28,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     public snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit() {
     this._subscriptions = [
-      this.authService.user$.subscribe(user => this.user = user),
-      this.authService.isLoggedIn$.subscribe(isLoggedIn => { this.isLoggedIn = isLoggedIn })
+      this.authService.user$.subscribe(user => (this.user = user)),
+      this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+        this.isLoggedIn = isLoggedIn
+      })
     ]
   }
 
@@ -57,34 +58,39 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submitSocialLogin(provider: string) {
-    this.authService.socialLogin(provider).subscribe((_user) => {
-      if (_user) {
-        console.log('Success! Redirecting now...', _user)
-        this.routeToRedirect()
+    this.authService.socialLogin(provider).subscribe(
+      (_user: any) => {
+        if (_user) {
+          console.log('Success! Redirecting now...', _user)
+          this.routeToRedirect()
+        }
+      },
+      (err: any) => {
+        console.log('Error logging in.', err)
       }
-    }, err => {
-      console.log('Error logging in.', err)
-    })
+    )
   }
 
   submitLogin() {
-    this.authService.login(this.credentials).subscribe((_user) => {
-      console.log('Success! Redirecting now...', _user)
-      this.routeToRedirect()
-    }, err => {
-      console.log('Error logging in.', err)
-      this.openSnackBar(err.error, 'dismiss')
-    })
+    this.authService.login(this.credentials).subscribe(
+      (_user: any) => {
+        console.log('Success! Redirecting now...', _user)
+        this.routeToRedirect()
+      },
+      (err: any) => {
+        console.log('Error logging in.', err)
+        this.openSnackBar(err.error, 'dismiss')
+      }
+    )
   }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 2000,
+      duration: 2000
     })
   }
 
   private routeToRedirect() {
     this.router.navigate([this.authService.returnUrl])
   }
-
 }

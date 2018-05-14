@@ -29,16 +29,19 @@ export async function createSessionToken(user: User) {
 export async function decodeJwt(token: string) {
   const payload = await jwt.verify(token, RSA_PUBLIC_KEY)
   console.log('decoded JWT payload', payload)
-  return payload
+  // TODO: is there a better way?
+  return payload as any
 }
 
 export async function createCsrfToken() {
-  const token = await randomBytes(32).then(bytes => bytes.toString('hex'))
+  const token = await randomBytes(32).then((bytes: any) =>
+    bytes.toString('hex')
+  )
   return token
 }
 
 // Required by chat-server
-export function defaultVerifyClient(info, done) {
+export function defaultVerifyClient(info: any, done: any) {
   const cookies = getCookiesMap(info.req.headers.cookie)
   const jwToken = cookies.SESSIONID
   if (!jwToken) {
@@ -46,9 +49,9 @@ export function defaultVerifyClient(info, done) {
     done(false, 403, 'Forbidden')
   } else {
     decodeJwt(jwToken)
-      .then(_decodedJwt => {
-        info.req['userId'] = _decodedJwt.sub // currently only saving the userId on req
-        done(_decodedJwt.sub)
+      .then(decodedJwt => {
+        info.req['userId'] = decodedJwt.sub // currently only saving the userId on req
+        done(decodedJwt.sub)
       })
       .catch(err => {
         console.log(err)
@@ -57,13 +60,13 @@ export function defaultVerifyClient(info, done) {
   }
 }
 
-function getCookiesMap(cookiesString): { [key: string]: string } {
+function getCookiesMap(cookiesString: string): { [key: string]: string } {
   return cookiesString
     .split(';')
     .map(function(cookieString) {
       return cookieString.trim().split('=')
     })
-    .reduce(function(acc, curr) {
+    .reduce(function(acc: { [key: string]: string }, curr) {
       acc[curr[0]] = curr[1]
       return acc
     }, {})

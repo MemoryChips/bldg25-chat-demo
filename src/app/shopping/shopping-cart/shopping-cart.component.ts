@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core'
-import { ShoppingCartService, Cart } from '../../shared/services/shopping-cart.service'
-import { Subscription } from 'rxjs/Subscription'
+import {
+  ShoppingCartService,
+  Cart
+} from '../../shared/services/shopping-cart.service'
+import { Subscription } from 'rxjs'
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks'
 
 @Component({
@@ -9,18 +12,15 @@ import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks'
   styleUrls: ['./shopping-cart.component.scss']
 })
 export class ShoppingCartComponent implements OnInit, OnDestroy {
-
   cart: Cart
 
   private subscriptions: Subscription[]
 
-  constructor(
-    private shoppingCartService: ShoppingCartService
-  ) { }
+  constructor(private shoppingCartService: ShoppingCartService) {}
 
   ngOnInit() {
     this.subscriptions = [
-      this.shoppingCartService.cart$.subscribe(cart => this.cart = cart),
+      this.shoppingCartService.cart$.subscribe(cart => (this.cart = cart))
     ]
   }
 

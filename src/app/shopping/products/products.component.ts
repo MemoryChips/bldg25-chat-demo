@@ -44,7 +44,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(prods => {
           this.products = prods
-          debugger
           return this.route.queryParamMap
         })
       )

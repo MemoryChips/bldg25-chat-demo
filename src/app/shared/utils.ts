@@ -2,16 +2,26 @@ export function values<T>(obj: { [key: string]: T }): T[] {
   return Object.keys(obj).map(key => obj[key])
 }
 
-// export interface KeyedObj<T> {
-//   [key: string]: T
-// }
-// export function addKey<T>(obj: KeyedObj<T>) {
-export function addKey(obj: any) {
+interface KeyedObj {
+  [key: string]: any
+}
+export function addKey(obj: KeyedObj) {
   Object.keys(obj).forEach((key: string) => {
     obj[key]['key'] = key
   })
   return obj
 }
+
+// export interface KeyedObj<T> {
+//   [key: string]: T
+// }
+// export function addKey<T>(obj: KeyedObj<T>) {
+// export function addKey(obj: any) {
+//   Object.keys(obj).forEach((key: string) => {
+//     obj[key]['key'] = key
+//   })
+//   return obj
+// }
 
 // TODO: can this be combined with above
 // export interface IdedObj<T> {

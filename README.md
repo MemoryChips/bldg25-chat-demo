@@ -15,7 +15,6 @@
 * login.component.ts
 * utils.ts
 * product.service.ts
-* my-orders.component.ts
 
 1.  Fix problems in logout when token is expired. Also, reconnect when token is expired.
 

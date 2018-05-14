@@ -42,7 +42,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.productService
       .getList()
       .pipe(
-        switchMap(prods => {
+        switchMap((prods: Product[]) => {
           this.products = prods
           return this.route.queryParamMap
         })

@@ -44,11 +44,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(prods => {
           this.products = prods
+          debugger
           return this.route.queryParamMap
         })
       )
       .subscribe(params => {
-        this.categoryKey = params.get('category') || 'default-cat-key'
+        this.categoryKey = params.get('category') || ''
         this.applyFilter()
       })
   }

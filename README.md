@@ -2,6 +2,7 @@
 
 ## TODO: Urgent
 
+1.  Fix products not loading issue
 1.  Scrub any's in these files:
 
 * auth-api.ts

@@ -80,7 +80,7 @@ export class AdminProductsComponent
     this.router.navigate(['admin/products/copy', item.key])
   }
 
-  productDeleteClicked(item: any) {
+  productDeleteClicked(item: Product) {
     console.log(
       `Delete requested for ${item.title} - this method is not complete.`
     )

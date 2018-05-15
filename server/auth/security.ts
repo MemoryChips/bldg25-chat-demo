@@ -61,6 +61,9 @@ export function defaultVerifyClient(info: any, done: any) {
 }
 
 function getCookiesMap(cookiesString: string): { [key: string]: string } {
+  if (!cookiesString) {
+    return {}
+  }
   return cookiesString
     .split(';')
     .map(function(cookieString) {

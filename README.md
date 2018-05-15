@@ -2,20 +2,11 @@
 
 ## TODO: Urgent
 
-1.  Fix navbar issue with using ngbdropdown
-1.  Scrub any's in these files:
-
-* auth-api.ts
-* security.ts
-* authentication.ts and authorization.ts
-* get-user.ts
-* order-api.ts
-* admin-products.ts
-
-* utils.ts
-* product.service.ts
-
 1.  Fix problems in logout when token is expired. Also, reconnect when token is expired.
+
+## TODO: Normal
+
+1.  Scrub any's in these files: auth-api.ts, security.ts, authentication.ts and authorization.ts,get-user.ts, order-api.ts
 
 ## Development Notes
 

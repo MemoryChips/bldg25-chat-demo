@@ -17,7 +17,8 @@ import {
   MatGridListModule,
   MatFormFieldModule,
   MatButtonToggleModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatMenuModule
 } from '@angular/material'
 
 const matModules = [
@@ -38,6 +39,7 @@ const matModules = [
   MatFormFieldModule,
   MatButtonToggleModule,
   MatTooltipModule,
+  MatMenuModule,
   BrowserAnimationsModule
 ]
 

@@ -22,28 +22,29 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="nav-item dropdown" ngbDropdown *ngIf="isLoggedIn; else anonymousUser">
-          <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ appUser?.userName || "logging in ..." }}
+          <a class="nav-link dropdown-toggle" [matMenuTriggerFor]="menu">
+            <span>{{ appUser?.userName || "logging in ..." }}</span>
           </a>
-          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
-            <a class="dropdown-item" routerLink="/my/orders">
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item routerLink="/my/orders">
               <i class="fa fa-suitcase" aria-hidden="true"></i>
               My Orders</a>
             <ng-container *ngIf="isAdmin">
-              <a class="dropdown-item" routerLink="/admin/orders">
+              <a mat-menu-item routerLink="/admin/orders">
                 <i class="fa fa-tasks" aria-hidden="true"></i>
                 Manage Orders</a>
-              <a class="dropdown-item" routerLink="/admin/products">
+              <a mat-menu-item routerLink="/admin/products">
                 <i class="fa fa-product-hunt" aria-hidden="true"></i>
                 Manage Products</a>
-              <a class="dropdown-item" routerLink="/admin/broadcastMessage">
+              <a mat-menu-item routerLink="/admin/broadcastMessage">
                 <i class="fa fa-podcast" aria-hidden="true"></i>
                 Send Broadcast Message</a>
             </ng-container>
-            <a class="dropdown-item" (click)="logout()">
+            <a mat-menu-item (click)="logout()">
               <i class="fa fa-sign-out" aria-hidden="true"></i>
-              Log Out</a>
-          </div>
+              Log Out
+            </a>
+          </mat-menu>
         </li>
         <li class="nav-item active">
           <a class="nav-link" routerLink="/products">

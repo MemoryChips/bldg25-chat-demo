@@ -8,12 +8,13 @@ import { NavbarComponent } from './navbar/navbar.component'
 import { SharedModule } from 'shared/shared.module'
 
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-
+import { MaterialModule } from '../material/material.module'
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     // NgbModule,
+    MaterialModule,
     RouterModule.forChild([])
   ],
   declarations: [NavbarComponent, FooterComponent, HomeComponent],

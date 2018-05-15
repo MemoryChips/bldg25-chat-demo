@@ -32,7 +32,7 @@ export const ANONYMOUS_USER: AppUser = {
   email: 'guest',
   id: '', // keep this falsey
   roles: [],
-  userName: 'anonymous',
+  userName: 'Guest',
   loginTime: 0,
   active: false,
   isAdmin: false

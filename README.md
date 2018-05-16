@@ -3,6 +3,7 @@
 ## TODO: Urgent
 
 1.  Fix problems in logout when token is expired. Also, reconnect when token is expired.
+2.  Signup does not complete login to chat - app code issue?
 
 ## TODO: Normal
 
@@ -44,6 +45,14 @@ ng g c chat/components/Activator -d
 ng g c chat/components/Tabs -d
 ng g c chat/components/RoomCard -d
 ```
+
+### chat server diff commands
+
+zdiff chat-server/database/chat-redis.ts ../bldg25-chat-dev/chat-server/database/chat-redis.ts
+zdiff chat-server/web-socket-server.ts ../bldg25-chat-dev/chat-server/web-socket-server.ts
+zdiff chat-server/chat-server.ts ../bldg25-chat-dev/chat-server/chat-server.ts
+
+zdiff chat-server/server-config.ts ../bldg25-chat-dev/chat-server/server-config.ts
 
 ## Deployment Notes
 

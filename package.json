@@ -35,7 +35,7 @@
     "argon2": "^0.16.1",
     "argon2-ffi": "^1.1.0",
     "autoprefixer": "^7.2.6",
-    "bldg25-chat": "file:../bldg25-chat-dev/bldg25-chat-0.0.1.tgz",
+    "bldg25-chat": "file:../bldg25-chat-dev/bldg25-chat-0.0.3.tgz",
     "body-parser": "^1.17.2",
     "command-line-args": "^4.0.6",
     "cookie-parser": "^1.4.3",

@@ -6,7 +6,7 @@ interface RequestWithUser extends Request {
 }
 
 export function retrieveUserIdFromRequest(
-  req: RequestWithUser,
+  req: any,
   _res: Response,
   next: NextFunction
 ) {

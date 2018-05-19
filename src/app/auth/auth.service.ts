@@ -99,7 +99,11 @@ export class AuthService {
   signUp(credentials: Credentials) {
     return this.http
       .post<AppUser>('/api/auth/signup', credentials)
-      .pipe(shareReplay(), tap(user => this.userSubject$.next(user)))
+      .pipe(shareReplay(), tap(user => {
+        this.userSubject$.next(user)
+        // this must be added to alert chat that the user is logged in
+        this.chatLoginService.setLoggedInState(true)
+      }))
   }
 
   login(credentials: Credentials) {

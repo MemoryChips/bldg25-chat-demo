@@ -21,7 +21,8 @@ export async function createSessionToken(user: User) {
     {
       algorithm: 'RS256',
       expiresIn: SESSION_DURATION,
-      subject: user.id.toString()
+      subject: JSON.stringify(user)
+      // subject: user.id.toString()
     }
   )
 }
@@ -50,7 +51,8 @@ export function defaultVerifyClient(info: any, done: any) {
   } else {
     decodeJwt(jwToken)
       .then(decodedJwt => {
-        info.req['userId'] = decodedJwt.sub // currently only saving the userId on req
+        info.req['user'] = JSON.parse(decodedJwt.sub) // TODO: verify this is correct
+        // info.req['userId'] = decodedJwt.sub // currently only saving the userId on req
         done(decodedJwt.sub)
       })
       .catch(err => {

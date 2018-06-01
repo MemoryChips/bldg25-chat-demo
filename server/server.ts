@@ -12,6 +12,10 @@ const bodyParser = require('body-parser')
 // import cookieParser = require('cookie-parser')
 import * as cookieParser from 'cookie-parser'
 
+import { ChatWebSocketServer, IChatConfig } from 'bldg25-chat-server'
+
+import { defaultVerifyClient } from './auth/security' // *** verifies client credentials
+
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
 
@@ -51,4 +55,21 @@ if (process.env.PROD) {
   })
 }
 
+// configuration of chat server and redisdb server used by the chat server
+export const config: IChatConfig = {
+  redisUrl: 'localhost', // *** set this to the url of the redis server
+  chatServerHost: 'localhost', // *** set this to the url of the chat server
+  redisPort: 6379, // *** set this to the port of the redis server
+  chatServerPort: 9000, // *** set this to the port of the chat server
+  verifyClient: defaultVerifyClient,
+  // verifyClient,
+  redisDbAuthCode:
+    process.env.REDIS_DB_AUTHCODE ||
+    'bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ'
+}
+// AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
+// *** Chat server must be added to the express server as follows:
+const chatServer = new ChatWebSocketServer(server, config)
+const info = chatServer.webSocketServer.options
+console.log(info)
 server.listen(port, () => console.log(serverInfo + server.address().port))

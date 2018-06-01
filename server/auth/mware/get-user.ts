@@ -27,7 +27,12 @@ async function handleSessionCookie(jwt: string, req: RequestWithUser) {
   try {
     // const payload = await decodeJwt(jwt)
     // req['user'] = payload
-    if (typeof jwt === 'string') req['user'] = await decodeJwt(jwt)
+    // if (typeof jwt === 'string') req['user'] = await decodeJwt(jwt)
+    if (typeof jwt === 'string') {
+      const jwtDecoded: any = await decodeJwt(jwt)
+      req['user'] = JSON.parse(jwtDecoded.sub)
+      console.log(req['user'])
+    }
   } catch (err) {
     console.log('Error: Could not extract user from request:', err.message)
   }

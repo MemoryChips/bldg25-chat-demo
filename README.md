@@ -2,8 +2,9 @@
 
 ## TODO: Urgent
 
-1.  Fix problems in logout when token is expired. Also, reconnect when token is expired.
-2.  Signup does not complete login to chat - app code issue?
+1.  Fix problems in logout when token is expired - This may be fixed
+2.  Signup does not complete login to chat - app code issue? - This may be fixed
+3.  After signup, the user list is not updated. Chat opens but does not have updated user list.
 
 ## TODO: Normal
 

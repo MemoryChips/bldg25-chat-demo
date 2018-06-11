@@ -1,5 +1,3 @@
-// import { addWebSocketServer } from './web-socket-server'
-// import { ChatWebSocketServer } from './web-socket-server'
 import * as express from 'express'
 import * as http from 'http'
 import { retrieveUserIdFromRequest } from './auth/mware/get-user'
@@ -9,7 +7,6 @@ import { productRouter } from './product/product-routes'
 import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 const bodyParser = require('body-parser')
-// import cookieParser = require('cookie-parser')
 import * as cookieParser from 'cookie-parser'
 
 import { ChatWebSocketServer, IChatConfig } from 'bldg25-chat-server'
@@ -20,12 +17,6 @@ import { defaultVerifyClient } from './auth/security' // *** verifies client cre
 const app: express.Application = express()
 
 const server = http.createServer(app)
-const serverInfo = 'HTTP Server running at http://localhost:'
-
-// addWebSocketServer(server)
-// const chatServer = new ChatWebSocketServer(server)
-// const info = chatServer.options
-// console.log(info)
 
 app.use(cookieParser())
 app.use(retrieveUserIdFromRequest)
@@ -37,7 +28,6 @@ if (process.env.PROD) {
 }
 
 // for product images
-// http://localhost:9000/api/image-files/avocado.jpg
 app.use('/image-files', express.static(__dirname + '/images'))
 
 // REST API
@@ -72,4 +62,6 @@ export const config: IChatConfig = {
 const chatServer = new ChatWebSocketServer(server, config)
 const info = chatServer.webSocketServer.options
 console.log(info)
+
+const serverInfo = 'HTTP Server running at http://localhost:'
 server.listen(port, () => console.log(serverInfo + server.address().port))

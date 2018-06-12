@@ -3,8 +3,9 @@
 ## TODO: Urgent
 
 1.  Fix problems in logout when token is expired - This may be fixed
-2.  Signup does not complete login to chat - app code issue? - This may be fixed
-3.  After signup, the user list is not updated. Chat opens but does not have updated user list.
+2.  Room List sometimes does not have the other user that is in the room
+3.  Signup does not complete login to chat - app code issue? - This may be fixed
+4.  After signup, the user list is not updated. Chat opens but does not have updated user list.
 
 ## TODO: Normal
 
@@ -12,8 +13,8 @@
 
 ## Development Notes
 
-* git clone; npm install
-* install redis server
+- git clone; npm install
+- install redis server
 
 ```bash
 npm start # ng serve
@@ -63,7 +64,7 @@ zdiff chat-server/server-config.ts ../bldg25-chat-dev/chat-server/server-config.
 4.  Dead code elimination
 5.  AOT compilation
 
-* navbar background color changed to blue in development
+- navbar background color changed to blue in development
 
 ```bash
 ng build --prod
@@ -121,7 +122,7 @@ ngh --no-silent # maybe run with sudo
 
 #### Setup on Firebase
 
-* create app in google firebase site
+- create app in google firebase site
 
 ```bash
 npm i -g firebase-tools

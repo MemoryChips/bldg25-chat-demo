@@ -32,7 +32,9 @@ pug *.pug -P  # cd to directory
 ```
 
 ```bash
-npm i /home/rob/Documents/Training-GreenLanternOnly/ng5-data-table-lib/ng5-data-table-0.2.1.tgz
+VERSION=1.0.5
+npm i ../bldg25-chat-dev/bldg25-chat-$VERSION.tgz
+npm i ../bldg25-chat-dev/bldg25-chat-server-$VERSION.tgz
 ```
 
 ### CLI commands

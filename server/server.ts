@@ -50,6 +50,7 @@ export const config: IChatConfig = {
   redisUrl: 'localhost', // *** set this to the url of the redis server
   chatServerHost: 'localhost', // *** set this to the url of the chat server
   redisPort: 6379, // *** set this to the port of the redis server
+  redisDataBase: 1, // *** set this to the redis database number to be used by the chat server
   chatServerPort: 9000, // *** set this to the port of the chat server
   verifyClient: defaultVerifyClient,
   // verifyClient,

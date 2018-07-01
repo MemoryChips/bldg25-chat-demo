@@ -14,7 +14,6 @@ import { MatSnackBar } from '@angular/material'
 export class LoginComponent implements OnInit, OnDestroy {
   user: AppUser
   isLoggedIn = false
-  _subscriptions: Array<Subscription> = []
   credentials: Credentials = {
     email: 'admin@gmail.com',
     password: 'Password10'
@@ -23,6 +22,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   passwordInputType = 'password'
   hide = true
   email = new FormControl('', [Validators.required, Validators.email])
+  password = new FormControl('', [Validators.required])
+
+  _subscriptions: Array<Subscription> = []
 
   constructor(
     private authService: AuthService,
@@ -37,6 +39,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.isLoggedIn = isLoggedIn
       })
     ]
+    this.email.setValue(this.credentials.email)
+    this.password.setValue(this.credentials.password)
   }
 
   @Unsubscribe()

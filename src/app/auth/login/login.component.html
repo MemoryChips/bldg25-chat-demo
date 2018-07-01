@@ -20,11 +20,11 @@
           <div class="example-container">
 
             <mat-form-field>
-              <input name="email" matInput placeholder="Enter your email" [(ngModel)]="credentials.email" [formControl]="email" required>
+              <input name="email" matInput placeholder="Enter your email" [formControl]="email" required>
               <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input name="password" matInput placeholder="Enter your password" [(ngModel)]="credentials.password" [type]="hide ? 'password' : 'text'">
+              <input name="password" matInput placeholder="Enter your password" [formControl]="password" [type]="hide ? 'password' : 'text'">
               <mat-icon class="nav-item" matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}
               </mat-icon>
             </mat-form-field>

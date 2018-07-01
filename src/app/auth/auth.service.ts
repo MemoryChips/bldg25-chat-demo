@@ -65,9 +65,14 @@ export class AuthService {
   ) {
     console.log('Auth service created.')
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
-    this.http.get<AppUser>('/api/auth/user-me').subscribe(user => {
-      this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
-    })
+    this.http.get<AppUser>('/api/auth/user-me').subscribe(
+      user => {
+        this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
+      },
+      err => {
+        console.log(`User failed to logout: ${err.message}`)
+      }
+    )
   }
 
   logout(): Observable<any> {
@@ -97,13 +102,14 @@ export class AuthService {
   }
 
   signUp(credentials: Credentials) {
-    return this.http
-      .post<AppUser>('/api/auth/signup', credentials)
-      .pipe(shareReplay(), tap(user => {
+    return this.http.post<AppUser>('/api/auth/signup', credentials).pipe(
+      shareReplay(),
+      tap(user => {
         this.userSubject$.next(user)
         // this must be added to alert chat that the user is logged in
         this.chatLoginService.setLoggedInState(true)
-      }))
+      })
+    )
   }
 
   login(credentials: Credentials) {
@@ -120,8 +126,9 @@ export class AuthService {
 
   socialLogin(provider: string) {
     this.preLogin()
-    return this.http
-      .get<AppUser>('/api/auth/social-login/' + provider)
-      .pipe(shareReplay(), tap(user => this.userSubject$.next(user)))
+    return this.http.get<AppUser>('/api/auth/social-login/' + provider).pipe(
+      shareReplay(),
+      tap(user => this.userSubject$.next(user))
+    )
   }
 }

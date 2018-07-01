@@ -2,10 +2,9 @@
 
 ## TODO: Urgent
 
+1.  Fix problem with logged in user hitting refresh - user-me is rejected
 1.  Fix problems in logout when token is expired - This may be fixed
-2.  Room List sometimes does not have the other user that is in the room
-3.  Signup does not complete login to chat - app code issue? - This may be fixed
-4.  After signup, the user list is not updated. Chat opens but does not have updated user list.
+1.  After signup, the user list is not updated. Chat opens but does not have updated user list. - this may be fixed
 
 ## TODO: Normal
 

@@ -67,7 +67,11 @@ export class AuthService {
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
     this.http.get<AppUser>('/api/auth/user-me').subscribe(
       user => {
-        this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
+        if (!!user.id) {
+          this._completLogin(user)
+        } else {
+          this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
+        }
       },
       err => {
         console.log(`User failed to logout: ${err.message}`)
@@ -117,11 +121,15 @@ export class AuthService {
     return this.http.post<AppUser>('/api/auth/login', credentials).pipe(
       shareReplay(),
       tap(user => {
-        this.userSubject$.next(user)
-        // this must be added to alert chat that the user is logged in
-        this.chatLoginService.setLoggedInState(true)
+        this._completLogin(user)
       })
     )
+  }
+
+  private _completLogin(user: AppUser) {
+    this.userSubject$.next(user)
+    // this must be added to alert chat that the user is logged in
+    this.chatLoginService.setLoggedInState(true)
   }
 
   socialLogin(provider: string) {

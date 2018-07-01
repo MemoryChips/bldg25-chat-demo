@@ -41,8 +41,8 @@ export function createUser(req: Request, res: Response) {
 }
 
 export function getJwtUser(req: any, res: any) {
-  if (req.user) {
-    const userId: string = req.user.sub
+  if (!!req.user) {
+    const userId: string = req.user.id
     redisdb
       .getUserById(userId)
       .then(user => {

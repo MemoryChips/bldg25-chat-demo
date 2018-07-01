@@ -2,7 +2,6 @@
 
 ## TODO: Urgent
 
-1.  Fix problem with logged in user hitting refresh - user-me is rejected
 1.  Fix problems in logout when token is expired - This may be fixed
 1.  After signup, the user list is not updated. Chat opens but does not have updated user list. - this may be fixed
 

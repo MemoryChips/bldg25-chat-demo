@@ -38,6 +38,11 @@ export const CATEGORIES: KeyedObj<DbCategory> = {
     // key: 'web-dev',
     lead: 'Kevin Tamlyn',
     title: 'Web Development'
+  },
+  veggies: {
+    // key: 'web-dev',
+    lead: 'Kevin Tamlyn',
+    title: 'Veggies'
   }
 }
 
@@ -80,7 +85,7 @@ export const PRODUCTS: KeyedObj<DbProduct> = {
   },
   '-L0VdmFZvHL3o0X7Iavc': {
     category: 'manpower',
-    imageUrl: 'http://localhost:9000/image-files/mc.jpg',
+    imageUrl: 'http://localhost:9000/image-files/mc1.jpg',
     price: 10,
     title: 'Web App Testing II'
   },
@@ -91,7 +96,7 @@ export const PRODUCTS: KeyedObj<DbProduct> = {
     title: 'Wordpress Sites'
   },
   '-KrqgOLs07ZkbapP4EGi': {
-    category: 'database',
+    category: 'veggies',
     imageUrl: 'http://localhost:9000/image-files/spinach.jpg',
     price: 2.5,
     title: 'Spinach'
@@ -104,7 +109,7 @@ export const PRODUCTS: KeyedObj<DbProduct> = {
     title: 'Freshly Baked Bread'
   },
   '-KrvrXbV3rqnFEru_ojw': {
-    category: 'web-dev',
+    category: 'veggies',
     imageUrl: 'http://localhost:9000/image-files/avocado.jpg',
     price: 1.75,
     title: 'Avacado'

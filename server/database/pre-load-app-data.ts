@@ -86,8 +86,7 @@ export const PRODUCTS: KeyedObj<DbProduct> = {
   },
   '-L0ZiFWvItP4YFXtYEH_': {
     category: 'web-dev',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/0/0c/Wordpress_logo_8.png',
+    imageUrl: 'http://localhost:9000/image-files/pretty-lady.jpg',
     price: 22,
     title: 'Wordpress Sites'
   },

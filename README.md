@@ -2,12 +2,10 @@
 
 ## TODO: Urgent
 
-1.  Fix problems in logout when token is expired - This may be fixed
-1.  After signup, the user list is not updated. Chat opens but does not have updated user list. - this may be fixed
-
 ## TODO: Normal
 
-1.  Scrub any's in these files: auth-api.ts, security.ts, authentication.ts and authorization.ts,get-user.ts, order-api.ts
+1.  Add gmail oath 2.0 signup
+1.  Final product card if it is alone stretches accross the screen
 
 ## Development Notes
 

@@ -4,7 +4,7 @@ import { ShoppingModule } from './shopping/shopping.module'
 import { AdminModule } from './admin/admin.module'
 import { NgModule } from '@angular/core'
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
@@ -24,6 +24,8 @@ import { SharedModule } from './shared/shared.module'
 
 import { ChatModule } from 'bldg25-chat'
 
+const webSocketServerUrl = 'ws://localhost:4200/api-ws'
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -36,7 +38,7 @@ import { ChatModule } from 'bldg25-chat'
     AuthModule,
     ChatModule.forRoot({
       name: 'Sherlock Holmes',
-      webSocketServerUrl: 'ws://localhost:4200/api-ws',
+      webSocketServerUrl,
       chatOpenAtLogin: false,
       reconnectInterval: 5000,
       reconnectAttempts: 6
@@ -50,6 +52,7 @@ import { ChatModule } from 'bldg25-chat'
       headerName: 'x-xsrf-token'
     }),
     FormsModule,
+    ReactiveFormsModule,
     CustomFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },

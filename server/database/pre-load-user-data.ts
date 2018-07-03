@@ -40,42 +40,49 @@ const users: DbUser[] = [
     email: 'Heath44@hotmail.com',
     roles: ['STUDENT'],
     userName: 'Aaron Moore',
+    avatarUrl: '',
     passwordDigest
   },
   {
     email: 'Gideon9@yahoo.com',
     roles: ['STUDENT'],
     userName: 'Yvonne Conroy Mrs.',
+    avatarUrl: '',
     passwordDigest
   },
   {
     email: 'Laney_Huels@hotmail.com',
     roles: ['STUDENT'],
     userName: 'Laron Padberg',
+    avatarUrl: '',
     passwordDigest
   },
   {
     email: 'Aletha.Labadie@hotmail.com',
     roles: ['STUDENT'],
     userName: 'Dr. Maryam Spinka',
+    avatarUrl: '',
     passwordDigest
   },
   {
     email: 'Rogelio24@hotmail.com',
     roles: ['STUDENT'],
     userName: 'Kiley Baumbach',
+    avatarUrl: '',
     passwordDigest
   },
   {
     email: 'Yazmin.Heidenreich97@gmail.com',
     roles: ['STUDENT'],
     userName: 'Hollis MacGyver',
+    avatarUrl: '',
     passwordDigest
   },
   {
     email: 'Deon_Heaney@gmail.com',
     roles: ['STUDENT'],
     userName: 'Axel McLaughlin',
+    avatarUrl: '',
     passwordDigest
   }
 ]

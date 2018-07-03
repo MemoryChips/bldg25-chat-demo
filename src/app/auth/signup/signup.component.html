@@ -2,12 +2,9 @@
   <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
-    <!-- <div class="column medium-6 medium-centered large-4 large-centered"> -->
-
-      <form #signUpForm="ngForm"
-        class="form-horizontal"
-        (ngSubmit)="submitSignUp(signUpForm)"
-        novalidate="">
+      <!-- <div class="column medium-6 medium-centered large-4 large-centered"> -->
+      <mat-error *ngIf="form.errors">Invalid signup</mat-error>
+      <form [formGroup]="form" class="form-horizontal" (ngSubmit)="submitSignUp()" novalidate="">
         <fieldset>
           <div id="legend">
             <legend class="text-center">Email Sign Up</legend>
@@ -16,40 +13,31 @@
           <div class="example-container">
 
             <mat-form-field>
-              <input
-                name="userName"
-                matInput
-                placeholder="Enter your username"
-                [(ngModel)]="credentials.userName">
+              <input formControlName="userName" matInput placeholder="Enter your username" id="userName" type="text">
+              <mat-hint *ngIf="userName.pending">Checking for uniqueness...</mat-hint>
+              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.shouldBeUniqueUserName">{{ "User Name is already in use" }}</mat-error>
+              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.cannotContainSpace">{{ "User Name must not contains spaces" }}</mat-error>
+              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.required">{{ "User Name is required" }}</mat-error>
+              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.minlength">
+                User Name must be a minimum of {{ userName.errors.minlength.requiredLength }} characters
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input
-                name="email"
-                matInput
-                placeholder="Enter your email"
-                [(ngModel)]="credentials.email"
-                [formControl]="email" required>
-              <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+              <input formControlName="email" matInput placeholder="Enter your email" id="email" type="text">
+              <mat-error *ngIf="email.errors && email.touched && email.invalid">{{ getErrorMessage(email) }}</mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input
-                name="password"
-                matInput
-                placeholder="Enter your password"
-                [(ngModel)]="credentials.password"
-                [type]="hide ? 'password' : 'text'">
-              <mat-icon
-                class="nav-item"
-                matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}
+              <input formControlName="password" matInput placeholder="Enter your password" id="password" [type]="hide ? 'password' : 'text'">
+              <mat-icon class="nav-item" matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}
               </mat-icon>
+              <mat-error *ngIf="password.errors && password.touched && password.errors.cannotContainSpace">{{ "Password must not contains spaces" }}</mat-error>
+              <mat-error *ngIf="password.errors && password.touched && password.errors.minlength">
+                User Name must be a minimum of {{ password.errors.minlength.requiredLength }} characters
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input
-                name="confirm"
-                matInput
-                placeholder="Confirm your password"
-                [(ngModel)]="confirmPassword"
-                [type]="hide ? 'password' : 'text'">
+              <input formControlName="confirmPassword" matInput placeholder="Confirm your password" id="confirmPassword" [type]="hide ? 'password' : 'text'">
+              <mat-error *ngIf="confirmPassword.errors && confirmPassword.touched && confirmPassword.errors.matchPassword">{{ "Passwords must match" }}</mat-error>
             </mat-form-field>
 
           </div>

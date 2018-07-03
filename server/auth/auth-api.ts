@@ -5,6 +5,8 @@ import * as argon2 from 'argon2'
 import { validatePassword } from './password-validation'
 import { createCsrfToken, createSessionToken } from './security'
 
+import { serverConfig } from '../server-config'
+
 // TODO: align with front end
 // import { Credentials } from 'app/auth/auth.service'
 export interface Credentials {
@@ -20,6 +22,7 @@ interface SignUpInfo {
   email: string
   password: string
   userName: string
+  avatarUrl?: string
 }
 export function createUser(req: Request, res: Response) {
   const signUpInfo: SignUpInfo = req.body
@@ -104,7 +107,9 @@ async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
     email: signUpInfo.email,
     userName: signUpInfo.userName,
     passwordDigest,
-    roles: ['STUDENT']
+    roles: ['STUDENT'],
+    avatarUrl: signUpInfo.avatarUrl || serverConfig.defaultAvatarUrl
+    // avatarUrl: ''
   }
   const userCreated = await redisdb.createUser(dbUser)
   if (userCreated) {

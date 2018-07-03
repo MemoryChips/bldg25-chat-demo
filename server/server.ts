@@ -9,9 +9,8 @@ import { orderRouter } from './order/order-routes'
 const bodyParser = require('body-parser')
 import * as cookieParser from 'cookie-parser'
 
-import { ChatWebSocketServer, IChatConfig } from 'bldg25-chat-server'
-
-import { defaultVerifyClient } from './auth/security' // *** verifies client credentials
+import { ChatWebSocketServer } from 'bldg25-chat-server'
+import { chatConfig, serverConfig } from './server-config'
 
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
@@ -25,10 +24,11 @@ app.use(bodyParser.json())
 // for serving in production
 if (process.env.PROD) {
   app.use(express.static(__dirname + '/dist'))
+  app.use('/image-files', express.static(__dirname + '/dist' + '/images'))
+} else {
+  // for product images
+  app.use('/image-files', express.static(__dirname + '/images'))
 }
-
-// for product images
-app.use('/image-files', express.static(__dirname + '/images'))
 
 // REST API
 app.use('/api/product', productRouter)
@@ -37,7 +37,6 @@ app.use('/api/auth', authRouter)
 app.use('/api/order', orderRouter)
 
 // heroku deployment
-const port = process.env.PORT || 9000
 if (process.env.PROD) {
   // gives response when user refreshes some random url in angular
   app.all('*', (_req, res) => {
@@ -45,24 +44,11 @@ if (process.env.PROD) {
   })
 }
 
-// configuration of chat server and redisdb server used by the chat server
-export const config: IChatConfig = {
-  redisUrl: 'localhost', // *** set this to the url of the redis server
-  chatServerHost: 'localhost', // *** set this to the url of the chat server
-  redisPort: 6379, // *** set this to the port of the redis server
-  redisDataBase: 1, // *** set this to the redis database number to be used by the chat server
-  chatServerPort: 9000, // *** set this to the port of the chat server
-  verifyClient: defaultVerifyClient,
-  // verifyClient,
-  redisDbAuthCode:
-    process.env.REDIS_DB_AUTHCODE ||
-    'bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ'
-}
 // AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
 // *** Chat server must be added to the express server as follows:
-const chatServer = new ChatWebSocketServer(server, config)
-const info = chatServer.webSocketServer.options
-console.log(info)
+// tslint:disable-next-line:no-unused-expression
+new ChatWebSocketServer(server, chatConfig)
 
-const serverInfo = 'HTTP Server running at http://localhost:'
-server.listen(port, () => console.log(serverInfo + server.address().port))
+server.listen(serverConfig.port, () =>
+  console.log(`HTTP Api Server running on port: ${serverConfig.port}`)
+)

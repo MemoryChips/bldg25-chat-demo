@@ -1,6 +1,6 @@
 import * as redis from 'redis'
 import { DbUser } from '../auth/models/user'
-
+import { serverConfig } from '../server-config'
 export const USERS = 'users'
 export const USER_EMAIL = 'user:email'
 
@@ -10,7 +10,10 @@ class RedisDatabase {
   constructor() {
     console.log('Instance of redis database created.')
     // AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
-    this.redisClient = redis.createClient({ host: 'localhost', port: 6379 })
+    this.redisClient = redis.createClient({
+      host: serverConfig.host,
+      port: 6379
+    })
     const authorized = this.redisClient.auth(
       'bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ'
     )

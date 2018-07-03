@@ -14,10 +14,10 @@ import { MatSnackBar } from '@angular/material'
 export class LoginComponent implements OnInit, OnDestroy {
   user: AppUser
   isLoggedIn = false
-  credentials: Credentials = {
-    email: 'admin@gmail.com',
-    password: 'Password10'
-  }
+  // credentials: Credentials = {
+  //   email: 'admin@gmail.com',
+  //   password: 'Password10'
+  // }
   showPassword = false
   passwordInputType = 'password'
   hide = true
@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.isLoggedIn = isLoggedIn
       })
     ]
-    this.email.setValue(this.credentials.email)
-    this.password.setValue(this.credentials.password)
+    this.email.setValue('admin@gmail.com')
+    this.password.setValue('Password10')
   }
 
   @Unsubscribe()
@@ -76,7 +76,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submitLogin() {
-    this.authService.login(this.credentials).subscribe(
+    const credentials: Credentials = {
+      email: this.email.value,
+      password: this.password.value
+    }
+    this.authService.login(credentials).subscribe(
       (_user: AppUser) => {
         console.log('Login Success! Redirecting now...', _user)
         this.routeToRedirect()

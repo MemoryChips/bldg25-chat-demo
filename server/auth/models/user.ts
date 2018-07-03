@@ -4,7 +4,7 @@ export interface DbUser {
   userName: string
   passwordDigest: string
   roles: string[]
-  avatarUrl?: string
+  avatarUrl: string
 }
 
 export interface User extends DbUser {

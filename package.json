@@ -51,8 +51,8 @@
     "ng2-validation": "^4.2.0",
     "password-validator": "^4.0.0",
     "redis": "^2.8.0",
-    "rxjs": "^6.1.0",
-    "ws": "^5.2.0",
+    "rxjs": "^6.2.1",
+    "ws": "^5.2.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
@@ -67,7 +67,7 @@
     "@types/jsonwebtoken": "^7.2.7",
     "@types/node": "^6.0.101",
     "@types/redis": "^2.8.5",
-    "@types/ws": "^3.2.1",
+    "@types/ws": "^5.1.2",
     "codelyzer": "^4.1.0",
     "concurrently": "^3.5.1",
     "jasmine-core": "~2.6.2",
@@ -80,7 +80,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "nodemon": "^1.15.1",
     "protractor": "~5.1.2",
-    "ts-node": "~3.2.0",
+    "ts-node": "^7.0.0",
     "tslint": "~5.7.0",
     "typescript": "^2.7.2"
   }

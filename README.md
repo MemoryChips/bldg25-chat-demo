@@ -1,11 +1,8 @@
 # Chat5
 
-This should be removed
-
 ```bash
 REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 # AUTH this_should_be_a_secret_authcode
-# AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
 ```
 
 ## TODO: Urgent
@@ -14,6 +11,7 @@ REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 
 1.  Add gmail oath 2.0 signup
 1.  Final product card if it is alone stretches accross the screen
+1.  Create instructions on how to use this demo app
 
 ## Development Notes
 

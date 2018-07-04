@@ -11,7 +11,7 @@
     <div class="col-md-4">
       <!-- <div class="column medium-6 medium-centered large-4 large-centered"> -->
 
-      <form #loginForm="ngForm" class="form-horizontal" (ngSubmit)="submitLogin(loginForm)" novalidate="">
+      <form [formGroup]="form" class="form-horizontal" (ngSubmit)="submitLogin()" novalidate="">
         <fieldset>
           <div id="legend">
             <legend class="text-center">Email Login</legend>
@@ -20,13 +20,17 @@
           <div class="example-container">
 
             <mat-form-field>
-              <input name="email" matInput placeholder="Enter your email" [formControl]="email" required>
-              <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+              <input formControlName="email" matInput placeholder="Enter your email" id="email" type="text">
+              <mat-error *ngIf="email.errors && email.touched && email.invalid">Email is invalid</mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input name="password" matInput placeholder="Enter your password" [formControl]="password" [type]="hide ? 'password' : 'text'">
+              <input formControlName="password" matInput placeholder="Enter your password" id="password" [type]="hide ? 'password' : 'text'">
               <mat-icon class="nav-item" matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}
               </mat-icon>
+              <mat-error *ngIf="password.errors && password.touched && password.errors.cannotContainSpace">{{ "Password must not contains spaces" }}</mat-error>
+              <mat-error *ngIf="password.errors && password.touched && password.errors.minlength">
+                User Name must be a minimum of {{ password.errors.minlength.requiredLength }} characters
+              </mat-error>
             </mat-form-field>
 
           </div>

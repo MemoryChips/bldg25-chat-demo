@@ -24,7 +24,7 @@
             </mat-form-field>
             <mat-form-field>
               <input formControlName="email" matInput placeholder="Enter your email" id="email" type="text">
-              <mat-error *ngIf="email.errors && email.touched && email.invalid">{{ getErrorMessage(email) }}</mat-error>
+              <mat-error *ngIf="email.errors && email.touched && email.invalid">Email is invalid</mat-error>
             </mat-form-field>
             <mat-form-field>
               <input formControlName="password" matInput placeholder="Enter your password" id="password" [type]="hide ? 'password' : 'text'">

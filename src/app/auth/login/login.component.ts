@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { FormControl, Validators } from '@angular/forms'
+import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
 import { AuthService, Credentials, AppUser } from '../auth.service'
 import { Router } from '@angular/router'
 import { Unsubscribe } from 'shared/utils'
 import { MatSnackBar } from '@angular/material'
+import { SignupValidators } from '../signup/signup.validators'
 
 @Component({
   selector: 'app-login',
@@ -21,8 +22,22 @@ export class LoginComponent implements OnInit, OnDestroy {
   showPassword = false
   passwordInputType = 'password'
   hide = true
-  email = new FormControl('', [Validators.required, Validators.email])
-  password = new FormControl('', [Validators.required])
+  form = new FormGroup({
+    email: new FormControl('robert.tamlyn@gmail.com', [
+      Validators.required,
+      Validators.email
+    ]),
+    password: new FormControl('Password10', [
+      Validators.required,
+      SignupValidators.cannotContainSpace
+    ])
+  })
+  get email() {
+    return this.form.get('email')
+  }
+  get password() {
+    return this.form.get('password')
+  }
 
   _subscriptions: Array<Subscription> = []
 
@@ -39,8 +54,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.isLoggedIn = isLoggedIn
       })
     ]
-    this.email.setValue('admin@gmail.com')
-    this.password.setValue('Password10')
   }
 
   @Unsubscribe()
@@ -76,10 +89,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submitLogin() {
-    const credentials: Credentials = {
-      email: this.email.value,
-      password: this.password.value
-    }
+    const credentials: Credentials = this.form.value
     this.authService.login(credentials).subscribe(
       (_user: AppUser) => {
         console.log('Login Success! Redirecting now...', _user)

@@ -24,7 +24,8 @@ import { SharedModule } from './shared/shared.module'
 
 import { ChatModule } from 'bldg25-chat'
 
-const webSocketServerUrl = 'ws://localhost:4200/api-ws'
+import { environment } from '../environments/environment'
+const webSocketServerUrl = environment.webSocketServerUrl
 
 @NgModule({
   declarations: [AppComponent],

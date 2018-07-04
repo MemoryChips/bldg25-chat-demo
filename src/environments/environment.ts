@@ -3,14 +3,13 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+const host = 'localhost'
+const port = 4200
+
+// const host = process.env.HOST_URL || 'localhost'
+// const port = process.env.PORT || 4200
+
 export const environment = {
   production: false,
-  firebase: {
-    apiKey: 'AIzaSyDBRr35JOKFmxv84LfQi89vpHklgfjrT-8',
-    authDomain: 'chat-5-firebase.firebaseapp.com',
-    databaseURL: 'https://chat-5-firebase.firebaseio.com',
-    projectId: 'chat-5-firebase',
-    storageBucket: 'chat-5-firebase.appspot.com',
-    messagingSenderId: '1036420277755'
-  }
+  webSocketServerUrl: `ws://${host}:${port}/api-ws`
 }

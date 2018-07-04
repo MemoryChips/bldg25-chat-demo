@@ -4,6 +4,8 @@ import { IChatConfig } from 'bldg25-chat-server'
 const host = process.env.HOST_URL || 'localhost'
 const port = process.env.PORT || 9000
 const chatServerPort = process.env.PORT || 9000
+const redisDbAuthCode =
+  process.env.REDIS_DB_AUTHCODE || 'this_should_be_a_secret_authcode'
 
 // configuration of chat server and redisdb server used by the chat server
 export const chatConfig: IChatConfig = {
@@ -14,9 +16,7 @@ export const chatConfig: IChatConfig = {
   chatServerPort, // *** set this to the port of the chat server
   verifyClient: defaultVerifyClient,
   // verifyClient,
-  redisDbAuthCode:
-    process.env.REDIS_DB_AUTHCODE ||
-    'bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ'
+  redisDbAuthCode
 }
 
 const defaultAvatarUrl = `http://${host}:${port}/image-files/default-gravatar.jpg`
@@ -29,5 +29,6 @@ export const serverConfig = {
   defaultAvatarUrl,
   host,
   port,
-  chatServerPort
+  chatServerPort,
+  redisDbAuthCode
 }

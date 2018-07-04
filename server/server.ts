@@ -44,7 +44,6 @@ if (process.env.PROD) {
   })
 }
 
-// AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
 // *** Chat server must be added to the express server as follows:
 // tslint:disable-next-line:no-unused-expression
 new ChatWebSocketServer(server, chatConfig)

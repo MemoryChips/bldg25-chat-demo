@@ -1,5 +1,13 @@
 # Chat5
 
+This should be removed
+
+```bash
+REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
+# AUTH this_should_be_a_secret_authcode
+# AUTH bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ
+```
+
 ## TODO: Urgent
 
 ## TODO: Normal

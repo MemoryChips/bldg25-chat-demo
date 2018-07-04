@@ -2,8 +2,9 @@
 // tslint:disable:max-line-length
 import * as redis from 'redis'
 const redisClient = redis.createClient({ host: 'localhost', port: 6379 })
+import { serverConfig } from '../server-config'
 
-redisClient.auth('bnparXdTcWyvXxkz1CdlEscwXrreNI6Us3IeCdFzFsaLDJ7KYNmVSUkPcpVJ')
+redisClient.auth(serverConfig.redisDbAuthCode)
 
 redisClient.on('ready', function() {
   console.log('Redis is ready')

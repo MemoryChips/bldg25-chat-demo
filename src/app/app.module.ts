@@ -25,7 +25,6 @@ import { SharedModule } from './shared/shared.module'
 import { ChatModule } from 'bldg25-chat'
 
 import { environment } from '../environments/environment'
-const webSocketServerUrl = environment.webSocketServerUrl
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,13 +36,14 @@ const webSocketServerUrl = environment.webSocketServerUrl
     AdminModule,
     CoreModule,
     AuthModule,
-    ChatModule.forRoot({
-      name: 'Sherlock Holmes',
-      webSocketServerUrl,
-      chatOpenAtLogin: false,
-      reconnectInterval: 5000,
-      reconnectAttempts: 6
-    }),
+    ChatModule.forRoot(environment.chatConfig),
+    // ChatModule.forRoot({
+    //   name: 'Sherlock Holmes',
+    //   webSocketServerUrl,
+    //   chatOpenAtLogin: false,
+    //   reconnectInterval: 5000,
+    //   reconnectAttempts: 6
+    // }),
     // NgbModule.forRoot(),
     BrowserAnimationsModule,
     MaterialModule,

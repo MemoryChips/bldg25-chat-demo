@@ -3,14 +3,11 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-const host = 'localhost'
-const port = 4200
-const webSocketProtocol = 'ws'
-
 export const environment = {
   production: false,
   chatConfig: {
-    webSocketServerUrl: `${webSocketProtocol}://${host}:${port}/api-ws`,
+    // webSocketServerUrl: 'ws://localhost:4202/api-ws',
+    webSocketServerUrl: 'wss://localhost:4202/api-ws',
     chatOpenAtLogin: false,
     reconnectInterval: 5000,
     reconnectAttempts: 6

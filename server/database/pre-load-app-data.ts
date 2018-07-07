@@ -74,31 +74,31 @@ export interface DbProduct {
 export const PRODUCTS: KeyedObj<DbProduct> = {
   '-L0V4jyvXq9qR9cNTenO': {
     category: 'database',
-    imageUrl: 'http://localhost:9000/image-files/ch.jpg',
+    imageUrl: 'http://localhost:9001/image-files/ch.jpg',
     price: 5,
     title: 'Taxonomy Services Lite'
   },
   '-L0VdmFZvHL3o0X7IKzu': {
     category: 'web-dev',
-    imageUrl: 'http://localhost:9000/image-files/hot-babe.jpg',
+    imageUrl: 'http://localhost:9001/image-files/hot-babe.jpg',
     price: 10,
     title: 'Web App Testing'
   },
   '-L0VdmFZvHL3o0X7Iavc': {
     category: 'manpower',
-    imageUrl: 'http://localhost:9000/image-files/mc1.jpg',
+    imageUrl: 'http://localhost:9001/image-files/mc1.jpg',
     price: 10,
     title: 'Web App Testing II'
   },
   '-L0ZiFWvItP4YFXtYEH_': {
     category: 'web-dev',
-    imageUrl: 'http://localhost:9000/image-files/pretty-lady.jpg',
+    imageUrl: 'http://localhost:9001/image-files/pretty-lady.jpg',
     price: 22,
     title: 'Wordpress Sites'
   },
   '-KrqgOLs07ZkbapP4EGi': {
     category: 'veggies',
-    imageUrl: 'http://localhost:9000/image-files/spinach.jpg',
+    imageUrl: 'http://localhost:9001/image-files/spinach.jpg',
     price: 2.5,
     title: 'Spinach'
   },
@@ -111,7 +111,7 @@ export const PRODUCTS: KeyedObj<DbProduct> = {
   },
   '-KrvrXbV3rqnFEru_ojw': {
     category: 'veggies',
-    imageUrl: 'http://localhost:9000/image-files/avocado.jpg',
+    imageUrl: 'http://localhost:9001/image-files/avocado.jpg',
     price: 1.75,
     title: 'Avacado'
   },

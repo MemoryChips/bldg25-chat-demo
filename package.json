@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config ./proxy.json",
     "start-secure": "ng serve -c secure --proxy-config ./proxy-secure.json --ssl --ssl-key key.pem --ssl-cert cert.pem",
+    "start-image-server": "./node_modules/.bin/ts-node ./server/image-server.ts",
     "start-redisdb": "redis-server ./server/database/redis.conf",
     "pre-load-app-data": "ts-node ./server/database/pre-load-app-data.ts",
     "pre-load-user-data": "ts-node ./server/database/pre-load-user-data.ts",

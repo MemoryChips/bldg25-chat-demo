@@ -9,13 +9,9 @@ import { Router } from '@angular/router'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  title = 'Chat 6 Demo'
 
-  title = 'Chat5'
-
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {
+  constructor(private auth: AuthService, private router: Router) {
     this.auth.user$.subscribe(_user => {
       // TODO: Why is this important?
       // this.userService.saveUser(user)  // ensures we have the update name in the database
@@ -30,7 +26,5 @@ export class AppComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

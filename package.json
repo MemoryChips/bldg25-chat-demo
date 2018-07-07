@@ -17,7 +17,7 @@
     "start-chat-server": "./node_modules/.bin/ts-node ./chat-server/chat-server.ts",
     "server": "./node_modules/.bin/nodemon  -w ./server --ext \".ts\" --exec \"npm run start-server\"",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --watch",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

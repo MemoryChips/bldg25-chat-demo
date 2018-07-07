@@ -1,5 +1,8 @@
 import * as express from 'express'
 import * as http from 'http'
+import * as https from 'https'
+import * as fs from 'fs'
+
 import { retrieveUserIdFromRequest } from './auth/mware/get-user'
 
 import { authRouter } from './auth/auth-routes-api'
@@ -15,8 +18,6 @@ import { chatConfig, serverConfig } from './server-config'
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
 
-const server = http.createServer(app)
-
 app.use(cookieParser())
 app.use(retrieveUserIdFromRequest)
 app.use(bodyParser.json())
@@ -24,10 +25,6 @@ app.use(bodyParser.json())
 // for serving in production
 if (process.env.PROD) {
   app.use(express.static(__dirname + '/dist'))
-  app.use('/image-files', express.static(__dirname + '/dist' + '/images'))
-} else {
-  // for product images
-  app.use('/image-files', express.static(__dirname + '/images'))
 }
 
 // REST API
@@ -37,6 +34,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/order', orderRouter)
 
 // heroku deployment
+const port = process.env.PORT || serverConfig.port
 if (process.env.PROD) {
   // gives response when user refreshes some random url in angular
   app.all('*', (_req, res) => {
@@ -44,10 +42,36 @@ if (process.env.PROD) {
   })
 }
 
-// *** Chat server must be added to the express server as follows:
-// tslint:disable-next-line:no-unused-expression
-new ChatWebSocketServer(server, chatConfig)
+if (serverConfig.secure) {
+  // launch an HTTPS Server. Note: this does NOT mean that the application is secure
+  const httpsServer = https.createServer(
+    { key: fs.readFileSync('key.pem'), cert: fs.readFileSync('cert.pem') },
+    app
+  )
 
-server.listen(serverConfig.port, () =>
-  console.log(`HTTP Api Server running on port: ${serverConfig.port}`)
-)
+  // *** Chat server must be added to the express server as follows:
+  // tslint:disable-next-line:no-unused-expression
+  new ChatWebSocketServer(httpsServer, chatConfig)
+
+  httpsServer.listen(port, () => {
+    console.log(`HTTPS Server running at port: ${port}`)
+  })
+} else {
+  // launch an HTTP Server
+  const httpServer = http.createServer(app)
+
+  // *** Chat server must be added to the express server as follows:
+  // tslint:disable-next-line:no-unused-expression
+  new ChatWebSocketServer(httpServer, chatConfig)
+
+  httpServer.listen(port, () => {
+    console.log(`HTTP Server running at port: ${port}`)
+  })
+}
+// server.listen(port, () => {
+//   const addressInfo = server.address() as AddressInfo
+//   console.log(serverInfo + addressInfo.port)
+//   console.log(`Dev Chat server ${addressInfo.address} listening on port ${addressInfo.port}`)
+//   console.log(`Chat server using redis databases at ${chatConfig.redisUrl}:${chatConfig.redisPort}`)
+//   console.log(`Chat server using redis database: ${chatConfig.redisDataBase}`)
+// })

@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "https://localhost:9000",
+    "secure": false
+  },
+  "/api-ws": {
+    "target": "wss://localhost:9000",
+    "secure": false,
+    "ws": true
+  }
+}

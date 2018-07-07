@@ -23,6 +23,12 @@ const defaultAvatarUrl = `http://${host}:${port}/image-files/default-gravatar.jp
 console.log(`default avatar url: ${defaultAvatarUrl}`)
 // const defaultAvatarUrl = 'http://localhost:9002/image-files/default-gravatar.jpg'
 
+const commandLineArgs = require('command-line-args')
+const optionDefinitions = [
+  { name: 'secure', type: Boolean, defaultOption: false }
+]
+export const options = commandLineArgs(optionDefinitions)
+
 export const serverConfig = {
   verbose: true,
   log: console.log,
@@ -30,5 +36,6 @@ export const serverConfig = {
   host,
   port,
   chatServerPort,
-  redisDbAuthCode
+  redisDbAuthCode,
+  secure: !!options.secure
 }

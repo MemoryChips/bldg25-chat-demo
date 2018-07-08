@@ -18,6 +18,7 @@
     "server": "./node_modules/.bin/nodemon  -w ./server --ext \".ts\" --exec \"npm run start-server\"",
     "build": "ng build",
     "test": "ng test --watch",
+    "api-test": "jest",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -65,16 +66,20 @@
     "@angular/language-service": "6.0.1",
     "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.11.1",
+    "@types/frisby": "^2.0.1",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
+    "@types/jest": "^23.1.4",
     "@types/jsonwebtoken": "^7.2.7",
     "@types/node": "^6.0.101",
     "@types/redis": "^2.8.5",
     "@types/ws": "^5.1.2",
     "codelyzer": "^4.1.0",
     "concurrently": "^3.5.1",
+    "frisby": "^2.0.16",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
+    "jest": "^23.3.0",
     "karma": "~1.7.0",
     "karma-chrome-launcher": "~2.1.1",
     "karma-cli": "~1.0.1",
@@ -83,8 +88,28 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "nodemon": "^1.15.1",
     "protractor": "~5.1.2",
+    "ts-jest": "^23.0.0",
     "ts-node": "^7.0.0",
     "tslint": "~5.7.0",
     "typescript": "^2.7.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/",
+      "<rootDir>/projects/"
+    ]
   }
 }

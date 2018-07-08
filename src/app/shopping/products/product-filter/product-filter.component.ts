@@ -8,14 +8,14 @@ import { Input } from '@angular/core'
   styleUrls: ['./product-filter.component.scss']
 })
 export class ProductFilterComponent implements OnInit {
-
   categories: Category[]
   @Input() categoryKey: string
 
-  constructor(private categoryService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit() {
-    this.categoryService.getCategories().subscribe(cats => this.categories = cats)
+    this.productService
+      .getCategories()
+      .subscribe(cats => (this.categories = cats))
   }
-
 }

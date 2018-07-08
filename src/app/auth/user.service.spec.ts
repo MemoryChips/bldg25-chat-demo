@@ -9,7 +9,7 @@ class MockHttpClient {
   put() {}
 }
 
-fdescribe('UserService', () => {
+describe('UserService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [

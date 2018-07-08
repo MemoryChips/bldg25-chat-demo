@@ -108,8 +108,7 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "<rootDir>/src/",
-      "<rootDir>/projects/"
+      "<rootDir>/src/"
     ]
   }
 }

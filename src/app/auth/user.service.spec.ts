@@ -2,10 +2,20 @@ import { TestBed, inject } from '@angular/core/testing'
 
 import { UserService } from './user.service'
 
-describe('UserService', () => {
+import { HttpClient } from '@angular/common/http'
+// import { of } from 'rxjs'
+
+class MockHttpClient {
+  put() {}
+}
+
+fdescribe('UserService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UserService]
+      providers: [
+        UserService,
+        { provide: HttpClient, useClass: MockHttpClient }
+      ]
     })
   })
 

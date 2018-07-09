@@ -131,7 +131,13 @@ async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
       userName: signUpInfo.userName
     })
   } else {
-    res.status(403).json({ success: false, reason: 'unable to create user' })
+    console.log(`Unable to create user: ${dbUser.email}`)
+    res
+      .status(403)
+      .json({
+        success: false,
+        reason: 'unable to create user. Possibly user exists.'
+      })
   }
 }
 

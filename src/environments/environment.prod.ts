@@ -5,7 +5,7 @@ const webSocketProtocol = 'wss' // Keep this as wss unless you are deploying an 
 
 const serverUrl = `${httpType}://${host}:${port}/api-ws`
 const webSocketServerUrl = `${webSocketProtocol}://${host}:${port}/api-ws`
-console.log(`Building for a server at ${serverUrl}`)
+console.log(`Built for a server at ${serverUrl}`)
 
 export const environment = {
   production: true,

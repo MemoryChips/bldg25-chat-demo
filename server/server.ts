@@ -68,10 +68,3 @@ if (serverConfig.secure) {
     console.log(`HTTP Server running at port: ${port}`)
   })
 }
-// server.listen(port, () => {
-//   const addressInfo = server.address() as AddressInfo
-//   console.log(serverInfo + addressInfo.port)
-//   console.log(`Dev Chat server ${addressInfo.address} listening on port ${addressInfo.port}`)
-//   console.log(`Chat server using redis databases at ${chatConfig.redisUrl}:${chatConfig.redisPort}`)
-//   console.log(`Chat server using redis database: ${chatConfig.redisDataBase}`)
-// })

@@ -1,5 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { FormGroup, FormControl, Validators } from '@angular/forms'
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl
+} from '@angular/forms'
 import { Router } from '@angular/router'
 
 import { Credentials, AuthService } from '../auth.service'
@@ -25,6 +30,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       ]),
       password: new FormControl('Password10', [
         Validators.required,
+        Validators.minLength(3),
         SignupValidators.cannotContainSpace
       ]),
       confirmPassword: new FormControl('Password10', [Validators.required]),
@@ -78,6 +84,17 @@ export class SignupComponent implements OnInit, OnDestroy {
         console.log(`Error while signing up: ${error}`)
       }
     )
+  }
+
+  // <mat-error * ngIf="" > {{ "User Name is already in use" }}</mat-error>
+  formControlError(input: AbstractControl | null, error: string): boolean {
+    if (!input) return false
+    else return !!input.errors && input.touched && input.errors[error]
+  }
+
+  formControlInvalid(input: AbstractControl | null): boolean {
+    if (!input) return false
+    else return !!input.errors && input.touched && input.invalid
   }
 
   private routeToRedirect() {

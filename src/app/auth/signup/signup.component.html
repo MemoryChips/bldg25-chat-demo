@@ -14,30 +14,30 @@
 
             <mat-form-field>
               <input formControlName="userName" matInput placeholder="Enter your username" id="userName" type="text">
-              <mat-hint *ngIf="userName.pending">Checking for uniqueness...</mat-hint>
-              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.shouldBeUniqueUserName">{{ "User Name is already in use" }}</mat-error>
-              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.cannotContainSpace">{{ "User Name must not contains spaces" }}</mat-error>
-              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.required">{{ "User Name is required" }}</mat-error>
-              <mat-error *ngIf="userName.errors && userName.touched && userName.errors.minlength">
+              <mat-hint *ngIf="!!userName && userName.pending">Checking for uniqueness...</mat-hint>
+              <mat-error *ngIf="formControlError(userName, 'shouldBeUniqueUserName')">{{ "User Name is already in use" }}</mat-error>
+              <mat-error *ngIf="formControlError(userName, 'cannotContainSpace')">{{ "User Name must not contain spaces" }}</mat-error>
+              <mat-error *ngIf="formControlError(userName, 'required')">{{ "User Name is required" }}</mat-error>
+              <mat-error *ngIf="formControlError(userName, 'minlength')">
                 User Name must be a minimum of {{ userName.errors.minlength.requiredLength }} characters
               </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input formControlName="email" matInput placeholder="Enter your email" id="email" type="text">
-              <mat-error *ngIf="email.errors && email.touched && email.invalid">Email is invalid</mat-error>
+              <mat-error *ngIf="formControlInvalid(email)">Email is invalid</mat-error>
             </mat-form-field>
             <mat-form-field>
               <input formControlName="password" matInput placeholder="Enter your password" id="password" [type]="hide ? 'password' : 'text'">
               <mat-icon class="nav-item" matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}
               </mat-icon>
-              <mat-error *ngIf="password.errors && password.touched && password.errors.cannotContainSpace">{{ "Password must not contains spaces" }}</mat-error>
-              <mat-error *ngIf="password.errors && password.touched && password.errors.minlength">
-                User Name must be a minimum of {{ password.errors.minlength.requiredLength }} characters
+              <mat-error *ngIf="formControlError(password, 'cannotContainSpace')">{{ "Password must not contains spaces" }}</mat-error>
+              <mat-error *ngIf="formControlError(password, 'minlength')">
+                Password must be a minimum of {{ password.errors.minlength.requiredLength }} characters
               </mat-error>
             </mat-form-field>
             <mat-form-field>
               <input formControlName="confirmPassword" matInput placeholder="Confirm your password" id="confirmPassword" [type]="hide ? 'password' : 'text'">
-              <mat-error *ngIf="confirmPassword.errors && confirmPassword.touched && confirmPassword.errors.matchPassword">{{ "Passwords must match" }}</mat-error>
+              <mat-error *ngIf="formControlError(confirmPassword, 'matchPassword')">{{ "Passwords must match" }}</mat-error>
             </mat-form-field>
 
           </div>

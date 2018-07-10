@@ -7,6 +7,16 @@ REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 
 ## TODO: Urgent
 
+1.  Move images to assets folder consider subfolder images; update app pre load to use images subfolder
+1.  Create server compile script - possibly add tsconfig.json to server directory
+
+```bashrc
+tsc server/server.ts --outDir dist/out-tsc --lib es2017
+tsc server/server.ts --outDir dist/out-tsc --lib es2017 --exclude "*.jest.*"
+# next line did not help type conflicts in jest and jasmine
+tsc server/server.ts --outDir dist/out-tsc --lib es2017 --typeRoots node_modules/@types
+```
+
 ## TODO: Normal
 
 1.  Add gmail oath 2.0 signup

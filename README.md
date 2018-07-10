@@ -7,7 +7,6 @@ REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 
 ## TODO: Urgent
 
-1.  Move images to assets folder consider subfolder images; update app pre load to use images subfolder
 1.  Create server compile script - possibly add tsconfig.json to server directory
 
 ```bashrc
@@ -19,6 +18,7 @@ tsc server/server.ts --outDir dist/out-tsc --lib es2017 --typeRoots node_modules
 
 ## TODO: Normal
 
+1.  Delete images in server folder and remove image server code
 1.  Add gmail oath 2.0 signup
 1.  Final product card if it is alone stretches accross the screen
 1.  Create instructions on how to use this demo app

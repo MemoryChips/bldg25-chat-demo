@@ -14,6 +14,7 @@
     "start-redis-cli": "redis-cli -p 6379",
     "start-server": "./node_modules/.bin/ts-node ./server/server.ts",
     "start-server-secure": "./node_modules/.bin/ts-node ./server/server.ts --secure",
+    "start-server-prod": "./node_modules/.bin/ts-node ./server/server.ts --secure --prod",
     "start-chat-server": "./node_modules/.bin/ts-node ./chat-server/chat-server.ts",
     "server": "./node_modules/.bin/nodemon  -w ./server --ext \".ts\" --exec \"npm run start-server\"",
     "build": "ng build --prod --aot",

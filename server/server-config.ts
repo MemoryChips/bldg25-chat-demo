@@ -25,7 +25,8 @@ console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
-  { name: 'secure', type: Boolean, defaultOption: false }
+  { name: 'secure', type: Boolean },
+  { name: 'prod', type: Boolean }
 ]
 export const options = commandLineArgs(optionDefinitions)
 
@@ -37,5 +38,6 @@ export const serverConfig = {
   port,
   chatServerPort,
   redisDbAuthCode,
-  secure: !!options.secure
+  secure: !!options.secure,
+  prod: !!options.secure
 }

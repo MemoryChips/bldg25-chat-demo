@@ -1,5 +1,5 @@
 const host = 'localhost' // Set this to the host url of the deployment server
-const port = 4200 // Set this to the port of the deployment server
+const port = 9000 // Set this to the port of the deployment server
 const httpType = 'https'
 const webSocketProtocol = 'wss' // Keep this as wss unless you are deploying an unecrypted server
 

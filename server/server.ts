@@ -23,7 +23,7 @@ app.use(retrieveUserIdFromRequest)
 app.use(bodyParser.json())
 
 // for serving in production
-if (process.env.PROD) {
+if (process.env.PROD || serverConfig.prod) {
   app.use(express.static(__dirname + '/dist'))
 }
 
@@ -35,7 +35,8 @@ app.use('/api/order', orderRouter)
 
 // heroku deployment
 const port = process.env.PORT || serverConfig.port
-if (process.env.PROD) {
+if (process.env.PROD || serverConfig.prod) {
+  console.log(`Running in prod mode: ${serverConfig.host}:${serverConfig.port}`)
   // gives response when user refreshes some random url in angular
   app.all('*', (_req, res) => {
     res.status(200).sendFile(__dirname + '/dist/index.html')

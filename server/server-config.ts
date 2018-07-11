@@ -2,8 +2,9 @@ import { defaultVerifyClient } from './auth/security' // *** verifies client cre
 import { IChatConfig } from 'bldg25-chat-server'
 
 const host = process.env.HOST_URL || 'localhost'
+// FIXME: fix up these two lines they are hoky
 const port = process.env.PORT || 9000
-const chatServerPort = process.env.PORT || 9000
+const chatServerPort = Number(process.env.PORT || '9000')
 const redisDbAuthCode =
   process.env.REDIS_DB_AUTHCODE || 'this_should_be_a_secret_authcode'
 

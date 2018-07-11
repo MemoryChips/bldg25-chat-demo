@@ -8,12 +8,17 @@
       "type": "node",
       "request": "launch",
       "name": "Server",
+      "program": "${workspaceFolder}/server/dist/out-tsc/server.js",
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "ts-node-Server",
       "args": ["${workspaceFolder}/server/server.ts"],
-      "runtimeArgs": [
-        "--nolazy",
-        "-r",
-        "ts-node/register"
-      ],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
       "sourceMaps": true,
       "cwd": "${workspaceFolder}",
       "protocol": "inspector"

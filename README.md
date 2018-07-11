@@ -8,6 +8,8 @@ REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 ## TODO: Urgent
 
 1.  Create server compile script - possibly add tsconfig.json to server directory
+    "@types/node": "^6.0.101",
+2.  type files frisby and node-fetch were modified
 
 ```bashrc
 tsc server/server.ts --outDir dist/out-tsc --lib es2017

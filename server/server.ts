@@ -1,5 +1,8 @@
 // import * as express from 'express'
+// import * as cookieParser from 'cookie-parser'
 import express from 'express'
+import cookieParser from 'cookie-parser'
+
 import * as http from 'http'
 import * as https from 'https'
 import * as fs from 'fs'
@@ -11,8 +14,6 @@ import { productRouter } from './product/product-routes'
 import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 const bodyParser = require('body-parser')
-// import * as cookieParser from 'cookie-parser'
-import cookieParser from 'cookie-parser'
 
 import { ChatWebSocketServer } from 'bldg25-chat-server'
 import { chatConfig, serverConfig } from './server-config'

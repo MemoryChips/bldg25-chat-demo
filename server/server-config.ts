@@ -19,9 +19,12 @@ export const chatConfig: IChatConfig = {
   redisDbAuthCode
 }
 
-const defaultAvatarUrl = `http://${host}:${port}/image-files/default-gravatar.jpg`
-console.log(`default avatar url: ${defaultAvatarUrl}`)
+const imageFilePort = process.env.PROD ? port : 4200
+const defaultAvatarUrl = `http://${host}:${imageFilePort}/assets/default-gravatar.jpg`
+// const defaultAvatarUrl = `http://${host}:4200/image-files/default-gravatar.jpg`
+// const defaultAvatarUrl = `http://${host}:${port}/image-files/default-gravatar.jpg`
 // const defaultAvatarUrl = 'http://localhost:9002/image-files/default-gravatar.jpg'
+console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 const commandLineArgs = require('command-line-args')
 const optionDefinitions = [

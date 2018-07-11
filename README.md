@@ -7,16 +7,7 @@ REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 
 ## TODO: Urgent
 
-1.  Create server compile script - possibly add tsconfig.json to server directory
-    "@types/node": "^6.0.101",
-2.  type files frisby and node-fetch were modified
-
-```bashrc
-tsc server/server.ts --outDir dist/out-tsc --lib es2017
-tsc server/server.ts --outDir dist/out-tsc --lib es2017 --exclude "*.jest.*"
-# next line did not help type conflicts in jest and jasmine
-tsc server/server.ts --outDir dist/out-tsc --lib es2017 --typeRoots node_modules/@types
-```
+1.  type files frisby and node-fetch were modified
 
 ## TODO: Normal
 
@@ -27,6 +18,14 @@ tsc server/server.ts --outDir dist/out-tsc --lib es2017 --typeRoots node_modules
 1.  Signup should add snack bar message when it fails
 
 ## Development Notes
+
+Old ts-node server start commands
+
+```bash
+#    "start-server-ts-node": "./node_modules/.bin/ts-node ./server/server.ts",
+#    "start-server-ts-node-secure": "./node_modules/.bin/ts-node ./server/server.ts --secure",
+#    "start-server-prod-ts-node": "./node_modules/.bin/ts-node ./server/server.ts --secure --prod",
+```
 
 - git clone; npm install
 - install redis server

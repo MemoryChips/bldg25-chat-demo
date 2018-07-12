@@ -7,13 +7,14 @@ export const USER_EMAIL = 'user:email'
 class RedisDatabase {
   private redisClient: redis.RedisClient
 
-  constructor() {
+  constructor(dbNum = 0) {
     console.log('Instance of redis database created.')
     this.redisClient = redis.createClient({
-      host: serverConfig.host,
-      port: 6379
+      host: serverConfig.db.host,
+      port: serverConfig.db.port
     })
     const authorized = this.redisClient.auth(serverConfig.redisDbAuthCode)
+    this.redisClient.select(dbNum)
     console.log(`Authorization: ${authorized}`)
   }
 

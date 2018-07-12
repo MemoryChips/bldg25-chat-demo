@@ -2,7 +2,7 @@ import { defaultVerifyClient } from './auth/security' // *** verifies client cre
 import { IChatConfig } from 'bldg25-chat-server'
 
 const host = process.env.HOST_URL || 'localhost'
-// FIXME: fix up these two lines they are hocky
+// FIXME: fix up these two lines they are hokey
 const port = process.env.PORT || 9000
 const chatServerPort = Number(process.env.PORT || '9000')
 const redisDbAuthCode =
@@ -10,11 +10,11 @@ const redisDbAuthCode =
 
 // configuration of chat server and redisdb server used by the chat server
 export const chatConfig: IChatConfig = {
-  redisUrl: host, // *** set this to the url of the redis server
-  redisPort: 6379, // *** set this to the port of the redis server
+  redisUrl: host, // *** set this to the url of the chat redis server
+  redisPort: 6379, // *** set this to the port of the chat redis server
   redisDataBase: 1, // *** set this to the redis database number to be used by the chat server
-  chatServerHost: host, // *** set this to the url of the chat server
-  chatServerPort, // *** set this to the port of the chat server
+  chatServerHost: host, // *** set this to the url of the server
+  chatServerPort, // *** set this to the port of the server
   verifyClient: defaultVerifyClient,
   // verifyClient,
   redisDbAuthCode
@@ -34,14 +34,21 @@ const optionDefinitions = [
 ]
 export const options = commandLineArgs(optionDefinitions)
 
+const dbHost = !!options.dbHost ? options.dbHost : 'localhost'
+const dbPort = !!options.dbPort ? options.dbPort : 6379
 export const serverConfig = {
   verbose: true,
   log: console.log,
-  defaultAvatarUrl,
   host,
   port,
+  db: {
+    type: 'redis',
+    host: dbHost,
+    port: dbPort
+  },
   chatServerPort,
   redisDbAuthCode,
+  defaultAvatarUrl,
   secure: !!options.secure,
   prod: !!options.secure
 }

@@ -11,6 +11,16 @@ REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 
 ## TODO: Normal
 
+1.  Deploy to Heroku
+
+```bash
+# redistogo cli login
+redis-cli -u redis://redistogo:63cf95b9b1a52f2fe6d0a9c5a67fa527@catfish.redistogo.com:9782/
+redis-cli -u redis://redistogo@catfish.redistogo.com:9782
+auth 63cf95b9b1a52f2fe6d0a9c5a67fa527
+redis-cli -h catfish.redistogo.com -p 9782 -a 63cf95b9b1a52f2fe6d0a9c5a67fa527
+```
+
 1.  Delete images in server folder and remove image server code
 1.  Add gmail oath 2.0 signup
 1.  Final product card if it is alone stretches accross the screen

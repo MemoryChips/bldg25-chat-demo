@@ -5,8 +5,11 @@ const host = process.env.HOST_URL || 'localhost'
 // FIXME: fix up these two lines they are hokey
 const port = process.env.PORT || 9000
 const chatServerPort = Number(process.env.PORT || '9000')
+// const redisDbAuthCode =
+//   process.env.REDIS_DB_AUTHCODE || 'this_should_be_a_secret_authcode'
+// auth 63cf95b9b1a52f2fe6d0a9c5a67fa527
 const redisDbAuthCode =
-  process.env.REDIS_DB_AUTHCODE || 'this_should_be_a_secret_authcode'
+  process.env.REDIS_DB_AUTHCODE || '63cf95b9b1a52f2fe6d0a9c5a67fa527'
 
 // configuration of chat server and redisdb server used by the chat server
 export const chatConfig: IChatConfig = {
@@ -22,20 +25,24 @@ export const chatConfig: IChatConfig = {
 
 const imageFilePort = process.env.PROD ? port : 4200
 const defaultAvatarUrl = `http://${host}:${imageFilePort}/assets/default-gravatar.jpg`
-// const defaultAvatarUrl = `http://${host}:4200/image-files/default-gravatar.jpg`
-// const defaultAvatarUrl = `http://${host}:${port}/image-files/default-gravatar.jpg`
-// const defaultAvatarUrl = 'http://localhost:9002/image-files/default-gravatar.jpg'
 console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
   { name: 'secure', type: Boolean },
-  { name: 'prod', type: Boolean }
+  { name: 'prod', type: Boolean },
+  { name: 'dbHost', type: String },
+  { name: 'dbPort', type: Number }
 ]
 export const options = commandLineArgs(optionDefinitions)
-
-const dbHost = !!options.dbHost ? options.dbHost : 'localhost'
-const dbPort = !!options.dbPort ? options.dbPort : 6379
+console.log(`${Object.keys(options).length}`)
+// redis - cli - u redis://redistogo@catfish.redistogo.com:9782
+// auth 63cf95b9b1a52f2fe6d0a9c5a67fa527
+const dbHost = !!options.dbHost ? options.dbHost : 'catfish.redistogo.com'
+const dbPort = !!options.dbPort ? options.dbPort : 9782
+// const dbHost = !!options.dbHost ? options.dbHost : 'localhost'
+// const dbPort = !!options.dbPort ? options.dbPort : 6379
+console.log(`Using ${dbHost}:${dbPort} for redis database`)
 export const serverConfig = {
   verbose: true,
   log: console.log,

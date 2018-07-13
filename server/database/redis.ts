@@ -1,10 +1,11 @@
 import * as redis from 'redis'
 import { DbUser } from '../auth/models/user'
 import { serverConfig } from '../server-config'
+import { DbProducts, DbProduct, Categories } from '../product/product-api'
 export const USERS = 'users'
 export const USER_EMAIL = 'user:email'
 
-class RedisDatabase {
+export class RedisDatabase {
   private redisClient: redis.RedisClient
 
   constructor(dbNum = 0) {
@@ -15,11 +16,11 @@ class RedisDatabase {
     })
     const authorized = this.redisClient.auth(serverConfig.redisDbAuthCode)
     this.redisClient.select(dbNum)
-    console.log(`Authorization: ${authorized}`)
+    console.log(`Database ${dbNum} selected with Authorization: ${authorized}`)
   }
 
   quit() {
-    this.redisClient.quit()
+    return this.redisClient.quit()
   }
 
   uniqueId() {
@@ -39,6 +40,32 @@ class RedisDatabase {
       })
     })
   }
+
+  saveAllCategories(cats: Categories): Promise<boolean> {
+    return this.setItem('categories', JSON.stringify(cats))
+  }
+
+  getAllCategories(): Promise<Categories> {
+    return this.getItem('categories').then((sCats: string) => JSON.parse(sCats))
+  }
+
+  saveAllProducts(products: DbProducts): Promise<boolean> {
+    return this.setItem('products', JSON.stringify(products))
+  }
+
+  // FIXME: Implement this
+  saveProduct(_product: DbProduct): Promise<boolean> {
+    return new Promise((resolve, _reject) => {
+      resolve(true)
+    })
+  }
+
+  getAllProducts(): Promise<DbProducts> {
+    return this.getItem('products').then((sProducts: string) =>
+      JSON.parse(sProducts)
+    )
+  }
+
   getUserById(userId: string): Promise<DbUser> {
     // first check for exists
     return this._userExistsById(userId).then(exists => {
@@ -80,17 +107,6 @@ class RedisDatabase {
       return this.getUserById(index)
     })
   }
-
-  // getUserByEmail(email: string): Promise<DbUser> {
-  //   return new Promise((resolve, reject) => {
-  //     this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
-  //       if (_err) return reject(_err)
-  //       resolve(index)
-  //     })
-  //   }).then((index: string) => {
-  //     return this.getUserById(index)
-  //   })
-  // }
 
   private _userExistsById(userId: string): Promise<boolean> {
     return new Promise((resolve, reject) => {

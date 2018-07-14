@@ -87,10 +87,9 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 ## TODO: Urgent
 
 1.  type files frisby and node-fetch were modified
-2.  Fix test of prod mode web socket fails to connect
+2.  Fix test of prod mode
 
-Images are missing
-Full path to angular build in server code needs to be relative path
+web socket fails to connect - probably need to adjust attempted connection url it is likely using the proxy version and needs to switch to a direct version in prod
 
 3.  The next item
 

@@ -1,20 +1,37 @@
 # Chat 6
 
-```bash
-REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
-# AUTH this_should_be_a_secret_authcode
-```
+This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 ## Pre-Launch
 
-- Initialize redis database
+### Initialize redis database
+
+- Local Redis
+
+```bash
+redis-server ./server/database/redis.conf
+npm run pre-load-app-data-local # initializes local redis database
+```
+
+- RedisToGo
 
 ```bash
 # obtain redistogo database and set options in server-config.ts
 npm run pre-load-app-data # initializes RedisToGo
-# OR run local redis database
-redis-server ./server/database/redis.conf
-npm run pre-load-app-data-local # initializes local redis database
+```
+
+- RedisLabs
+
+```bash
+# obtain redistogo database and set options here
+# redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com:10568
+# 26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
+DBPORT=10568
+DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
+# redis-cli -h redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com -p 10568 -a 26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 ```
 
 ## Launch Scenarios
@@ -55,13 +72,16 @@ npm run start-server-local  # move local options to debug launch in vs code
 npm start
 ```
 
-- Local test of prod FIXME: This is not working
+- Local test of prod
 
 ```bash
-redis-cli -h catfish.redistogo.com -p 9782 -a 63cf95b9b1a52f2fe6d0a9c5a67fa527
+DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
+DBPORT=10568
+DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 # cntl-shft-b to build server code in vs-code
-npm run start-server-prod
-npm start-secure
+# npm run start-server-prod
+node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 
 ## TODO: Urgent

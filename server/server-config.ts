@@ -25,7 +25,7 @@ const host = process.env.HOST_URL || 'localhost'
 const port = process.env.PORT || 9000
 const chatServerPort = Number(port)
 
-const imageFilePort = process.env.PROD ? port : 4200
+const imageFilePort = process.env.PROD || options.prod ? port : 4200
 const defaultAvatarUrl = `http://${host}:${imageFilePort}/assets/default-gravatar.jpg`
 console.log(`default avatar url: ${defaultAvatarUrl}`)
 
@@ -53,5 +53,5 @@ export const serverConfig = {
   redisDbAuthCode,
   defaultAvatarUrl,
   secure: !!options.secure,
-  prod: !!options.secure
+  prod: !!options.prod
 }

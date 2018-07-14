@@ -1,6 +1,11 @@
 // tslint:disable:max-line-length
 import { RedisDatabase } from './redis'
 import { DbProducts, Categories } from '../product/product-api'
+import { serverConfig } from '../server-config'
+
+const assetsUrl = serverConfig.prod
+  ? 'https://localhost:9000/'
+  : 'http://localhost:4200/'
 
 export interface KeyedObj<T> {
   [key: string]: T
@@ -9,31 +14,31 @@ export interface KeyedObj<T> {
 export const products: DbProducts = {
   '-L0V4jyvXq9qR9cNTenO': {
     category: 'database',
-    imageUrl: 'http://localhost:4200/assets/ch.jpg',
+    imageUrl: assetsUrl + 'assets/ch.jpg',
     price: 5,
     title: 'Taxonomy Services Lite'
   },
   '-L0VdmFZvHL3o0X7IKzu': {
     category: 'web-dev',
-    imageUrl: 'http://localhost:4200/assets/hot-babe.jpg',
+    imageUrl: assetsUrl + 'assets/hot-babe.jpg',
     price: 10,
     title: 'Web App Testing'
   },
   '-L0VdmFZvHL3o0X7Iavc': {
     category: 'manpower',
-    imageUrl: 'http://localhost:4200/assets/mc1.jpg',
+    imageUrl: assetsUrl + 'assets/mc1.jpg',
     price: 10,
     title: 'Web App Testing II'
   },
   '-L0ZiFWvItP4YFXtYEH_': {
     category: 'web-dev',
-    imageUrl: 'http://localhost:4200/assets/pretty-lady.jpg',
+    imageUrl: assetsUrl + 'assets/pretty-lady.jpg',
     price: 22,
     title: 'Wordpress Sites'
   },
   '-KrqgOLs07ZkbapP4EGi': {
     category: 'veggies',
-    imageUrl: 'http://localhost:4200/assets/spinach.jpg',
+    imageUrl: assetsUrl + 'assets/spinach.jpg',
     price: 2.5,
     title: 'Spinach'
   },
@@ -46,7 +51,7 @@ export const products: DbProducts = {
   },
   '-KrvrXbV3rqnFEru_ojw': {
     category: 'veggies',
-    imageUrl: 'http://localhost:4200/assets/avocado.jpg',
+    imageUrl: assetsUrl + 'assets/avocado.jpg',
     price: 1.75,
     title: 'Avacado'
   },

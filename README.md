@@ -23,9 +23,7 @@ npm run pre-load-app-data # initializes RedisToGo
 - RedisLabs
 
 ```bash
-# obtain redistogo database and set options here
-# redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com:10568
-# 26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+# obtain redislabs database and set options here
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 DBPORT=10568
 DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
@@ -74,6 +72,8 @@ npm start
 
 - Local test of prod
 
+  This fails to connect to websocket
+
 ```bash
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 DBPORT=10568
@@ -87,7 +87,7 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 ## TODO: Urgent
 
 1.  type files frisby and node-fetch were modified
-2.  Fix test of prod mode: images are missing; gravatar images are missing too
+2.  Fix test of prod mode web socket fails to connect
 
 Images are missing
 Full path to angular build in server code needs to be relative path

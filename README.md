@@ -5,6 +5,63 @@ REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 # AUTH this_should_be_a_secret_authcode
 ```
 
+### Launch Scenarios
+
+- Initialize redis database
+
+```bash
+# obtain redistogo database and set options in server-config.ts
+npm run pre-load-app-data # initializes RedisToGo
+# OR run local redis database
+redis-server ./server/database/redis.conf
+npm run pre-load-app-data-local # initializes local redis database
+```
+
+- Local Devlopment with RedisToGo Server
+
+```bash
+redis-cli -h catfish.redistogo.com -p 9782 -a 63cf95b9b1a52f2fe6d0a9c5a67fa527
+# cntl-shft-b to build server code in vs-code
+npm run start-server
+npm start
+```
+
+- Local development with debug server with RedisToGo Server
+
+```bash
+redis-cli -h catfish.redistogo.com -p 9782 -a 63cf95b9b1a52f2fe6d0a9c5a67fa527
+ # Launch server with vs-code debugger
+npm start
+```
+
+- Local development with local redis server
+
+```bash
+redis-server ./server/database/redis.conf
+redis-cli -p 6379 -a this_should_be_a_secret_authcode
+npm run start-server-local
+npm start
+```
+
+- Local development with debug server with local redis server
+
+```bash
+redis-server ./server/database/redis.conf
+redis-cli -p 6379 -a this_should_be_a_secret_authcode
+# Launch server with vs-code debugger
+npm run start-server-local  # move local options to debug launch in vs code
+npm start
+```
+
+- Local test of prod FIXME: This is not working
+
+```bash
+redis-cli -h catfish.redistogo.com -p 9782 -a 63cf95b9b1a52f2fe6d0a9c5a67fa527
+# cntl-shft-b to build server code in vs-code
+npm run start-server-prod
+npm start-secure
+```
+
 ## TODO: Urgent
 
 1.  type files frisby and node-fetch were modified

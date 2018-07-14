@@ -17,6 +17,24 @@
     {
       "type": "node",
       "request": "launch",
+      "preLaunchTask": "build-server",
+      "name": "ServerLocal",
+      "program": "${workspaceFolder}/server/dist/out-tsc/server.js",
+      "args": [
+        "--dbHost",
+        "localhost",
+        "--dbPort",
+        "6379",
+        "--dbAuth",
+        "this_should_be_a_secret_authcode"
+      ],
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "ts-node-Server",
       "args": ["${workspaceFolder}/server/server.ts"],
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],

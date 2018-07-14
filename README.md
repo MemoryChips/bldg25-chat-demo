@@ -1,11 +1,11 @@
-# Chat5
+# Chat 6
 
 ```bash
 REDIS_DB_AUTHCODE=this_should_be_a_secret_authcode
 # AUTH this_should_be_a_secret_authcode
 ```
 
-### Launch Scenarios
+## Pre-Launch
 
 - Initialize redis database
 
@@ -16,6 +16,8 @@ npm run pre-load-app-data # initializes RedisToGo
 redis-server ./server/database/redis.conf
 npm run pre-load-app-data-local # initializes local redis database
 ```
+
+## Launch Scenarios
 
 - Local Devlopment with RedisToGo Server
 
@@ -65,6 +67,12 @@ npm start-secure
 ## TODO: Urgent
 
 1.  type files frisby and node-fetch were modified
+2.  Fix test of prod mode: images are missing; gravatar images are missing too
+
+Images are missing
+Full path to angular build in server code needs to be relative path
+
+3.  The next item
 
 ## TODO: Normal
 

@@ -9,7 +9,7 @@
       "request": "launch",
       "preLaunchTask": "build-server",
       "name": "Server",
-      "program": "${workspaceFolder}/server/dist/out-tsc/server.js",
+      "program": "${workspaceFolder}/dist/server.js",
       "sourceMaps": true,
       "cwd": "${workspaceFolder}",
       "protocol": "inspector"
@@ -19,7 +19,7 @@
       "request": "launch",
       "preLaunchTask": "build-server",
       "name": "ServerLocal",
-      "program": "${workspaceFolder}/server/dist/out-tsc/server.js",
+      "program": "${workspaceFolder}/dist/server.js",
       "args": [
         "--dbHost",
         "localhost",

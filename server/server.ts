@@ -28,7 +28,10 @@ app.use(bodyParser.json())
 
 // for serving in production
 if (process.env.PROD || serverConfig.prod) {
-  app.use(express.static(__dirname + '/dist'))
+  // const webDir = `/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/dist`
+  const webDir = `${__dirname}`
+  console.log(`Serving app from ${webDir}`)
+  app.use(express.static(webDir))
 }
 
 // REST API
@@ -43,7 +46,8 @@ if (process.env.PROD || serverConfig.prod) {
   console.log(`Running in prod mode: ${serverConfig.host}:${serverConfig.port}`)
   // gives response when user refreshes some random url in angular
   app.all('*', (_req, res) => {
-    res.status(200).sendFile(__dirname + '/dist/index.html')
+    res.status(200).sendFile(__dirname + '/index.html')
+    // res.status(200).sendFile(__dirname + '/index.html')
   })
 }
 

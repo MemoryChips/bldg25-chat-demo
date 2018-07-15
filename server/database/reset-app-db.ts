@@ -124,20 +124,6 @@ export const products: DbProducts = {
     price: 3,
     title: 'Saffron'
   },
-  '-Krvt8G_naLT8Pg_Fob6': {
-    category: 'database',
-    imageUrl:
-      'http://maxpixel.freegreatpicture.com/static/photo/1x/Seasoning-Powder-Curry-Spice-Ingredient-Turmeric-2344157.jpg',
-    price: 0.75,
-    title: 'Ground Turmeric'
-  },
-  '-KrvtXWZvGv-mr0IFbAA': {
-    category: 'database',
-    imageUrl:
-      'http://maxpixel.freegreatpicture.com/static/photo/1x/Ingredient-Herb-Seasoning-Seeds-Food-Coriander-390015.jpg',
-    price: 0.5,
-    title: 'Coriander Seeds'
-  },
   '-Krvtvc_uQyh6dzI-J3R': {
     category: 'manpower',
     imageUrl:

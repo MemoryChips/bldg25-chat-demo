@@ -110,5 +110,8 @@
       "/node_modules/",
       "<rootDir>/src/"
     ]
+  },
+  "engines": {
+    "node": "10.4.0"
   }
 }

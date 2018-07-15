@@ -88,18 +88,24 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 
 ## TODO: Urgent
 
-1.  type files frisby and node-fetch were modified
-2.  Remove redis auth keys from code except local
-3.  Dead code elimination
+1.  Delete images folder from server directory
+1.  type files frisby and node-fetch were modified - node fetch change reverted
+
+/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/node-fetch/index.d.ts
+/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/frisby/index.d.ts
+
+2.  Remove redis auth keys from code except local - auth keys only in README file for now
+3.  Create build script for use by Heroku OR decide to build locally and push to Heroku
 
 ## TODO: Normal
 
 1.  Deploy to Heroku
-1.  Delete images in server folder and remove image server code
-1.  Add gmail oath 2.0 signup OR okta login option
-1.  Final product card if it is alone stretches accross the screen
-1.  Create instructions on how to use this demo app
-1.  Signup should add snack bar message when it fails
+2.  Minify and/or uglify server code
+3.  Delete images in server folder and remove image server code
+4.  Add gmail oath 2.0 signup OR okta login option
+5.  Final product card if it is alone stretches accross the screen
+6.  Create instructions on how to use this demo app
+7.  Signup should add snack bar message when it fails
 
 ### Deployment Options
 

@@ -72,26 +72,19 @@ npm start
 
 - Local test of prod
 
-  This fails to connect to websocket
-
 ```bash
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 DBPORT=10568
 DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
+npm run build # to build demo app angular code
 # cntl-shft-b to build server code in vs-code
-# npm run start-server-prod
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 
 ## TODO: Urgent
 
 1.  type files frisby and node-fetch were modified
-2.  Fix test of prod mode
-
-web socket fails to connect - probably need to adjust attempted connection url it is likely using the proxy version and needs to switch to a direct version in prod
-
-3.  The next item
 
 ## TODO: Normal
 

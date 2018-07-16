@@ -93,6 +93,7 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 
 /home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/node-fetch/index.d.ts
 /home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/frisby/index.d.ts
+(line 81)export function formData(): FormData // ********\*\********* modified
 
 2.  Remove redis auth keys from code except local - auth keys only in README file for now
 3.  Create build script for use by Heroku OR decide to build locally and push to Heroku

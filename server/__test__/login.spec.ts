@@ -1,5 +1,7 @@
 // tslint:disable:max-line-length
-import * as frisby from 'frisby'
+// import * as frisby from 'frisby'
+// @types/frisby causes tsc errors when compiling the application
+const frisby = require('frisby')
 // const Joi = frisby.Joi
 import { serverConfig } from './test-config'
 import { testConfig } from './test-config'
@@ -30,7 +32,7 @@ describe('Api Auth endpoints', () => {
       .post(loginRequestUrl, testConfig.goodCredentials)
       .expect('status', 200)
       // .expectNot('json', badUser.expected)
-      .then(res => {
+      .then((res: any) => {
         if (verbose) {
           console.log(res.body)
           console.log(res.headers)

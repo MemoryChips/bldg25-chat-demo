@@ -110,6 +110,8 @@ heroku local web  # run the app locally
 heroku config:set DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 heroku config:set DBPORT=10568
 heroku config:set DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
+heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
 heroku config
 
 git push heroku master  # commit first!

@@ -8,8 +8,10 @@ export const randomBytes = util.promisify(crypto.randomBytes)
 
 export const signJwt = util.promisify(jwt.sign)
 
-const RSA_PRIVATE_KEY = fs.readFileSync('./server/keys/private.key')
-const RSA_PUBLIC_KEY = fs.readFileSync('./server/keys/public.key')
+const RSA_PRIVATE_KEY =
+  process.env.RSA_PRIVATE_KEY || fs.readFileSync('./server/keys/private.key')
+const RSA_PUBLIC_KEY =
+  process.env.RSA_PUBLIC_KEY || fs.readFileSync('./server/keys/public.key')
 const SESSION_DURATION = 72000000
 
 export async function createSessionToken(user: User) {

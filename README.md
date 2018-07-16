@@ -171,7 +171,10 @@ heroku open # shortcut to go to webpage
 ```bash
 # - create repo
 # - git remote add origin...
-git push origin master
+git remote add git-hub https://github.com/MemoryChips/bldg25-chat-demo.git
+git push git-hub master
+
+### where did these come from?
 npm i -g angular-cli-ghpages
 ng build --prod --base-href="https://<username>.github.io/<repository>/" # trailing / important
 ngh --no-silent # maybe run with sudo

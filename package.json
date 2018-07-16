@@ -62,7 +62,7 @@
     "password-validator": "^4.0.0",
     "redis": "^2.8.0",
     "rxjs": "^6.2.1",
-    "typescript": "^2.7.2",
+    "typescript": "2.7.2",
     "ws": "^5.2.1",
     "zone.js": "^0.8.26"
   },
@@ -94,8 +94,7 @@
     "protractor": "~5.1.2",
     "ts-jest": "^23.0.0",
     "ts-node": "^7.0.0",
-    "tslint": "~5.7.0",
-    "typescript": "^2.7.2"
+    "tslint": "~5.7.0"
   },
   "jest": {
     "transform": {

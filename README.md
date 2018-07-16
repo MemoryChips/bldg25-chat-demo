@@ -89,24 +89,42 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 
 ## TODO: Urgent
 
-1.  type files frisby and node-fetch were modified - node fetch change reverted
-
-/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/node-fetch/index.d.ts
-/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/frisby/index.d.ts
-(line 81)export function formData(): FormData // ********\*\********* modified
-
-2.  Remove redis auth keys from code except local - auth keys only in README file for now
-3.  Create build script for use by Heroku OR decide to build locally and push to Heroku
-
 ## TODO: Normal
 
 1.  Deploy to Heroku
-2.  Minify and/or uglify server code
-3.  Delete images in server folder and remove image server code
-4.  Add gmail oath 2.0 signup OR okta login option
-5.  Final product card if it is alone stretches accross the screen
-6.  Create instructions on how to use this demo app
-7.  Signup should add snack bar message when it fails
+
+```bash
+heroku create
+# Creating app... done, ⬢ stormy-mountain-18015
+# <https://stormy-mountain-18015.herokuapp.com/> App
+# <https://git.heroku.com/stormy-mountain-18015.git> Git
+git remote -v
+# create Procfile
+git push heroku master  # deploy to heroku
+heroku ps:scale web=1   # start an instance of the app running
+heroku open  # open in chrome
+heroku logs --tail
+heroku ps:scale web=0  # stop the running instance
+heroku local web  # run the app locally
+# env
+heroku config:set DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
+heroku config:set DBPORT=10568
+heroku config:set DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+heroku config
+```
+
+2.  Remove redis auth keys from code except local - auth keys only in README file for now
+3.  Minify and/or uglify server code
+4.  Delete images in server folder and remove image server code
+5.  Add gmail oath 2.0 signup OR okta login option
+6.  Final product card if it is alone stretches accross the screen
+7.  Create instructions on how to use this demo app
+8.  Signup should add snack bar message when it fails
+9.  type files frisby and node-fetch were modified - node fetch types were removed
+
+/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/node-fetch/index.d.ts
+/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/frisby/index.d.ts
+(line 81)export function formData(): FormData // **\*\*\*\***\*\***\*\*\*\*** modified
 
 ### Deployment Options
 

@@ -89,7 +89,6 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 
 ## TODO: Urgent
 
-1.  Delete images folder from server directory
 1.  type files frisby and node-fetch were modified - node fetch change reverted
 
 /home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/node-fetch/index.d.ts

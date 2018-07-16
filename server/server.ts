@@ -16,7 +16,7 @@ import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 const bodyParser = require('body-parser')
 
-import { ChatWebSocketServer } from 'bldg25-chat-server'
+import { ChatWebSocketServer } from '@robkatyat/bldg25-chat-server'
 import { chatConfig, serverConfig } from './server-config'
 
 // const env = process.env.NODE_ENV || 'development'

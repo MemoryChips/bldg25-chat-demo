@@ -1,5 +1,5 @@
 import { defaultVerifyClient } from './auth/security' // *** verifies client credentials
-import { IChatConfig } from 'bldg25-chat-server'
+import { IChatConfig } from '@robkatyat/bldg25-chat-server'
 
 // Command line settings
 const commandLineArgs = require('command-line-args')

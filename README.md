@@ -111,6 +111,8 @@ heroku config:set DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 heroku config:set DBPORT=10568
 heroku config:set DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
 heroku config
+
+git push heroku master  # commit first!
 ```
 
 2.  Remove redis auth keys from code except local - auth keys only in README file for now

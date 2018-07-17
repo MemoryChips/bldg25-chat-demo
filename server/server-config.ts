@@ -1,5 +1,5 @@
 import { defaultVerifyClient } from './auth/security' // *** verifies client credentials
-import { IChatConfig } from '@robkatyat/bldg25-chat-server'
+import { IChatConfig } from 'bldg25-chat-server'
 
 // Command line settings
 const commandLineArgs = require('command-line-args')
@@ -12,11 +12,11 @@ const optionDefinitions = [
 ]
 export const options = commandLineArgs(optionDefinitions)
 console.log(`${Object.keys(options).length}`)
-const dbHost = !!options.dbHost ? options.dbHost : 'catfish.redistogo.com' // OR localhost
-const dbPort = !!options.dbPort ? options.dbPort : 9782 // OR 6379
+const dbHost = !!options.dbHost ? options.dbHost : 'localhost'
+const dbPort = !!options.dbPort ? options.dbPort : 6379
 const redisDbAuthCode = !!options.dbAuth
   ? options.dbAuth
-  : '63cf95b9b1a52f2fe6d0a9c5a67fa527' // OR this_should_be_a_secret_authcode
+  : 'this_should_be_a_secret_authcode'
 console.log(`Using ${dbHost}:${dbPort} for redis database`)
 console.log(`Using authcode ${redisDbAuthCode} for redis database`)
 

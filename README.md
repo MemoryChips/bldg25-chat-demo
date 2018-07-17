@@ -13,44 +13,39 @@ This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 ```bash
 redis-server ./server/database/redis.conf
-npm run pre-load-app-data-local # initializes local redis database
+redis-cli -p 6379 -a this_should_be_a_secret_authcode
+npm run pre-load-app-data # initializes local redis database
 ```
 
 - RedisToGo
 
 ```bash
-# obtain redistogo database
-# set options in server-config.ts and package.json script
-npm run pre-load-app-data # initializes RedisToGo
+# obtain redislabs database and set up credentials
+DBHOST='catfish.redistogo.com'
+DBPORT=9782
+DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
+ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
+redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 ```
 
 - RedisLabs
 
 ```bash
-# obtain redislabs database and set options here
+# obtain redislabs database and set up credentials
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 DBPORT=10568
 DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
-# redis-cli -h redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com -p 10568 -a 26tEoF1QdEghVi0g4BvfNLekflbXF2gY
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 ```
 
 ## Launch Scenarios
 
-- Local Devlopment with RedisToGo Server
+- Local development with debug server with local redis server
 
 ```bash
-redis-cli -h catfish.redistogo.com -p 9782 -a 63cf95b9b1a52f2fe6d0a9c5a67fa527  # optional
-# cntl-shft-b to build server code in vs-code
-npm run start-server
-npm start
-```
-
-- Local development with debug server with RedisToGo Server
-
-```bash
-redis-cli -h catfish.redistogo.com -p 9782 -a 63cf95b9b1a52f2fe6d0a9c5a67fa527 # optional
+redis-server ./server/database/redis.conf # launch local redis server
+redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
 # Launch server with vs-code debugger
 npm start
 ```
@@ -58,23 +53,25 @@ npm start
 - Local development with local redis server
 
 ```bash
-redis-server ./server/database/redis.conf
+redis-server ./server/database/redis.conf  # launch local redis server
 redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
-npm run start-server-local
+npm run start-server
 npm start
 ```
 
-- Local development with debug server with local redis server
+- Local Devlopment with RedisToGo Server
 
 ```bash
-redis-server ./server/database/redis.conf
-redis-cli -p 6379 -a this_should_be_a_secret_authcode  # optional
-# Launch server with vs-code debugger
-npm run start-server-local  # move local options to debug launch in vs code
+DBHOST='catfish.redistogo.com'
+DBPORT=9782
+DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
+redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
+# cntl-shft-b to build server code in vs-code
+node dist/server.js --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 npm start
 ```
 
-- Local test of prod
+- Local test of prod with Redislabs Server
 
 ```bash
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
@@ -82,7 +79,7 @@ DBPORT=10568
 DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH # optional
 npm run build # to build demo app angular code and server code
-# cntl-shft-b to build only server code in vs-code
+# cntl-shft-b to build server in vs-code
 # npm run build-server to build only server code
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
@@ -121,6 +118,7 @@ git push heroku master  # commit first!
 
 ## TODO: Normal
 
+1.  Stopping database crashes server - Can it be auto restarted?
 2.  Remove redis auth keys from code except local - auth keys only in README file for now
 3.  Minify and/or uglify server code
 4.  Delete images in server folder and remove image server code

@@ -20,6 +20,9 @@ const redisDbAuthCode = !!options.dbAuth
 console.log(`Using ${dbHost}:${dbPort} for redis database`)
 console.log(`Using authcode ${redisDbAuthCode} for redis database`)
 
+// heroku host format
+// https://stormy-mountain-18015.herokuapp.com
+
 // Environment Settings
 const host = process.env.HOST_URL || 'localhost'
 const port = process.env.PORT || 9000

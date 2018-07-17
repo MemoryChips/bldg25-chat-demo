@@ -30,7 +30,7 @@ npm run pre-load-app-data # initializes RedisToGo
 # obtain redislabs database and set options here
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 DBPORT=10568
-DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 # redis-cli -h redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com -p 10568 -a 26tEoF1QdEghVi0g4BvfNLekflbXF2gY
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
@@ -79,7 +79,7 @@ npm start
 ```bash
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 DBPORT=10568
-DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH # optional
 npm run build # to build demo app angular code and server code
 # cntl-shft-b to build only server code in vs-code
@@ -87,11 +87,7 @@ npm run build # to build demo app angular code and server code
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 
-## TODO: Urgent
-
-## TODO: Normal
-
-1.  Deploy to Heroku
+- Heroku Deploy
 
 ```bash
 heroku create
@@ -109,13 +105,21 @@ heroku local web  # run the app locally
 # env
 heroku config:set DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 heroku config:set DBPORT=10568
-heroku config:set DBAUTH=26tEoF1QdEghVi0g4BvfNLekflbXF2gY
+heroku config:set DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
 heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
+heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com
 heroku config
 
 git push heroku master  # commit first!
 ```
+
+## TODO: Urgent
+
+1.  Deploy to Heroku has issues with images url's and chatwebserver url
+1.  Conceal redistogo key
+
+## TODO: Normal
 
 2.  Remove redis auth keys from code except local - auth keys only in README file for now
 3.  Minify and/or uglify server code

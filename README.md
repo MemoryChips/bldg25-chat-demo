@@ -111,6 +111,17 @@ heroku config
 git push heroku master  # commit first!
 ```
 
+## NPM Module test setup
+
+```bash
+# to test modules locally
+npm i ../bldg25-chat-dev/bldg25-chat-server-1.3.6.tgz --no-save
+npm i ../bldg25-chat-dev/bldg25-chat-1.3.6.tgz --no-save
+# to test published modules locally
+npm i bldg25-chat-server
+npm i bldg25-chat
+```
+
 ## TODO: Urgent
 
 1.  Deploy to Heroku has issues with images url's and chatwebserver url

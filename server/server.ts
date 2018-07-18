@@ -45,7 +45,7 @@ const port = process.env.PORT || serverConfig.port
 if (process.env.PROD || serverConfig.prod) {
   console.log(`Running in prod mode: ${serverConfig.host}:${serverConfig.port}`)
   // gives response when user refreshes some random url in angular
-  app.all('*', (_req, res) => {
+  app.all('*', (_req: any, res: any) => {
     res.status(200).sendFile(__dirname + '/index.html')
     // res.status(200).sendFile(__dirname + '/index.html')
   })

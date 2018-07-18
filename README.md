@@ -114,9 +114,12 @@ git push heroku master  # commit first!
 ## NPM Module test setup
 
 ```bash
+# to test modules locally - This does not work - Delete
+# npm i ../bldg25-chat-dev/bldg25-chat-server-1.3.6.tgz --no-save
+# npm i ../bldg25-chat-dev/bldg25-chat-1.3.6.tgz --no-save
 # to test modules locally
-npm i ../bldg25-chat-dev/bldg25-chat-server-1.3.6.tgz --no-save
-npm i ../bldg25-chat-dev/bldg25-chat-1.3.6.tgz --no-save
+npm i ../bldg25-chat-dev/bldg25-chat-server-1.3.6.tgz
+npm i ../bldg25-chat-dev/bldg25-chat-1.3.6.tgz
 # to test published modules locally
 npm i bldg25-chat-server
 npm i bldg25-chat

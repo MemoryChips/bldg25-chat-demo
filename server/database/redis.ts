@@ -65,10 +65,18 @@ export class RedisDatabase {
     return Promise.all(resets).then(results => results.every(r => r))
   }
 
-  // FIXME: Implement this
-  saveProduct(_product: DbProduct): Promise<boolean> {
-    return new Promise((resolve, _reject) => {
-      resolve(true)
+  saveProduct(
+    _product: DbProduct,
+    reqProductId: string | undefined
+  ): Promise<boolean> {
+    // return new Promise((resolve, _reject) => {
+    //   resolve(true)
+    // })
+    return redisdb.getItem('products').then(sProducts => {
+      const products: DbProducts = JSON.parse(sProducts)
+      const productId: string = reqProductId || redisdb.uniqueId()
+      products[productId] = _product
+      return redisdb.setItem('products', JSON.stringify(products))
     })
   }
 

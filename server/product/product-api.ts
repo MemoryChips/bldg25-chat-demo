@@ -61,25 +61,42 @@ export function getProduct(req: Request, res: Response) {
 }
 
 export function putPostProduct(req: Request, res: Response) {
+  const product = req.body
+  const productId: string =
+    req.params && req.params.id ? req.params.id : undefined
   redisdb
-    .getItem('products')
-    .then(sProducts => {
-      const products: DbProducts = JSON.parse(sProducts)
-      const productId: string =
-        req.params && req.params.id ? req.params.id : redisdb.uniqueId()
-      const product = req.body
-      products[productId] = product
-      redisdb.setItem('products', JSON.stringify(products)).then(success => {
-        if (success) {
-          res.status(200).json({ success })
-        } else {
-          res.status(403).send(`Unable to save product with id: ${productId}`)
-        }
-      })
+    .saveProduct(product, productId)
+    .then(success => {
+      if (success) {
+        res.status(200).json({
+          success
+        })
+      } else {
+        res.status(403).send(`Unable to save product: ${product}`)
+      }
     })
     .catch(err => {
       res.status(500).send(`Internal server error: ${err}`)
     })
+  // redisdb
+  //   .getItem('products')
+  //   .then(sProducts => {
+  //     const products: DbProducts = JSON.parse(sProducts)
+  //     const productId: string =
+  //       req.params && req.params.id ? req.params.id : redisdb.uniqueId()
+  //     const product = req.body
+  //     products[productId] = product
+  //     redisdb.setItem('products', JSON.stringify(products)).then(success => {
+  //       if (success) {
+  //         res.status(200).json({ success })
+  //       } else {
+  //         res.status(403).send(`Unable to save product with id: ${productId}`)
+  //       }
+  //     })
+  //   })
+  //   .catch(err => {
+  //     res.status(500).send(`Internal server error: ${err}`)
+  //   })
 }
 
 export function getAllCategories(_req: Request, res: Response) {

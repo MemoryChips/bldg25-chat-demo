@@ -20,7 +20,7 @@
 export const environment = {
   production: false,
   chatConfig: {
-    chatOpenAtLogin: true,
+    chatOpenAtLogin: false,
     reconnectInterval: 5000,
     reconnectAttempts: 6
   }

@@ -39,9 +39,6 @@ export class ProductService {
       map(addKey),
       map(values)
     )
-    // return this.getAll()
-    //   .map(addKey)
-    //   .map(values)
   }
 
   get(productId: string) {

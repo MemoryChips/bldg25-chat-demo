@@ -2,17 +2,30 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
 import { ProductsComponent } from './products.component'
 import { ProductService } from 'shared/services/product.service'
-import { ShoppingCartService } from 'shared/services/shopping-cart.service'
+import {
+  ShoppingCartService,
+  Cart
+} from 'shared/services/shopping-cart.service'
 import { ActivatedRoute } from '@angular/router'
 import { NO_ERRORS_SCHEMA } from '@angular/core'
 
-//   private productService: ProductService,
-// private shoppingCartService: ShoppingCartService,
-//   private route: ActivatedRoute
-
-class MockProductService {}
-class MockShoppingCartService {}
-class MockActivatedRoute {}
+import { Observable, of } from 'rxjs'
+class MockProductService {
+  // getList() {
+  //   return of({})
+  // }
+}
+class MockShoppingCartService {
+  cart$: Observable<Cart> = of<Cart>(new Cart())
+}
+class MockActivatedRoute {
+  queryParamMap() {
+    console.log('query map called')
+    return of({
+      get: () => ''
+    })
+  }
+}
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent

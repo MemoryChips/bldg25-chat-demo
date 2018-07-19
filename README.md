@@ -79,7 +79,8 @@ DBPORT=10568
 DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH # optional
 npm run build # to build demo app angular code and server code
-ng build --aot # avoids using deployed version of bldg25-chat when testing local version
+# to avoids using deployed version of bldg25-chat when testing local version of packages:
+ng build --aot
 # cntl-shft-b to build server in vs-code
 # npm run build-server to build only server code
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH

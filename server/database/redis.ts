@@ -2,7 +2,7 @@ import * as redis from 'redis'
 import { DbUser } from '../auth/models/user'
 import { serverConfig } from '../server-config'
 import { DbProducts, DbProduct, Categories } from '../product/product-api'
-import { allProducts } from './reset-app-db'
+import { getPreloadProducts, categories } from './reset-app-db'
 export const USERS = 'users'
 export const USER_EMAIL = 'user:email'
 
@@ -55,9 +55,14 @@ export class RedisDatabase {
   }
 
   resetAllProducts(): Promise<boolean> {
-    // get the all products from the reset-app-db
-    // const products = {}
-    return this.saveAllProducts(allProducts)
+    // const host = // NEED TO CONSTRUCT SERVER URL
+    const host = process.env.HOST_URL
+    const resets = [
+      this.saveAllProducts(getPreloadProducts(host)),
+      // this.saveAllProducts(getPreloadProducts(serverConfig.host)),
+      this.saveAllCategories(categories)
+    ]
+    return Promise.all(resets).then(results => results.every(r => r))
   }
 
   // FIXME: Implement this

@@ -11,7 +11,7 @@ export interface KeyedObj<T> {
   [key: string]: T
 }
 
-export const products: DbProducts = {
+export const allProducts: DbProducts = {
   '-L0V4jyvXq9qR9cNTenO': {
     category: 'database',
     imageUrl: assetsUrl + 'assets/ch.jpg',
@@ -180,7 +180,7 @@ export const categories: Categories = {
 
 export function resetAppDb(redisDb: RedisDatabase): Promise<boolean> {
   const dataUpdates = [
-    redisDb.saveAllProducts(products),
+    redisDb.saveAllProducts(allProducts),
     redisDb.saveAllCategories(categories)
   ]
   return Promise.all(dataUpdates).then((results: boolean[]) => {

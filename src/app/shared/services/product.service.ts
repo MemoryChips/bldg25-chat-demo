@@ -30,6 +30,10 @@ export class ProductService {
     return this.http.get<any>('/api/product/all')
   }
 
+  resetAll() {
+    return this.http.post<any>('/api/product/reset-all-products', '')
+  }
+
   getList() {
     return this.getAll().pipe<any>(
       map(addKey),

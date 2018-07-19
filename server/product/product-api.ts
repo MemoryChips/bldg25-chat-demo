@@ -22,6 +22,18 @@ export interface DbProduct {
 export interface DbProducts {
   [key: string]: DbProduct
 }
+
+export function resetAllProducts(_req: Request, res: Response) {
+  redisdb
+    .resetAllProducts() // TODO: Decide if this should also reset all categories
+    .then(success => {
+      res.status(200).send({ success })
+    })
+    .catch(err => {
+      res.status(500).send(`Internal server error: ${err}`)
+    })
+}
+
 export function getAllProducts(_req: Request, res: Response) {
   redisdb
     .getAllProducts()

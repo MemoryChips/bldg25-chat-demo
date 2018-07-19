@@ -2,6 +2,7 @@ import * as redis from 'redis'
 import { DbUser } from '../auth/models/user'
 import { serverConfig } from '../server-config'
 import { DbProducts, DbProduct, Categories } from '../product/product-api'
+import { allProducts } from './reset-app-db'
 export const USERS = 'users'
 export const USER_EMAIL = 'user:email'
 
@@ -51,6 +52,12 @@ export class RedisDatabase {
 
   saveAllProducts(products: DbProducts): Promise<boolean> {
     return this.setItem('products', JSON.stringify(products))
+  }
+
+  resetAllProducts(): Promise<boolean> {
+    // get the all products from the reset-app-db
+    // const products = {}
+    return this.saveAllProducts(allProducts)
   }
 
   // FIXME: Implement this

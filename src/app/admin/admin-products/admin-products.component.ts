@@ -85,4 +85,11 @@ export class AdminProductsComponent
       `Delete requested for ${item.title} - this method is not complete.`
     )
   }
+
+  resetAllProductsRequest() {
+    console.log(`Reset all products data requested.`)
+    this.productService.resetAll().subscribe(resp => {
+      console.log(`Response to reset all products: ${resp}`)
+    })
+  }
 }

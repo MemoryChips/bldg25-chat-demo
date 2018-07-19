@@ -5,6 +5,13 @@
     <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
+    <span class="float-right">
+      <section class="button-section">
+        <button class="reset-section" mat-raised-button color="primary" (click)="resetAllProductsRequest()">
+          Reset App Data
+        </button>
+      </section>
+    </span>
   </div>
 
   <mat-table #table [dataSource]="dataSource" matSort>

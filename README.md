@@ -3,9 +3,15 @@
 This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 - git clone; npm install
-- install redis server or obtain redistogo or redislabs server
+- install redis server or obtain redistogo or redislabs credentials
 
 ## Pre-Launch
+
+### Add Key Files to ./server/keys Folder
+
+- private.key and public.key: RSA private and public keys for running an encrypted server (https)
+- redis-labs-dbauth.key: Auth key for redis-labs
+- redis-togo-dbauth.key: Auth key for redistogo
 
 ### Initialize redis database
 

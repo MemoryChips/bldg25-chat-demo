@@ -47,3 +47,6 @@ server/keys
 
 # database files
 dump.rdb
+
+# copyright images
+src/assets/images

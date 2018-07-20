@@ -51,31 +51,31 @@ export function getPreloadProducts(assetsUrl = serverUrl) {
   const allProducts: DbProducts = {
     '-L0V4jyvXq9qR9cNTenO': {
       category: 'database',
-      imageUrl: assetsUrl + 'assets/ch.jpg',
+      imageUrl: assetsUrl + 'assets/images/ch.jpg',
       price: 5,
       title: 'Taxonomy Services Lite'
     },
     '-L0VdmFZvHL3o0X7IKzu': {
       category: 'web-dev',
-      imageUrl: assetsUrl + 'assets/hot-babe.jpg',
+      imageUrl: assetsUrl + 'assets/images/hot-babe.jpg',
       price: 10,
       title: 'Web App Testing'
     },
     '-L0VdmFZvHL3o0X7Iavc': {
       category: 'manpower',
-      imageUrl: assetsUrl + 'assets/mc1.jpg',
+      imageUrl: assetsUrl + 'assets/images/mc1.jpg',
       price: 10,
       title: 'Web App Testing II'
     },
     '-L0ZiFWvItP4YFXtYEH_': {
       category: 'web-dev',
-      imageUrl: assetsUrl + 'assets/pretty-lady.jpg',
+      imageUrl: assetsUrl + 'assets/images/pretty-lady.jpg',
       price: 22,
       title: 'Wordpress Sites'
     },
     '-KrqgOLs07ZkbapP4EGi': {
       category: 'veggies',
-      imageUrl: assetsUrl + 'assets/spinach.jpg',
+      imageUrl: assetsUrl + 'assets/images/spinach.jpg',
       price: 2.5,
       title: 'Spinach'
     },
@@ -88,7 +88,7 @@ export function getPreloadProducts(assetsUrl = serverUrl) {
     },
     '-KrvrXbV3rqnFEru_ojw': {
       category: 'veggies',
-      imageUrl: assetsUrl + 'assets/avocado.jpg',
+      imageUrl: assetsUrl + 'assets/images/avocado.jpg',
       price: 1.75,
       title: 'Avacado'
     },

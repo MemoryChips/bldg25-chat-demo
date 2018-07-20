@@ -7,11 +7,17 @@ This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 ## Pre-Launch
 
-### Add Key Files to ./server/keys Folder
+### Add Files not committed in the Repo
+
+#### Add Key Files to ./server/keys Folder
 
 - private.key and public.key: RSA private and public keys for running an encrypted server (https)
 - redis-labs-dbauth.key: Auth key for redis-labs
 - redis-togo-dbauth.key: Auth key for redistogo
+
+#### Add Image Files to ./src/assets/images as desired
+
+- these files are not commited to the repo
 
 ### Initialize redis database
 

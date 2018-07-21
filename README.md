@@ -142,19 +142,23 @@ npm i bldg25-chat
 ## TODO: Urgent
 
 1.  Deploy to Heroku has issues with images url's and chatwebserver url
-1.  Conceal redistogo key
+1.  Where is http-server used? I think it can be removed
+1.  Am I still using @ng-bootstrap/ng-bootstrap?
 
 ## TODO: Normal
 
+1.  Can I update tslint?
+1.  Can I update typescript?
+1.  Autoprefixer is used by webpack. Can I remove it from the project dependencies?
 1.  Stopping database crashes server - Can it be auto restarted?
-2.  Remove redis auth keys from code except local - auth keys only in README file for now
-3.  Minify and/or uglify server code
-4.  Delete images in server folder and remove image server code
-5.  Add gmail oath 2.0 signup OR okta login option
-6.  Final product card if it is alone stretches accross the screen
-7.  Create instructions on how to use this demo app
-8.  Signup should add snack bar message when it fails
-9.  type files frisby and node-fetch were modified - node fetch types were removed
+1.  Remove redis auth keys from code except local - auth keys only in README file for now
+1.  Minify and/or uglify server code
+1.  Delete images in server folder and remove image server code
+1.  Add gmail oath 2.0 signup OR okta login option
+1.  Final product card if it is alone stretches accross the screen
+1.  Create instructions on how to use this demo app
+1.  Signup should add snack bar message when it fails
+1.  type files frisby and node-fetch were modified - node fetch types were removed
 
 /home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/node-fetch/index.d.ts
 /home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/frisby/index.d.ts

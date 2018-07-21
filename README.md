@@ -91,7 +91,8 @@ DBPORT=10568
 DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH # optional
 npm run build # to build demo app angular code and server code
-# to avoids using deployed version of bldg25-chat when testing local version of packages:
+# If above is using incorrect version of bldg25-chat - reinstall node_modules
+# to avoid using deployed version of bldg25-chat when testing local version of packages:
 ng build --aot
 # cntl-shft-b to build server in vs-code
 # npm run build-server to build only server code
@@ -146,7 +147,6 @@ npm i bldg25-chat
 ## TODO: Normal
 
 1.  Can I update tslint?
-1.  Can I update typescript?
 1.  Autoprefixer is used by webpack. Can I remove it from the project dependencies?
 1.  Stopping database crashes server - Can it be auto restarted?
 1.  Remove redis auth keys from code except local - auth keys only in README file for now

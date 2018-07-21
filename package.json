@@ -40,7 +40,6 @@
     "@angular/platform-browser": "^6.0.9",
     "@angular/platform-browser-dynamic": "^6.0.9",
     "@angular/router": "^6.0.9",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "argon2": "^0.16.1",
     "argon2-ffi": "^1.1.0",
     "autolinker": "^1.6.2",

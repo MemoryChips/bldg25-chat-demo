@@ -142,8 +142,6 @@ npm i bldg25-chat
 ## TODO: Urgent
 
 1.  Deploy to Heroku has issues with images url's and chatwebserver url
-1.  Where is http-server used? I think it can be removed
-1.  Am I still using @ng-bootstrap/ng-bootstrap?
 
 ## TODO: Normal
 

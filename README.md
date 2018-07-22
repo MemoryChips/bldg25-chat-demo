@@ -121,6 +121,7 @@ heroku config:set DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
 heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
 heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com
+heroku config:set DEFAULT_AVATAR_URL=https://stormy-mountain-18015.herokuapp.com/assets/default-gravatar.jpg
 heroku config
 
 git push heroku master  # commit first!
@@ -142,10 +143,11 @@ npm i bldg25-chat
 
 ## TODO: Urgent
 
-1.  Deploy to Heroku has issues with images url's and chatwebserver url
+1.  Fix this: default avatar url: http://https://stormy-mountain-18015.herokuapp.com:26373/assets/default-gravatar.jpg
 
 ## TODO: Normal
 
+1.  Deploy to Heroku has issues with images url's
 1.  Can I update tslint?
 1.  Autoprefixer is used by webpack. Can I remove it from the project dependencies?
 1.  Stopping database crashes server - Can it be auto restarted?

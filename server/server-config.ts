@@ -30,7 +30,9 @@ const chatServerPort = Number(port)
 
 const imageHttp = options.secure ? 'https' : 'http'
 const imageFilePort = process.env.PROD || options.prod ? port : 4200
-const defaultAvatarUrl = `${imageHttp}://${host}:${imageFilePort}/assets/default-gravatar.jpg`
+const defaultAvatarUrl =
+  process.env.DEFAULT_AVATAR_URL ||
+  `${imageHttp}://${host}:${imageFilePort}/assets/default-gravatar.jpg`
 console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 export const chatConfig: IChatConfig = {

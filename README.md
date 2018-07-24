@@ -93,13 +93,19 @@ npm start
 - Local test of prod with Redislabs Server
 
 ```bash
+npm outdated
+npm update # to get latest published version of chat modules
+npm run build # to build demo app angular code and server code
 DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
 DBPORT=10568
 DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
-redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH # optional
-npm run build # to build demo app angular code and server code
+# redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH # optional
 # cntl-shft-b to build server in vs-code
 # npm run build-server to build only server code
+#
+# If errors in build occur, try deleting npm_modules and npm i
+#
+node dist/server.js --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 
@@ -133,22 +139,6 @@ heroku logs --tail
 heroku ps:scale web=0  # stop the running instance
 heroku local web  # run the app locally
 ```
-
-## TODO: Urgent
-
-## TODO: Normal
-
-1.  Can I update tslint?
-1.  Autoprefixer is used by webpack. Can I remove it from the project dependencies?
-1.  Stopping database crashes server - Can it be auto restarted?
-1.  Add gmail oath 2.0 signup OR okta login option
-1.  Final product card if it is alone stretches accross the screen
-1.  Signup should add snack bar message when it fails
-1.  type files frisby and node-fetch were modified - node fetch types were removed
-
-/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/node-fetch/index.d.ts
-/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/node_modules/@types/frisby/index.d.ts
-(line 81)export function formData(): FormData // **\*\*\*\***\*\***\*\*\*\*** modified
 
 ### Setup on Github
 

@@ -20,7 +20,8 @@ cd ~/redis-4.0.6/src/  # location of redis-server and redis-cli
 
 #### Add Key Files to ./server/keys Folder
 
-- private.key and public.key: RSA private and public keys for running an encrypted server (https)
+- cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
+- private.key and public.key: RSA private and public keys for encoding JSON webtokens
 - redis-labs-dbauth.key: Auth key for redis-labs
 - redis-togo-dbauth.key: Auth key for redistogo
 

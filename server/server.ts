@@ -54,7 +54,10 @@ if (process.env.PROD || serverConfig.prod) {
 if (serverConfig.secure) {
   // launch an HTTPS Server. Note: this does NOT mean that the application is secure
   const httpsServer = https.createServer(
-    { key: fs.readFileSync('key.pem'), cert: fs.readFileSync('cert.pem') },
+    {
+      key: fs.readFileSync('./server/keys/key.pem'),
+      cert: fs.readFileSync('./server/keys/cert.pem')
+    },
     app
   )
 

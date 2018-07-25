@@ -110,6 +110,14 @@ node dist/server.js --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 
+- Run tests
+
+```bash
+redis-server ./server/database/redis.conf  # launch local redis server
+npm run start-server
+npm run api-test
+```
+
 - Heroku Deploy
 
 ```bash

@@ -90,27 +90,8 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "nodemon": "^1.18.3",
     "protractor": "~5.1.2",
-    "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
     "tslint": "~5.7.0"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/src/"
-    ]
   },
   "engines": {
     "node": "10.4.0",

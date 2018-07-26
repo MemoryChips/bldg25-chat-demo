@@ -114,7 +114,7 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 
 ```bash
 redis-server ./server/database/redis.conf  # launch local redis server
-npm run start-server
+npm run start-server # launch api server OR run vs-code debugger
 npm run api-test
 ```
 

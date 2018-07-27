@@ -1,44 +1,51 @@
 // tslint:disable:max-line-length
-// import * as frisby from 'frisby'
-// @types/frisby causes tsc errors when compiling the application
-const frisby = require('frisby')
-// const Joi = frisby.Joi
 import { serverConfig } from './test-config'
 import { testConfig } from './test-config'
-
+import fetch from 'node-fetch'
 const verbose = false
 const serverType = 'http'
-// const serverType = 'https'  // jest does not work with https
 
 const serverUrl = `${serverType}://${serverConfig.chatServerHost}:${
   serverConfig.chatServerPort
 }`
 const loginRequestUrl = `${serverUrl}/api/auth/login`
 
-describe('Api Auth endpoints', () => {
+describe('Api Auth endpoints with node-fetch', () => {
   it(`should block ${
-    testConfig.badCredentials.email
-  } from login with bad credentials`, (done: DoneFn) => {
-    frisby
-      .post(loginRequestUrl, testConfig.badCredentials)
-      .expect('status', 403)
-      // .expectNot('json', badUser.expected)
-      .done(done)
+    testConfig.goodCredentials.email
+  } login with bad credentials`, (done: DoneFn) => {
+    fetch(loginRequestUrl, {
+      method: 'POST',
+      body: JSON.stringify(testConfig.badCredentials),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      if (verbose) {
+        console.log(res.body)
+        console.log(res.headers)
+      }
+      expect(res.status).toBe(403)
+      done()
+    })
   })
   it(`should accept ${
     testConfig.goodCredentials.email
-  } from login with good credentials`, (done: DoneFn) => {
-    frisby
-      .post(loginRequestUrl, testConfig.goodCredentials)
-      .expect('status', 200)
-      // .expectNot('json', badUser.expected)
-      .then((res: any) => {
-        if (verbose) {
-          console.log(res.body)
-          console.log(res.headers)
-        }
-      })
-      .done(done)
+  } login with good credentials`, (done: DoneFn) => {
+    fetch(loginRequestUrl, {
+      method: 'POST',
+      body: JSON.stringify(testConfig.goodCredentials),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      if (verbose) {
+        console.log(res.body)
+        console.log(res.headers)
+      }
+      expect(res.status).toBe(200)
+      done()
+    })
   })
 })
 

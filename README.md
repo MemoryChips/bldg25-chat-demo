@@ -75,6 +75,7 @@ npm start
 ```bash
 redis-server ./server/database/redis.conf  # launch local redis server
 redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
+# run server build in vs code with ctrl-shft-b
 npm run start-server
 npm start
 ```

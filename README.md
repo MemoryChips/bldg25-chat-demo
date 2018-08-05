@@ -157,3 +157,39 @@ heroku local web  # run the app locally
 git remote add git-hub https://github.com/MemoryChips/bldg25-chat-demo.git
 git push git-hub master
 ```
+
+### Setup Demo App
+
+- clone repo at git@bitbucket.org:robkat/chat-5.git
+- run npm install
+
+  - confirm build works; correct any errors
+  - package.lock.json will likely be modified
+
+- Add Key Files not committed to repo to ./server/keys Folder
+  - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
+  - private.key and public.key: RSA private and public keys for encoding JSON webtokens
+  - redis-labs-dbauth.key: Auth key for redis-labs
+  - redis-togo-dbauth.key: Auth key for redistogo
+
+```bash
+# cd to project dir
+# set the next line to the source of your key files
+# TODO: set up example set of files
+SOURCE_OF_KEYFILES=../../bldg25-chat-demo/server/server/keys
+mkdir ./server/keys/.
+cp $SOURCE_OF_KEYFILES ./server/keys
+```
+
+- add image files as desired to ./src/assets/images
+
+```bash
+# cd to project dir
+# set the next line to the source of your image files
+# TODO: set up example set of files
+SOURCE_OF_IMAGEFILES=../../bldg25-chat-demo/src/assets/images/*
+mkdir ./src/assets/images
+cp $SOURCE_OF_IMAGEFILES ./src/assets/images
+```
+
+- choose and run a launch scenario listed above

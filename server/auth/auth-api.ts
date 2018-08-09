@@ -7,6 +7,8 @@ import { createCsrfToken, createSessionToken } from './security'
 
 import { serverConfig } from '../server-config'
 
+import { TOKEN_AGE } from '../server-config'
+
 // TODO: align with front end
 // import { Credentials } from 'app/auth/auth.service'
 export interface Credentials {
@@ -132,12 +134,10 @@ async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
     })
   } else {
     console.log(`Unable to create user: ${dbUser.email}`)
-    res
-      .status(403)
-      .json({
-        success: false,
-        reason: 'unable to create user. Possibly user exists.'
-      })
+    res.status(403).json({
+      success: false,
+      reason: 'unable to create user. Possibly user exists.'
+    })
   }
 }
 
@@ -164,8 +164,7 @@ export async function login(req: Request, res: Response) {
   const sessionToken = await createSessionToken(user)
   const csrfToken = await createCsrfToken()
   console.log('Login successful')
-  const age24hrs = 24 * 60 * 60 * 1000
-  res.cookie('SESSIONID', sessionToken, { maxAge: age24hrs, httpOnly: true })
+  res.cookie('SESSIONID', sessionToken, { maxAge: TOKEN_AGE, httpOnly: true })
   res.cookie('XSRF-TOKEN', csrfToken)
   res.status(200).json({
     id: user.id,

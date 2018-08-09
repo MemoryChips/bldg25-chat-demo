@@ -61,3 +61,5 @@ export const serverConfig = {
   secure: !!options.secure,
   prod: !!options.prod
 }
+
+export const TOKEN_AGE = 24 * 60 * 60 * 1000

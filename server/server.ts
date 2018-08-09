@@ -16,7 +16,7 @@ import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 const bodyParser = require('body-parser')
 
-import { ChatWebSocketServer } from 'bldg25-chat-server'
+import { attachVideoSocketServer } from 'bldg25-chat-server'
 import { chatConfig, serverConfig } from './server-config'
 
 // const env = process.env.NODE_ENV || 'development'
@@ -62,8 +62,7 @@ if (serverConfig.secure) {
   )
 
   // *** Chat server must be added to the express server as follows:
-  // tslint:disable-next-line:no-unused-expression
-  new ChatWebSocketServer(httpsServer, chatConfig)
+  attachVideoSocketServer(httpsServer, chatConfig)
 
   httpsServer.listen(port, () => {
     console.log(`HTTPS Server running at port: ${port}`)
@@ -73,8 +72,7 @@ if (serverConfig.secure) {
   const httpServer = http.createServer(app)
 
   // *** Chat server must be added to the express server as follows:
-  // tslint:disable-next-line:no-unused-expression
-  new ChatWebSocketServer(httpServer, chatConfig)
+  attachVideoSocketServer(httpServer, chatConfig)
 
   httpServer.listen(port, () => {
     console.log(`HTTP Server running at port: ${port}`)

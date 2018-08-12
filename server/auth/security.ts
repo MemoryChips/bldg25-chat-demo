@@ -44,6 +44,15 @@ export async function getUserFromJwt(token: string): Promise<User> {
       } else {
         if (typeof result === 'string') return reject('Error: recieved string from jwt.verify')
         const decodedToken = result as any
+        const timeLeftHrs = (decodedToken.exp - global.Date.now() / 1000) / 3600
+        if (timeLeftHrs < 12) {
+          console.log(
+            `Expiration of ${timeLeftHrs} is less than 12 hrs. Consider reject OR find other way to alert front end.`
+          )
+          // reject(`Expiration of ${timeLeftHrs} is less than 12 hrs`)
+        } else {
+          console.log(`Expiration of ${timeLeftHrs} is more than 12 hrs.`)
+        }
         const user: User = JSON.parse(decodedToken.sub)
         return resolve(user)
       }

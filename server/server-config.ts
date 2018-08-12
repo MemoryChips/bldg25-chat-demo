@@ -1,4 +1,4 @@
-import { defaultVerifyClient } from './auth/security' // *** verifies client credentials
+// import { defaultVerifyClient } from './auth/security' // *** verifies client credentials
 import { IChatConfig } from 'bldg25-chat-server'
 
 // Command line settings
@@ -41,7 +41,7 @@ export const chatConfig: IChatConfig = {
   redisDataBase: 0, // *** set this to the redis database number to be used by the chat server
   // chatServerHost: host, // *** set this to the url of the server
   // chatServerPort, // *** set this to the port of the server
-  verifyClient: defaultVerifyClient,
+  // verifyClient: defaultVerifyClient,
   redisDbAuthCode
 }
 
@@ -62,4 +62,4 @@ export const serverConfig = {
   prod: !!options.prod
 }
 
-export const TOKEN_AGE = 24 * 60 * 60 * 1000
+export const TOKEN_AGE_MS = 24 * 60 * 60 * 1000

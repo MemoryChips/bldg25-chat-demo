@@ -8,7 +8,7 @@ import * as http from 'http'
 import * as https from 'https'
 import * as fs from 'fs'
 
-import { retrieveUserIdFromRequest } from './auth/mware/get-user'
+import { getUserFromRequest } from './auth/mware/get-user'
 
 import { authRouter } from './auth/auth-routes-api'
 import { productRouter } from './product/product-routes'
@@ -18,12 +18,13 @@ const bodyParser = require('body-parser')
 
 import { attachVideoSocketServer } from 'bldg25-chat-server'
 import { chatConfig, serverConfig } from './server-config'
+import { verifySocketConnection } from './auth/security'
 
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
 
 app.use(cookieParser())
-app.use(retrieveUserIdFromRequest)
+app.use(getUserFromRequest)
 app.use(bodyParser.json())
 
 // for serving in production
@@ -62,7 +63,7 @@ if (serverConfig.secure) {
   )
 
   // *** Chat server must be added to the express server as follows:
-  attachVideoSocketServer(httpsServer, chatConfig)
+  attachVideoSocketServer(httpsServer, chatConfig, verifySocketConnection)
 
   httpsServer.listen(port, () => {
     console.log(`HTTPS Server running at port: ${port}`)
@@ -72,7 +73,7 @@ if (serverConfig.secure) {
   const httpServer = http.createServer(app)
 
   // *** Chat server must be added to the express server as follows:
-  attachVideoSocketServer(httpServer, chatConfig)
+  attachVideoSocketServer(httpServer, chatConfig, verifySocketConnection)
 
   httpServer.listen(port, () => {
     console.log(`HTTP Server running at port: ${port}`)

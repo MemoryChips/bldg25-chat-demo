@@ -7,7 +7,7 @@ import { createCsrfToken, createSessionToken } from './security'
 
 import { serverConfig } from '../server-config'
 
-import { TOKEN_AGE } from '../server-config'
+import { TOKEN_AGE_MS } from '../server-config'
 
 // TODO: align with front end
 // import { Credentials } from 'app/auth/auth.service'
@@ -164,7 +164,10 @@ export async function login(req: Request, res: Response) {
   const sessionToken = await createSessionToken(user)
   const csrfToken = await createCsrfToken()
   console.log('Login successful')
-  res.cookie('SESSIONID', sessionToken, { maxAge: TOKEN_AGE, httpOnly: true })
+  res.cookie('SESSIONID', sessionToken, {
+    maxAge: TOKEN_AGE_MS,
+    httpOnly: true
+  })
   res.cookie('XSRF-TOKEN', csrfToken)
   res.status(200).json({
     id: user.id,

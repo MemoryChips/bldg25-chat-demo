@@ -3,64 +3,67 @@ const crypto = require('crypto')
 import * as jwt from 'jsonwebtoken'
 import * as fs from 'fs'
 import { User } from './models/user'
+import { VerifySocketConnection } from 'bldg25-chat-server'
+import { TOKEN_AGE_MS } from '../server-config'
 
 export const randomBytes = util.promisify(crypto.randomBytes)
 
-export const signJwt = util.promisify(jwt.sign)
+const RSA_PRIVATE_KEY = fs.readFileSync('./server/keys/private.key')
+const RSA_PUBLIC_KEY = fs.readFileSync('./server/keys/public.key')
 
-const RSA_PRIVATE_KEY =
-  process.env.RSA_PRIVATE_KEY || fs.readFileSync('./server/keys/private.key')
-const RSA_PUBLIC_KEY =
-  process.env.RSA_PUBLIC_KEY || fs.readFileSync('./server/keys/public.key')
-const SESSION_DURATION = 72000000
+const SESSION_DURATION_SECS = Math.round(TOKEN_AGE_MS / 1000)
+console.log(`session duration is set to: ${SESSION_DURATION_SECS}`)
 
-export async function createSessionToken(user: User) {
-  return signJwt(
+export function createSessionToken(user: User) {
+  const rUser = { ...user }
+  const options: jwt.SignOptions = {
+    algorithm: 'RS256',
+    expiresIn: SESSION_DURATION_SECS,
+    subject: JSON.stringify(rUser)
+  }
+  const token = jwt.sign(
     {
       roles: user.roles
     },
     RSA_PRIVATE_KEY,
-    {
-      algorithm: 'RS256',
-      expiresIn: SESSION_DURATION,
-      subject: JSON.stringify(user)
-      // subject: user.id.toString()
-    }
-  )
-}
-
-export async function decodeJwt(token: string) {
-  const payload = await jwt.verify(token, RSA_PUBLIC_KEY)
-  console.log('decoded JWT payload', payload)
-  // TODO: is there a better way?
-  return payload as any
-}
-
-export async function createCsrfToken() {
-  const token = await randomBytes(32).then((bytes: any) =>
-    bytes.toString('hex')
+    options
   )
   return token
 }
 
-// Required by chat-server
-export function defaultVerifyClient(info: any, done: any) {
-  const cookies = getCookiesMap(info.req.headers.cookie)
-  const jwToken = cookies.SESSIONID
-  if (!jwToken) {
+export async function createCsrfToken() {
+  const token = await randomBytes(32).then((bytes: any) => bytes.toString('hex'))
+  return token
+}
+
+export async function getUserFromJwt(token: string): Promise<User> {
+  return new Promise<User>((resolve, reject) => {
+    jwt.verify(token, RSA_PUBLIC_KEY, (err, result) => {
+      if (err) {
+        return reject(err)
+      } else {
+        if (typeof result === 'string') return reject('Error: recieved string from jwt.verify')
+        const decodedToken = result as any
+        const user: User = JSON.parse(decodedToken.sub)
+        return resolve(user)
+      }
+    })
+  })
+}
+
+/*
+  This function must be exported for the chat server to verify socket connection attempts
+  The chat server is looking for the user in a jwt that can be decoded and returned by this
+  function
+*/
+export const verifySocketConnection: VerifySocketConnection = function(req: any) {
+  const cookies = getCookiesMap(req.headers.cookie)
+  const token = cookies.SESSIONID
+  if (!token) {
     console.log('jwt is missing in a websocket connection attempt')
-    done(false, 403, 'Forbidden')
+    return Promise.reject('jwt is missing in a websocket connection attempt')
   } else {
-    decodeJwt(jwToken)
-      .then(decodedJwt => {
-        info.req['user'] = JSON.parse(decodedJwt.sub) // TODO: verify this is correct
-        // info.req['userId'] = decodedJwt.sub // currently only saving the userId on req
-        done(decodedJwt.sub)
-      })
-      .catch(err => {
-        console.log(err)
-        done(false, 403, 'Forbidden - invalid jwt')
-      })
+    return getUserFromJwt(token)
   }
 }
 

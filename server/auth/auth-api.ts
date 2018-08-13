@@ -81,6 +81,19 @@ export function getUser(req: Request, res: Response) {
   }
 }
 
+export function deleteUser(req: any, res: Response) {
+  const email = req.params.email
+  redisdb.deleteUser(email).then(n => {
+    if (n === 1) {
+      res.status(200).json({ success: true, reason: `user with email ${email} deleted` })
+    } else {
+      res
+        .status(403)
+        .json({ success: false, reason: `user with email ${email} not found and not deleted` })
+    }
+  })
+}
+
 export function saveUser(req: any, res: any) {
   const userId = req.params.id
   redisdb.getUserById(userId).then(dbUser => {
@@ -92,9 +105,7 @@ export function saveUser(req: any, res: any) {
         if (_results < 2) {
           createUser(req, res)
         } else {
-          res
-            .status(403)
-            .json({ success: false, reason: 'error deleting old records' })
+          res.status(403).json({ success: false, reason: 'error deleting old records' })
         }
       })
       .catch(err => {
@@ -153,10 +164,7 @@ export async function login(req: Request, res: Response) {
     return res.status(500).send('Server error. User record not found.')
   }
   const user: User = { id: userId, ...dbUser }
-  const isPasswordValid = await argon2.verify(
-    user.passwordDigest,
-    credentials.password
-  )
+  const isPasswordValid = await argon2.verify(user.passwordDigest, credentials.password)
   if (!isPasswordValid) {
     return res.status(403).send('incorrect password')
   }

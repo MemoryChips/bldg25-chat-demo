@@ -11,13 +11,33 @@ export class RedisDatabase {
 
   constructor(dbNum = 0) {
     console.log('Instance of redis database created.')
-    this.redisClient = redis.createClient({
-      host: serverConfig.db.host,
-      port: serverConfig.db.port
+    this.redisClient = redis.createClient(serverConfig.db.port, serverConfig.db.host, {
+      max_attempts: 20,
+      retry_strategy: options => {
+        console.log(
+          `Trying to reconnect: ${options.attempt} attempt. ${
+            options.total_retry_time
+          } total retry time.`
+        )
+        return 5000
+      }
     })
-    const authorized = this.redisClient.auth(serverConfig.redisDbAuthCode)
-    this.redisClient.select(dbNum)
-    console.log(`Database ${dbNum} selected with Authorization: ${authorized}`)
+    this.redisClient.on('error', err => {
+      // Can I reconnect here?
+      console.error(`Error in client: ${err}`)
+    })
+    // this.redisClient = redis.createClient({
+    //   port: serverConfig.db.port,
+    //   host: serverConfig.db.host,
+    // })
+    this.redisClient.on('connect', _e => {
+      const authorized = this.redisClient.auth(serverConfig.redisDbAuthCode)
+      this.redisClient.select(dbNum)
+      console.log(`Database ${dbNum} selected with Authorization: ${authorized}`)
+    })
+    this.redisClient.on('reconnecting', _e => {
+      console.log(`Attempting reconnect`)
+    })
   }
 
   quit() {
@@ -65,10 +85,7 @@ export class RedisDatabase {
     return Promise.all(resets).then(results => results.every(r => r))
   }
 
-  saveProduct(
-    _product: DbProduct,
-    reqProductId: string | undefined
-  ): Promise<boolean> {
+  saveProduct(_product: DbProduct, reqProductId: string | undefined): Promise<boolean> {
     // return new Promise((resolve, _reject) => {
     //   resolve(true)
     // })
@@ -81,9 +98,7 @@ export class RedisDatabase {
   }
 
   getAllProducts(): Promise<DbProducts> {
-    return this.getItem('products').then((sProducts: string) =>
-      JSON.parse(sProducts)
-    )
+    return this.getItem('products').then((sProducts: string) => JSON.parse(sProducts))
   }
 
   getUserById(userId: string): Promise<DbUser> {
@@ -171,9 +186,7 @@ export class RedisDatabase {
       this.redisClient.hdel(USER_EMAIL, email, (_err, numDeleted) => {
         if (_err) reject(_err)
         if (numDeleted > 1) {
-          console.log(
-            `*** WARNING *** deleted multiple email links for ${email}`
-          )
+          console.log(`*** WARNING *** deleted multiple email links for ${email}`)
         }
         resolve(numDeleted)
       })
@@ -185,9 +198,7 @@ export class RedisDatabase {
       this.redisClient.hdel(USERS, index, (_err, numDeleted) => {
         if (_err) reject(_err)
         if (numDeleted > 1) {
-          console.log(
-            `*** ERROR *** deleted multiple user records for ${index}`
-          )
+          console.log(`*** ERROR *** deleted multiple user records for ${index}`)
         }
         resolve(numDeleted)
       })
@@ -233,11 +244,7 @@ export class RedisDatabase {
     })
   }
 
-  private _createHashItem(
-    type: string,
-    value = '',
-    uid: string = ''
-  ): Promise<string> {
+  private _createHashItem(type: string, value = '', uid: string = ''): Promise<string> {
     return new Promise((resolve, reject) => {
       if (!uid) uid = this.uniqueId()
       this.redisClient.hset(type, uid, value, (_err, itemsCreated) => {

@@ -1,11 +1,9 @@
 // tslint:disable:max-line-length
-import { RedisDatabase } from './redis'
+// import { RedisDatabase } from './redis'
 import { DbProducts, Categories } from '../product/product-api'
 import { serverConfig } from '../server-config'
 
-const serverUrl = serverConfig.prod
-  ? 'https://localhost:9000/'
-  : 'http://localhost:4200/'
+const serverUrl = serverConfig.prod ? 'https://localhost:9000/' : 'http://localhost:4200/'
 
 export interface KeyedObj<T> {
   [key: string]: T
@@ -35,17 +33,17 @@ export const categories: Categories = {
   }
 }
 
-export function resetAppDb(redisDb: RedisDatabase): Promise<boolean> {
-  const dataUpdates = [
-    redisDb.saveAllProducts(getPreloadProducts()),
-    redisDb.saveAllCategories(categories)
-  ]
-  return Promise.all(dataUpdates).then((results: boolean[]) => {
-    const success = results.every(r => r)
-    console.log(`Categories and products loaded: ${success}`)
-    return success
-  })
-}
+// export function resetAppDb(redisDb: RedisDatabase): Promise<boolean> {
+//   const dataUpdates = [
+//     redisDb.saveAllProducts(getPreloadProducts()),
+//     redisDb.saveAllCategories(categories)
+//   ]
+//   return Promise.all(dataUpdates).then((results: boolean[]) => {
+//     const success = results.every(r => r)
+//     console.log(`Categories and products loaded: ${success}`)
+//     return success
+//   })
+// }
 
 export function getPreloadProducts(assetsUrl = serverUrl) {
   const allProducts: DbProducts = {
@@ -81,8 +79,7 @@ export function getPreloadProducts(assetsUrl = serverUrl) {
     },
     '-KrrIkDT19XhPgWo0T0A': {
       category: 'database',
-      imageUrl:
-        'https://static.pexels.com/photos/2434/bread-food-healthy-breakfast.jpg',
+      imageUrl: 'https://static.pexels.com/photos/2434/bread-food-healthy-breakfast.jpg',
       price: 3,
       title: 'Freshly Baked Bread'
     },
@@ -121,43 +118,37 @@ export function getPreloadProducts(assetsUrl = serverUrl) {
     },
     '-KrvsKZbI_mpo3hJg7G7': {
       category: 'manpower',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/c/c4/Orange-Fruit-Pieces.jpg',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Orange-Fruit-Pieces.jpg',
       price: 1.7,
       title: 'Orange'
     },
     '-KrvsRNOg-ftEUM3Te-F': {
       category: 'manpower',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg',
       price: 2,
       title: 'Apple'
     },
     '-Krvs_CiDXdiZ3yd0PUp': {
       category: 'manpower',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/3/36/Kyoho-grape.jpg',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Kyoho-grape.jpg',
       price: 2,
       title: 'Grape'
     },
     '-KrvsfKjGc0NCM0prc0I': {
       category: 'database',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/9/9e/Autumn_Red_peaches.jpg',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Autumn_Red_peaches.jpg',
       price: 2,
       title: 'Peach'
     },
     '-KrvsrmX3I1-Bo6eFCdx': {
       category: 'database',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cinnamon-other.jpg',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cinnamon-other.jpg',
       price: 0.5,
       title: 'Cinnamon Sticks'
     },
     '-KrvsxvxOmTzMXOSx7iG': {
       category: 'database',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/4/48/Saffron_Crop.JPG',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Saffron_Crop.JPG',
       price: 3,
       title: 'Saffron'
     },
@@ -170,22 +161,19 @@ export function getPreloadProducts(assetsUrl = serverUrl) {
     },
     '-Krvu3aL-m-ku0yCnQGr': {
       category: 'manpower',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/1/1d/Bagel-Plain-Alt.jpg',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Bagel-Plain-Alt.jpg',
       price: 1,
       title: 'Bagel Bread'
     },
     '-KrvuH_bkBBZDW0NCwfl': {
       category: 'manpower',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/e/e1/Strawberries.jpg',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Strawberries.jpg',
       price: 1.95,
       title: 'Strawberry'
     },
     '-KrvuT7GtYfsFvmQfgoj': {
       category: 'manpower',
-      imageUrl:
-        'https://static.pexels.com/photos/416607/pexels-photo-416607.jpeg',
+      imageUrl: 'https://static.pexels.com/photos/416607/pexels-photo-416607.jpeg',
       price: 1.25,
       title: 'Baguette Bread'
     }

@@ -6,7 +6,8 @@ import { getPreloadProducts, categories } from './reset-app-db'
 export const USERS = 'users'
 export const USER_EMAIL = 'user:email'
 
-export class RedisDatabase {
+// export class RedisDatabase {
+class RedisDatabase {
   private redisClient: redis.RedisClient
 
   constructor(dbNum = 0) {
@@ -85,14 +86,12 @@ export class RedisDatabase {
   }
 
   saveProduct(_product: DbProduct, reqProductId: string | undefined): Promise<boolean> {
-    // return new Promise((resolve, _reject) => {
-    //   resolve(true)
-    // })
-    return redisdb.getItem('products').then(sProducts => {
+    // return redisdb.getItem('products').then(sProducts => {
+    return this.getItem('products').then(sProducts => {
       const products: DbProducts = JSON.parse(sProducts)
-      const productId: string = reqProductId || redisdb.uniqueId()
+      const productId: string = reqProductId || this.uniqueId()
       products[productId] = _product
-      return redisdb.setItem('products', JSON.stringify(products))
+      return this.setItem('products', JSON.stringify(products))
     })
   }
 
@@ -206,11 +205,10 @@ export class RedisDatabase {
 
   private _createUser(dbUser: DbUser): Promise<boolean> {
     // let createdUserId = ''
-    return redisdb
-      ._createHashItem(USERS, JSON.stringify(dbUser))
+    return this._createHashItem(USERS, JSON.stringify(dbUser))
       .then(userId => {
         // createdUserId = userId
-        return redisdb._createHashItem(USER_EMAIL, userId, dbUser.email)
+        return this._createHashItem(USER_EMAIL, userId, dbUser.email)
       })
       .then(userEmail => {
         // const newDbUser = console.log(dbUser)

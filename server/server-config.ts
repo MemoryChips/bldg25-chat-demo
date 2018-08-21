@@ -11,12 +11,9 @@ const optionDefinitions = [
   { name: 'dbPort', type: Number }
 ]
 export const options = commandLineArgs(optionDefinitions)
-console.log(`${Object.keys(options).length}`)
 const dbHost = !!options.dbHost ? options.dbHost : 'localhost'
 const dbPort = !!options.dbPort ? options.dbPort : 6379
-const redisDbAuthCode = !!options.dbAuth
-  ? options.dbAuth
-  : 'this_should_be_a_secret_authcode'
+const redisDbAuthCode = !!options.dbAuth ? options.dbAuth : 'this_should_be_a_secret_authcode'
 console.log(`Using ${dbHost}:${dbPort} for redis database`)
 console.log(`Using authcode ${redisDbAuthCode} for redis database`)
 

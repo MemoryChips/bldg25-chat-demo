@@ -12,7 +12,6 @@ export class RedisDatabase {
   constructor(dbNum = 0) {
     console.log('Instance of redis database created.')
     this.redisClient = redis.createClient(serverConfig.db.port, serverConfig.db.host, {
-      max_attempts: 20,
       retry_strategy: options => {
         console.log(
           `Trying to reconnect: ${options.attempt} attempt. ${

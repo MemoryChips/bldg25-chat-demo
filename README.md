@@ -111,6 +111,19 @@ node dist/server.js --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 
+- remove all chat keys from database
+
+```bash
+DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
+DBPORT=10568
+DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
+# OR
+DBHOST='catfish.redistogo.com'
+DBPORT=9782
+DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
+redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH KEYS chat* | xargs redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH DEL
+```
+
 - Run tests
 
 ```bash

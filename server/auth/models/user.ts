@@ -1,5 +1,5 @@
 export interface DbUser {
-  // id?: string
+  // _id?: string
   email: string
   userName: string
   passwordDigest: string
@@ -8,5 +8,5 @@ export interface DbUser {
 }
 
 export interface User extends DbUser {
-  id: string
+  _id: string
 }

@@ -18,7 +18,7 @@ export interface Credentials {
 // application user must have the properties for ChatUser
 export interface AppUser {
   email: string
-  id: string
+  _id: string
   roles: string[]
   userName: string
   loginTime: number
@@ -30,7 +30,7 @@ export interface AppUser {
 
 export const ANONYMOUS_USER: AppUser = {
   email: 'guest',
-  id: '', // keep this falsey
+  _id: '', // keep this falsey
   roles: [],
   userName: 'Guest',
   loginTime: 0,
@@ -48,10 +48,8 @@ export class AuthService {
     .pipe(filter((user: AppUser) => !!user))
 
   returnUrl = '/'
-  isLoggedIn$: Observable<boolean> = this.user$.pipe(map(user => !!user.id))
-  isLoggedOut$: Observable<boolean> = this.isLoggedIn$.pipe(
-    map(isLoggedIn => !isLoggedIn)
-  )
+  isLoggedIn$: Observable<boolean> = this.user$.pipe(map(user => !!user._id))
+  isLoggedOut$: Observable<boolean> = this.isLoggedIn$.pipe(map(isLoggedIn => !isLoggedIn))
   chatConnection: WebSocket
 
   public showPassword = false
@@ -67,10 +65,10 @@ export class AuthService {
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
     this.http.get<AppUser>('/api/auth/user-me').subscribe(
       user => {
-        if (!!user.id) {
+        if (!!user._id) {
           this._completLogin(user)
         } else {
-          this.userSubject$.next(user.id ? user : ANONYMOUS_USER)
+          this.userSubject$.next(user._id ? user : ANONYMOUS_USER)
         }
       },
       err => {

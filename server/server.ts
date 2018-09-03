@@ -16,7 +16,9 @@ import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 import bodyParser from 'body-parser'
 
-import { attachVideoSocketServer } from 'bldg25-chat-server'
+// necessary imports from bldg25 chat server package
+import { attachVideoSocketServer, ChatDatabase } from 'bldg25-chat-server'
+
 import { chatConfig, serverConfig } from './server-config'
 import { verifySocketConnection } from './auth/security'
 
@@ -52,6 +54,9 @@ if (process.env.PROD || serverConfig.prod) {
   })
 }
 
+// Create database connection for chat
+const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
+
 if (serverConfig.secure) {
   // launch an HTTPS Server. Note: this does NOT mean that the application is secure
   const httpsServer = https.createServer(
@@ -63,7 +68,7 @@ if (serverConfig.secure) {
   )
 
   // *** Chat server must be added to the express server as follows:
-  attachVideoSocketServer(httpsServer, chatConfig, verifySocketConnection)
+  attachVideoSocketServer(httpsServer, dbChat, verifySocketConnection)
 
   httpsServer.listen(port, () => {
     console.log(`HTTPS Server running at port: ${port}`)
@@ -73,7 +78,7 @@ if (serverConfig.secure) {
   const httpServer = http.createServer(app)
 
   // *** Chat server must be added to the express server as follows:
-  attachVideoSocketServer(httpServer, chatConfig, verifySocketConnection)
+  attachVideoSocketServer(httpServer, dbChat, verifySocketConnection)
 
   httpServer.listen(port, () => {
     console.log(`HTTP Server running at port: ${port}`)

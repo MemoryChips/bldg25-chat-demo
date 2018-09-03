@@ -47,11 +47,11 @@ export function createUser(req: Request, res: Response) {
 
 export function getJwtUser(req: any, res: any) {
   if (!!req.user) {
-    const userId: string = req.user.id
+    const userId: string = req.user._id
     redisdb
       .getUserById(userId)
       .then(user => {
-        const rUser = { id: userId, ...user }
+        const rUser = { _id: userId, ...user }
         delete rUser.passwordDigest
         res.status(200).json(rUser)
       })
@@ -60,7 +60,7 @@ export function getJwtUser(req: any, res: any) {
       })
   } else {
     res.status(200).json({
-      id: undefined,
+      _id: undefined,
       email: undefined,
       userName: 'anonymous',
       roles: []
@@ -69,8 +69,8 @@ export function getJwtUser(req: any, res: any) {
 }
 
 export function getUser(req: Request, res: Response) {
-  if (req.params.id) {
-    const userId = req.params.id
+  if (req.params._id) {
+    const userId = req.params._id
     redisdb.getUserById(userId).then(user => {
       // const rUser = { ...JSON.parse(user) }
       // delete user.passwordDigest
@@ -95,7 +95,7 @@ export function deleteUser(req: any, res: Response) {
 }
 
 export function saveUser(req: any, res: any) {
-  const userId = req.params.id
+  const userId = req.params._id
   redisdb.getUserById(userId).then(dbUser => {
     const userEmail = dbUser.email
     redisdb
@@ -130,15 +130,15 @@ async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
   const userCreated = await redisdb.createUser(dbUser)
   if (userCreated) {
     // const dbUser = await redisdb.getUserByEmail(signUpInfo.email)
-    const id = await redisdb.getUserId(signUpInfo.email)
-    const user: User = { id, ...dbUser }
+    const _id = await redisdb.getUserId(signUpInfo.email)
+    const user: User = { _id, ...dbUser }
     const sessionToken = await createSessionToken(user)
     const csrfToken = await createCsrfToken()
     // res.cookie('SESSIONID', sessionToken, { httpOnly: true, secure: true })
     res.cookie('SESSIONID', sessionToken, { httpOnly: true })
     res.cookie('XSRF-TOKEN', csrfToken)
     res.status(200).json({
-      id,
+      _id,
       email: dbUser.email,
       roles: dbUser.roles,
       userName: signUpInfo.userName
@@ -163,7 +163,7 @@ export async function login(req: Request, res: Response) {
   if (!dbUser) {
     return res.status(500).send('Server error. User record not found.')
   }
-  const user: User = { id: userId, ...dbUser }
+  const user: User = { _id: userId, ...dbUser }
   const isPasswordValid = await argon2.verify(user.passwordDigest, credentials.password)
   if (!isPasswordValid) {
     return res.status(403).send('incorrect password')
@@ -178,7 +178,7 @@ export async function login(req: Request, res: Response) {
   })
   res.cookie('XSRF-TOKEN', csrfToken)
   res.status(200).json({
-    id: user.id,
+    _id: user._id,
     email: user.email,
     roles: user.roles,
     userName: user.userName,

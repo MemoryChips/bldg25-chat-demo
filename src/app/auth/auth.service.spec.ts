@@ -9,7 +9,7 @@ import { of } from 'rxjs'
 
 const PRETEND_USER: AppUser = {
   email: 'pretend@gmail.com',
-  id: 'xyz', // keep this falsey
+  _id: 'xyz', // keep this falsey
   roles: ['STUDENT'],
   userName: 'Pretend',
   loginTime: 42,

@@ -33,13 +33,15 @@ const defaultAvatarUrl =
 console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 export const chatConfig: IChatConfig = {
-  redisUrl: dbHost, // *** set this to the url of the chat redis server
-  redisPort: dbPort, // *** set this to the port of the chat redis server
-  redisDataBase: 0, // *** set this to the redis database number to be used by the chat server
-  // chatServerHost: host, // *** set this to the url of the server
-  // chatServerPort, // *** set this to the port of the server
-  // verifyClient: defaultVerifyClient,
-  redisDbAuthCode
+  dbConfig: {
+    redisUrl: dbHost, // *** set this to the url of the chat redis server
+    redisPort: dbPort, // *** set this to the port of the chat redis server
+    redisDataBase: 0, // *** set this to the redis database number to be used by the chat server
+    // chatServerHost: host, // *** set this to the url of the server
+    // chatServerPort, // *** set this to the port of the server
+    // verifyClient: defaultVerifyClient,
+    redisDbAuthCode
+  }
 }
 
 export const serverConfig = {

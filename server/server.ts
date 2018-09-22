@@ -64,6 +64,7 @@ if (process.env.PROD || serverConfig.prod) {
 
 // Create database connection for chat
 // const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
+// const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
 const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
 
 if (serverConfig.secure) {

@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { ProductService, Product } from '../../shared/services/product.service'
 import { ActivatedRoute } from '@angular/router'
-import {
-  ShoppingCartService,
-  Cart
-} from '../../shared/services/shopping-cart.service'
+import { ShoppingCartService, Cart } from '../../shared/services/shopping-cart.service'
 import { Subscription } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
 
@@ -29,9 +26,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.populateProducts()
-    this.subscriptions = [
-      this.shoppingCartService.cart$.subscribe(cart => (this.cart = cart))
-    ]
+    this.subscriptions = [this.shoppingCartService.cart$.subscribe(cart => (this.cart = cart))]
   }
 
   ngOnDestroy() {
@@ -47,7 +42,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
           return this.route.queryParamMap
         })
       )
-      .subscribe(params => {
+      .subscribe((params: any) => {
         this.categoryKey = params.get('category') || ''
         this.applyFilter()
       })

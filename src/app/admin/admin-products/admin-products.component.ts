@@ -1,10 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  OnInit,
-  AfterViewInit,
-  OnDestroy
-} from '@angular/core'
+import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material'
 import { DomSanitizer } from '@angular/platform-browser'
@@ -18,14 +12,15 @@ import { Subscription } from 'rxjs'
   templateUrl: './admin-products.component.html',
   styleUrls: ['./admin-products.component.scss']
 })
-export class AdminProductsComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   // displayedColumns = ['key', 'category', 'title', 'price', 'imageUrl']
   displayedColumns = ['title', 'action', 'category', 'price', 'image-url']
   dataSource: MatTableDataSource<Product>
 
-  @ViewChild(MatPaginator) paginator: MatPaginator
-  @ViewChild(MatSort) sort: MatSort
+  @ViewChild(MatPaginator)
+  paginator: MatPaginator
+  @ViewChild(MatSort)
+  sort: MatSort
 
   private _subscriptions: Subscription[] = []
   constructor(
@@ -39,7 +34,8 @@ export class AdminProductsComponent
   ngOnInit() {
     // const data = this.productService.getListStatic()
     this._subscriptions = [
-      this.productService.getList().subscribe(products => {
+      this.productService.getList().subscribe((products: any) => {
+        // TODO: use Product instead of any
         this.dataSource.data = products
         // this.dataSource.data = data
       })
@@ -81,9 +77,7 @@ export class AdminProductsComponent
   }
 
   productDeleteClicked(item: Product) {
-    console.log(
-      `Delete requested for ${item.title} - this method is not complete.`
-    )
+    console.log(`Delete requested for ${item.title} - this method is not complete.`)
   }
 
   resetAllProductsRequest() {

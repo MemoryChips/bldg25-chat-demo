@@ -35,7 +35,7 @@ export class ProductService {
   }
 
   getList() {
-    return this.getAll().pipe<any>(
+    return this.getAll().pipe<any, any>(
       map(addKey),
       map(values)
     )

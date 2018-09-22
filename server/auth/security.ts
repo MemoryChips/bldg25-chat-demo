@@ -8,8 +8,8 @@ import { TOKEN_AGE_MS } from '../server-config'
 
 export const randomBytes = util.promisify(crypto.randomBytes)
 
-const RSA_PRIVATE_KEY = fs.readFileSync('./server/keys/private.key')
-const RSA_PUBLIC_KEY = fs.readFileSync('./server/keys/public.key')
+const RSA_PRIVATE_KEY = process.env.RSA_PRIVATE_KEY || fs.readFileSync('./server/keys/private.key')
+const RSA_PUBLIC_KEY = process.env.RSA_PUBLIC_KEY || fs.readFileSync('./server/keys/public.key')
 
 const SESSION_DURATION_SECS = Math.round(TOKEN_AGE_MS / 1000)
 console.log(`session duration is set to: ${SESSION_DURATION_SECS}`)

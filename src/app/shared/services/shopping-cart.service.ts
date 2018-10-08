@@ -6,17 +6,24 @@ import { filter } from 'rxjs/operators'
 import { Product } from 'shared/services/product.service'
 import { HttpClient } from '@angular/common/http'
 
+// Align FE/BE
 export interface Item {
   product: Product
   quantity: number
   key?: string
 }
 
-interface Items {
+export interface Items {
   [k: string]: Item
 }
 
-export class Cart {
+export interface ICart {
+  items: Items
+  productIds: string[]
+}
+// end align with FE/BE
+
+export class Cart implements ICart {
   dateCreated = new Date().getTime()
 
   constructor(public items: Items = {}) {}
@@ -52,9 +59,7 @@ export class Cart {
 @Injectable()
 export class ShoppingCartService {
   private subject = new BehaviorSubject<Cart>(new Cart())
-  cart$: Observable<Cart> = this.subject
-    .asObservable()
-    .pipe(filter((cart: Cart) => !!cart))
+  cart$: Observable<Cart> = this.subject.asObservable().pipe(filter((cart: Cart) => !!cart))
   private cart: Cart = new Cart()
 
   constructor(private http: HttpClient) {
@@ -99,21 +104,19 @@ export class ShoppingCartService {
 
   async clearCart() {
     const cartId = await this.getCartId()
-    this.http
-      .delete<{ success: boolean }>(`/api/shopping-carts/${cartId}`)
-      .subscribe(resp => {
-        if (resp.success) {
-          console.log('Cart cleared:', cartId)
-          localStorage.removeItem('cartId')
-          this.getCartId().then(_cartId => {
-            this.getCart().then(success => {
-              console.log(`New cart setup: ${success}`)
-            })
+    this.http.delete<{ success: boolean }>(`/api/shopping-carts/${cartId}`).subscribe(resp => {
+      if (resp.success) {
+        console.log('Cart cleared:', cartId)
+        localStorage.removeItem('cartId')
+        this.getCartId().then(_cartId => {
+          this.getCart().then(success => {
+            console.log(`New cart setup: ${success}`)
           })
-        } else {
-          console.log('Unable to clear cart.')
-        }
-      })
+        })
+      } else {
+        console.log('Unable to clear cart.')
+      }
+    })
   }
 
   private async getCart(): Promise<boolean> {
@@ -128,9 +131,7 @@ export class ShoppingCartService {
   }
 
   private async createCartDb() {
-    return this.http
-      .post<string>('/api/shopping-carts', { newCart: new Cart() })
-      .toPromise()
+    return this.http.post<string>('/api/shopping-carts', { newCart: new Cart() }).toPromise()
   }
 
   private setCartId(id: string) {

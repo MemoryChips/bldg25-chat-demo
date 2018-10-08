@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { redisdb } from '../database/redis'
-import { User, DbUser } from './models/user'
+// import { redisdb } from '../database/redis'
+import { User, SignUpInfo, Credentials, UserWithPwdDigest } from './models/user'
 import * as argon2 from 'argon2'
 import { validatePassword } from './password-validation'
 import { createCsrfToken, createSessionToken } from './security'
@@ -8,36 +8,20 @@ import { createCsrfToken, createSessionToken } from './security'
 import { serverConfig } from '../server-config'
 
 import { TOKEN_AGE_MS } from '../server-config'
+import { Database } from '../database/mongo'
 
-// TODO: align with front end
-// import { Credentials } from 'app/auth/auth.service'
-export interface Credentials {
-  userName?: string
-  email: string
-  password: string
-}
-
-// interface Req extends Request {
-//   user: any
-// }
-interface SignUpInfo {
-  email: string
-  password: string
-  userName: string
-  avatarUrl?: string
-}
 export function createUser(req: Request, res: Response) {
+  const db: Database = req.app.locals.db
   const signUpInfo: SignUpInfo = req.body
-  let errors: string[] = []
-  errors = validatePassword(signUpInfo.password)
-  redisdb.userExists(signUpInfo.email).then(exists => {
-    if (exists) {
+  const errors: string[] = validatePassword(signUpInfo.password)
+  db.getUserByEmail(signUpInfo.email).then(dbUser => {
+    if (dbUser) {
       errors.push('Email already in use.')
     }
     if (errors.length > 0) {
       res.status(400).json({ errors })
     } else {
-      createUserAndSession(res, signUpInfo).catch(err => {
+      createUserAndSession(req, res, signUpInfo).catch(err => {
         console.log('Error creating new user', err)
         res.sendStatus(500)
       })
@@ -46,34 +30,33 @@ export function createUser(req: Request, res: Response) {
 }
 
 export function getJwtUser(req: any, res: any) {
-  if (!!req.user) {
-    const userId: string = req.user._id
-    redisdb
-      .getUserById(userId)
+  const userNotFound = {
+    _id: undefined,
+    email: undefined,
+    userName: 'anonymous'
+  }
+  const jwtUser: User = res.locals.user
+  if (!!jwtUser) {
+    const db: Database = req.app.locals.db
+    db.getUserById(jwtUser._id)
       .then(user => {
-        const rUser = { _id: userId, ...user }
-        delete rUser.passwordDigest
-        res.status(200).json(rUser)
+        if (!user) return res.status(403).json(userNotFound)
+        res.status(200).json(user)
       })
       .catch(err => {
         res.status(403).json(`Error trying to get jwt user: ${err}`)
       })
   } else {
-    res.status(200).json({
-      _id: undefined,
-      email: undefined,
-      userName: 'anonymous',
-      roles: []
-    })
+    res.status(403).json(userNotFound)
   }
 }
 
 export function getUser(req: Request, res: Response) {
+  const db: Database = req.app.locals.db
   if (req.params._id) {
     const userId = req.params._id
-    redisdb.getUserById(userId).then(user => {
-      // const rUser = { ...JSON.parse(user) }
-      // delete user.passwordDigest
+    db.getUserById(userId).then(user => {
+      if (!user) return res.status(403).json({ error: `User with id: ${userId} not found` })
       res.status(200).json(user)
     })
   } else {
@@ -82,41 +65,44 @@ export function getUser(req: Request, res: Response) {
 }
 
 export function deleteUser(req: any, res: Response) {
+  const db: Database = req.app.locals.db
   const email = req.params.email
-  redisdb.deleteUser(email).then(n => {
-    if (n === 1) {
-      res.status(200).json({ success: true, reason: `user with email ${email} deleted` })
+  db.deleteUser(email).then(success => {
+    if (success) {
+      res.status(200).json({ success, reason: `user with email ${email} deleted` })
     } else {
       res
         .status(403)
-        .json({ success: false, reason: `user with email ${email} not found and not deleted` })
+        .json({ success, reason: `user with email ${email} not found and not deleted` })
     }
   })
 }
 
-export function saveUser(req: any, res: any) {
-  const userId = req.params._id
-  redisdb.getUserById(userId).then(dbUser => {
-    const userEmail = dbUser.email
-    redisdb
-      .deleteUser(userEmail)
-      .then(_results => {
-        console.log(`Results of deleting old records${_results}`)
-        if (_results < 2) {
-          createUser(req, res)
-        } else {
-          res.status(403).json({ success: false, reason: 'error deleting old records' })
-        }
-      })
-      .catch(err => {
-        res.status(403).json({ success: false, reason: err })
-      })
-  })
-}
+// export function saveUser(req: any, res: any) {
+//   const db: Database = req.app.locals.db
+//   const userId = req.params._id
+//   db.getUserById(userId).then(dbUser => {
+//     const userEmail = dbUser.email
+//     redisdb
+//       .deleteUser(userEmail)
+//       .then(_results => {
+//         console.log(`Results of deleting old records${_results}`)
+//         if (_results < 2) {
+//           createUser(req, res)
+//         } else {
+//           res.status(403).json({ success: false, reason: 'error deleting old records' })
+//         }
+//       })
+//       .catch(err => {
+//         res.status(403).json({ success: false, reason: err })
+//       })
+//   })
+// }
 
-async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
+async function createUserAndSession(req: Request, res: Response, signUpInfo: SignUpInfo) {
+  const db: Database = req.app.locals.db
   const passwordDigest = await argon2.hash(signUpInfo.password)
-  const dbUser: DbUser = {
+  const user: UserWithPwdDigest = {
     email: signUpInfo.email,
     userName: signUpInfo.userName,
     passwordDigest,
@@ -124,27 +110,19 @@ async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
     avatarUrl: signUpInfo.avatarUrl || serverConfig.defaultAvatarUrl
     // avatarUrl: ''
   }
-  if (dbUser.email.toLowerCase() === 'robert.tamlyn@gmail.com') {
-    dbUser.roles = ['STUDENT', 'ADMIN']
+  if (user.email.toLowerCase() === 'robert.tamlyn@gmail.com') {
+    user.roles = ['STUDENT', 'ADMIN']
   }
-  const userCreated = await redisdb.createUser(dbUser)
-  if (userCreated) {
+  const success = await db.createUser(user)
+  if (success) {
     // const dbUser = await redisdb.getUserByEmail(signUpInfo.email)
-    const _id = await redisdb.getUserId(signUpInfo.email)
-    const user: User = { _id, ...dbUser }
-    const sessionToken = await createSessionToken(user)
-    const csrfToken = await createCsrfToken()
-    // res.cookie('SESSIONID', sessionToken, { httpOnly: true, secure: true })
-    res.cookie('SESSIONID', sessionToken, { httpOnly: true })
-    res.cookie('XSRF-TOKEN', csrfToken)
-    res.status(200).json({
-      _id,
-      email: dbUser.email,
-      roles: dbUser.roles,
-      userName: signUpInfo.userName
-    })
+    const newUser = await db.getUserByEmail(signUpInfo.email)
+    if (!newUser) {
+      return res.status(500).json(`Server error while creating user: ${signUpInfo.email}`)
+    }
+    await sendSuccess(res, newUser) // TODO: is await necessary
   } else {
-    console.log(`Unable to create user: ${dbUser.email}`)
+    console.log(`Unable to create user: ${user.email}`)
     res.status(403).json({
       success: false,
       reason: 'unable to create user. Possibly user exists.'
@@ -152,38 +130,44 @@ async function createUserAndSession(res: Response, signUpInfo: SignUpInfo) {
   }
 }
 
-export async function login(req: Request, res: Response) {
-  const credentials: Credentials = req.body
-  const userId = await redisdb.getUserId(credentials.email)
-  if (!userId) {
-    return res.status(403).send('email not found')
-  }
+async function sendSuccess(res: Response, user: User) {
+  const sessionToken = await createSessionToken(user)
+  const csrfToken = await createCsrfToken()
+  // res.cookie('SESSIONID', sessionToken, { httpOnly: true, secure: true })
+  res.cookie('SESSIONID', sessionToken, { maxAge: TOKEN_AGE_MS, httpOnly: true })
+  res.cookie('XSRF-TOKEN', csrfToken)
+  res.status(200).json(user)
+}
 
-  const dbUser = await redisdb.getUserById(userId)
-  if (!dbUser) {
-    return res.status(500).send('Server error. User record not found.')
+export async function login(req: Request, res: Response) {
+  const db: Database = req.app.locals.db
+  const credentials: Credentials = req.body
+  const userPwdDigest = await db.getUserPwdDigest(credentials.email)
+  if (!userPwdDigest) {
+    return res.status(403).send(`User password digest with email ${credentials.email} not found`)
   }
-  const user: User = { _id: userId, ...dbUser }
-  const isPasswordValid = await argon2.verify(user.passwordDigest, credentials.password)
+  const isPasswordValid = await argon2.verify(userPwdDigest, credentials.password)
   if (!isPasswordValid) {
     return res.status(403).send('incorrect password')
   }
-
-  const sessionToken = await createSessionToken(user)
-  const csrfToken = await createCsrfToken()
-  console.log('Login successful')
-  res.cookie('SESSIONID', sessionToken, {
-    maxAge: TOKEN_AGE_MS,
-    httpOnly: true
-  })
-  res.cookie('XSRF-TOKEN', csrfToken)
-  res.status(200).json({
-    _id: user._id,
-    email: user.email,
-    roles: user.roles,
-    userName: user.userName,
-    avatarUrl: user.avatarUrl || ''
-  })
+  const user = await db.getUserByEmail(credentials.email)
+  if (user) sendSuccess(res, user)
+  else res.status(403).send(`User with email ${credentials.email} not found`)
+  // const sessionToken = await createSessionToken(userWithPwd)
+  // const csrfToken = await createCsrfToken()
+  // console.log('Login successful')
+  // res.cookie('SESSIONID', sessionToken, {
+  //   maxAge: TOKEN_AGE_MS,
+  //   httpOnly: true
+  // })
+  // res.cookie('XSRF-TOKEN', csrfToken)
+  // res.status(200).json({
+  //   _id: userWithPwd._id,
+  //   email: userWithPwd.email,
+  //   roles: userWithPwd.roles,
+  //   userName: userWithPwd.userName,
+  //   avatarUrl: userWithPwd.avatarUrl || ''
+  // })
 }
 
 export function logout(_req: Request, res: Response) {

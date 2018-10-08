@@ -72,7 +72,11 @@ export const verifySocketConnection: VerifySocketConnection = function(req: any)
     console.log('jwt is missing in a websocket connection attempt')
     return Promise.reject('jwt is missing in a websocket connection attempt')
   } else {
-    return getUserFromJwt(token)
+    // these two properties must be returned to chat
+    return getUserFromJwt(token).then(user => ({
+      email: user.email,
+      appId: user._id
+    }))
   }
 }
 

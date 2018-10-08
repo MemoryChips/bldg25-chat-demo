@@ -1,8 +1,8 @@
 import * as redis from 'redis'
-import { DbUser } from '../auth/models/user'
+import { UserWoId } from '../auth/models/user'
 import { serverConfig } from '../server-config'
-import { DbProducts, DbProduct, Categories } from '../product/product-api'
-import { getPreloadProducts, categories } from './reset-app-db'
+import { Products, DbProduct, Categories } from '../product/product-api'
+import { getPreloadProducts, categoriesPreload } from './reset-app-db'
 export const USERS = 'users'
 export const USER_EMAIL = 'user:email'
 
@@ -70,7 +70,7 @@ class RedisDatabase {
     return this.getItem('categories').then((sCats: string) => JSON.parse(sCats))
   }
 
-  saveAllProducts(products: DbProducts): Promise<boolean> {
+  saveAllProducts(products: Products): Promise<boolean> {
     return this.setItem('products', JSON.stringify(products))
   }
 
@@ -80,7 +80,7 @@ class RedisDatabase {
     const resets = [
       this.saveAllProducts(getPreloadProducts(host)),
       // this.saveAllProducts(getPreloadProducts(serverConfig.host)),
-      this.saveAllCategories(categories)
+      this.saveAllCategories(categoriesPreload)
     ]
     return Promise.all(resets).then(results => results.every(r => r))
   }
@@ -88,18 +88,18 @@ class RedisDatabase {
   saveProduct(_product: DbProduct, reqProductId: string | undefined): Promise<boolean> {
     // return redisdb.getItem('products').then(sProducts => {
     return this.getItem('products').then(sProducts => {
-      const products: DbProducts = JSON.parse(sProducts)
+      const products: Products = JSON.parse(sProducts)
       const productId: string = reqProductId || this.uniqueId()
       products[productId] = _product
       return this.setItem('products', JSON.stringify(products))
     })
   }
 
-  getAllProducts(): Promise<DbProducts> {
+  getAllProducts(): Promise<Products> {
     return this.getItem('products').then((sProducts: string) => JSON.parse(sProducts))
   }
 
-  getUserById(userId: string): Promise<DbUser> {
+  getUserById(userId: string): Promise<UserWoId> {
     // first check for exists
     return this._userExistsById(userId).then(exists => {
       if (exists) {
@@ -111,11 +111,11 @@ class RedisDatabase {
     })
   }
 
-  private _getUserById(userId: string): Promise<DbUser> {
+  private _getUserById(userId: string): Promise<UserWoId> {
     return new Promise((resolve, reject) => {
       this.redisClient.hget(USERS, userId, (_err, sUser) => {
         if (_err) reject(_err)
-        const rUser: DbUser = JSON.parse(sUser)
+        const rUser: UserWoId = JSON.parse(sUser)
         resolve(rUser)
       })
     })
@@ -130,7 +130,7 @@ class RedisDatabase {
     })
   }
 
-  getUserByEmail(email: string): Promise<DbUser> {
+  getUserByEmail(email: string): Promise<UserWoId> {
     return new Promise<string>((resolve, reject) => {
       this.redisClient.hget(USER_EMAIL, email, (_err, index) => {
         if (_err) return reject(_err)
@@ -203,7 +203,7 @@ class RedisDatabase {
     })
   }
 
-  private _createUser(dbUser: DbUser): Promise<boolean> {
+  private _createUser(dbUser: UserWoId): Promise<boolean> {
     // let createdUserId = ''
     return this._createHashItem(USERS, JSON.stringify(dbUser))
       .then(userId => {
@@ -217,7 +217,7 @@ class RedisDatabase {
       })
   }
 
-  createUser(dbUser: DbUser): Promise<boolean> {
+  createUser(dbUser: UserWoId): Promise<boolean> {
     return this.userExists(dbUser.email).then(exists => {
       if (exists) return false
       else return this._createUser(dbUser)
@@ -347,9 +347,9 @@ class RedisDatabase {
   }
 }
 
-export const redisdb = new RedisDatabase()
+export const redisdbDeprecated = new RedisDatabase()
 
 // required by chat server
-export function getAppUserById(id: string): Promise<DbUser> {
-  return redisdb.getUserById(id)
+export function getAppUserByIdDeprecated(id: string): Promise<UserWoId> {
+  return redisdbDeprecated.getUserById(id)
 }

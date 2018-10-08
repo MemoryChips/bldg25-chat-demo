@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { createUser, login, logout, getJwtUser, getUser, saveUser, deleteUser } from './auth-api'
+import { createUser, login, logout, getJwtUser, getUser, deleteUser } from './auth-api'
 import { checkIfAuthenticated } from './mware/authentication'
 import { checkIfAuthorized } from './mware/authorization'
 import { checkCsrfToken } from './mware/csrf'
@@ -18,6 +18,5 @@ authRouter
   .get('/user-me', getJwtUser)
   .get('/user/:id', checkIfAuthenticated, getUser)
   // .get('/user/:id', checkIfAuthenticated, checkCsrfToken, getUser)
-  .put('/user/:id', checkIfAuthenticated, saveUser) // TODO: this route does not use the id in the route
+  // .put('/user/:id', checkIfAuthenticated, saveUser) // TODO: this route does not use the id in the route
   .delete('/user/:email', checkIfAuthenticated, checkIfAuthorized(['ADMIN']), deleteUser)
-// .delete('/:id', deleteUser)

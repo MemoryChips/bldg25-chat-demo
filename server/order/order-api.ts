@@ -1,56 +1,50 @@
 import { Response } from 'express'
-import { redisdb } from '../database/redis'
+import { Database } from '../database/mongo'
+import { User } from '../auth/models/user'
 
-const type = 'order'
+// const type = 'order'
 
 // interface Req extends Request {
 //   user: any
 // }
 
-interface Order {
+export interface Order {
+  userId: string
   email: string
   password: string
   userName: string
 }
 
 export function postOrder(req: any, res: Response) {
+  const db: Database = req.app.locals.db
   const order: Order = req.body
-  const userId = req.user.sub
-  redisdb.createItem(type, JSON.stringify(order)).then(uid => {
-    redisdb
-      .addSetItem(`order:user:${userId}`, `order:${uid}`)
-      .then(_orderUserLink => {
-        console.log(`added order link created${_orderUserLink}`)
-        res.status(200).json({ success: true, userId })
-      })
+  const user: User = res.locals.user
+  db.createOrder(order, user._id).then(result => {
+    if (result) res.status(200).json({ success: result })
+    else res.status(403).json({ success: false, reason: 'unable to place order' })
   })
 }
 
-export function getMyOrders(_req: any, res: Response) {
-  const userId = _req.user.sub
-  redisdb
-    .getSmembers(`order:user:${userId}`)
+export function getMyOrders(req: any, res: Response) {
+  const db: Database = req.app.locals.db
+  // const userId = req.user.sub
+  const userId: string = req.app.locals.userId
+  db.getOrdersById(userId)
     .then(orders => {
       res.status(200).json(orders)
     })
     .catch(_err => {
-      res.status(200).json([])
+      res.status(403).json([])
     })
 }
 
-export function getAllOrders(_req: any, res: Response) {
-  redisdb
-    .getKeys(`order:user:*`)
-    .then(keys => {
-      const allUserPromises: Promise<string[]>[] = []
-      keys.forEach(userKey => {
-        allUserPromises.push(redisdb.getSmembers(userKey))
-      })
-      Promise.all(allUserPromises).then(results => {
-        res.status(200).json(results)
-      })
-    })
-    .catch(_err => {
-      res.status(200).json([])
-    })
+export function getAllOrders(req: any, res: Response) {
+  const db: Database = req.app.locals.db
+  db.getAllOrders().then(orders => {
+    if (orders) {
+      res.send(200).json({ orders })
+    } else {
+      res.send(400).json(`success: false`)
+    }
+  })
 }

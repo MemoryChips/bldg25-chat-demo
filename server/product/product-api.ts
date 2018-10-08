@@ -1,31 +1,37 @@
-import { redisdb } from '../database/redis'
+// import { redisdb } from '../database/redis'
 import { Request, Response } from 'express'
+import { ObjectId } from 'mongodb'
+import { Database } from '../database/mongo'
 
 // FIXME: align backend and frontend models
 export interface Category {
   title: string
   lead: string
-  key?: string
+  key: string
 }
 
 export interface Categories {
   [key: string]: Category
 }
-export interface DbProduct {
+export interface Product {
   title: string
   price: number
   imageUrl: string
   category: string
-  // key: string   // FIXME: this prop exists in FE version of Prodcut
+  key: string
 }
 
-export interface DbProducts {
+export interface DbProduct extends Product {
+  _id?: ObjectId
+}
+
+export interface Products {
   [key: string]: DbProduct
 }
 
-export function resetAllProducts(_req: Request, res: Response) {
-  redisdb
-    .resetAllProducts() // TODO: Decide if this should also reset all categories
+export function resetAllProducts(req: Request, res: Response) {
+  const db: Database = req.app.locals.db
+  db.resetAllProducts() // TODO: Decide if this should also reset all categories
     .then(success => {
       res.status(200).send({ success })
     })
@@ -34,9 +40,11 @@ export function resetAllProducts(_req: Request, res: Response) {
     })
 }
 
-export function getAllProducts(_req: Request, res: Response) {
-  redisdb
-    .getAllProducts()
+export function getAllProducts(req: Request, res: Response) {
+  // (<Database>req.app.locals.db)
+  // ;(req.app.locals.db as Database)
+  const db: Database = req.app.locals.db
+  db.getAllProducts()
     .then(products => {
       res.status(200).send(products)
     })
@@ -46,12 +54,10 @@ export function getAllProducts(_req: Request, res: Response) {
 }
 
 export function getProduct(req: Request, res: Response) {
-  redisdb
-    .getItem('products')
-    .then(sProducts => {
-      const products = JSON.parse(sProducts)
-      const productId = req.params.id
-      const product = products[productId]
+  const db: Database = req.app.locals.db
+  const productId: string = req.params.id
+  db.getProductById(productId)
+    .then(product => {
       if (product) res.status(200).json(product)
       else res.status(403).send(`Unable to find product with id: ${productId}`)
     })
@@ -61,11 +67,10 @@ export function getProduct(req: Request, res: Response) {
 }
 
 export function putPostProduct(req: Request, res: Response) {
+  const db: Database = req.app.locals.db
   const product = req.body
-  const productId: string =
-    req.params && req.params.id ? req.params.id : undefined
-  redisdb
-    .saveProduct(product, productId)
+  const productId: string = req.params && req.params.id ? req.params.id : undefined
+  db.saveProduct(product, productId)
     .then(success => {
       if (success) {
         res.status(200).json({
@@ -99,9 +104,9 @@ export function putPostProduct(req: Request, res: Response) {
   //   })
 }
 
-export function getAllCategories(_req: Request, res: Response) {
-  redisdb
-    .getAllCategories()
+export function getAllCategories(req: Request, res: Response) {
+  const db: Database = req.app.locals.db
+  db.getAllCategories()
     .then(cats => {
       res.status(200).json(cats)
     })

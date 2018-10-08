@@ -16,19 +16,18 @@ import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 import bodyParser from 'body-parser'
 
+import { MongoDatabase } from './database/mongo'
 // necessary imports from bldg25 chat server package
 import {
   attachVideoSocketServer,
-  // ChatDatabase,
-  // IChatDataBase,
-  ChatRedisDatabase
-  // ChatMongoDataBase
+  IChatDataBase,
+  // ChatRedisDatabase
+  ChatMongoDataBase
 } from 'bldg25-chat-server'
-// import mongodb from 'mongodb'
+import { MongoClient } from 'mongodb'
 
-import { chatConfig, serverConfig } from './server-config'
+import { mongoUrl, mongoDataBase, serverConfig } from './server-config'
 import { verifySocketConnection } from './auth/security'
-import { IChatRedisDb } from 'bldg25-chat-server/lib/server-config'
 
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
@@ -65,32 +64,46 @@ if (process.env.PROD || serverConfig.prod) {
 // Create database connection for chat
 // const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
 // const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
-const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
 
-if (serverConfig.secure) {
-  // launch an HTTPS Server. Note: this does NOT mean that the application is secure
-  const httpsServer = https.createServer(
-    {
-      key: fs.readFileSync('./server/keys/key.pem'),
-      cert: fs.readFileSync('./server/keys/cert.pem')
-    },
-    app
-  )
-
-  // *** Chat server must be added to the express server as follows:
-  attachVideoSocketServer(httpsServer, dbChat, verifySocketConnection)
-
-  httpsServer.listen(port, () => {
-    console.log(`HTTPS Server running at port: ${port}`)
+MongoClient.connect(
+  mongoUrl,
+  { useNewUrlParser: true }
+)
+  .then(client => {
+    const chatDb = new ChatMongoDataBase(client, mongoDataBase)
+    app.locals.db = new MongoDatabase(client, mongoDataBase)
+    runServer(chatDb)
   })
-} else {
-  // launch an HTTP Server
-  const httpServer = http.createServer(app)
-
-  // *** Chat server must be added to the express server as follows:
-  attachVideoSocketServer(httpServer, dbChat, verifySocketConnection)
-
-  httpServer.listen(port, () => {
-    console.log(`HTTP Server running at port: ${port}`)
+  .catch(err => {
+    console.log(`Error while connecting: ${err}`)
   })
+
+function runServer(dbChat: IChatDataBase) {
+  if (serverConfig.secure) {
+    // launch an HTTPS Server. Note: this does NOT mean that the application is secure
+    const httpsServer = https.createServer(
+      {
+        key: fs.readFileSync('./server/keys/key.pem'),
+        cert: fs.readFileSync('./server/keys/cert.pem')
+      },
+      app
+    )
+
+    // *** Chat server must be added to the express server as follows:
+    attachVideoSocketServer(httpsServer, dbChat, verifySocketConnection)
+
+    httpsServer.listen(port, () => {
+      console.log(`HTTPS Server running at port: ${port}`)
+    })
+  } else {
+    // launch an HTTP Server
+    const httpServer = http.createServer(app)
+
+    // *** Chat server must be added to the express server as follows:
+    attachVideoSocketServer(httpServer, dbChat, verifySocketConnection)
+
+    httpServer.listen(port, () => {
+      console.log(`HTTP Server running at port: ${port}`)
+    })
+  }
 }

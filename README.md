@@ -59,7 +59,16 @@ ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort 
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 ```
 
-## Launch Scenarios
+## Launch - Mongo
+
+- pre load data
+
+```bash
+# run current file debug on pre-load-user-data.ts OR
+node -r "ts-node/register" server/database/pre-load-user-data.ts
+```
+
+## Launch Scenarios - Redis
 
 - Local development with debug server with local redis server
 

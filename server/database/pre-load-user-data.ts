@@ -5,9 +5,9 @@ import { mongoUrl, mongoDataBase } from '../server-config'
 
 import { UserWoId } from '../auth/models/user'
 
-export interface KeyedObj<T> {
-  [key: string]: T
-}
+// export interface KeyedObj<T> {
+//   [key: string]: T
+// }
 
 const catUrl = 'http://localhost:4200/assets/cat.jpg'
 const dogUrl = 'http://localhost:4200/assets/dog.jpg'
@@ -97,11 +97,12 @@ MongoClient.connect(
   })
 
 function runPreload(db: Database) {
-  return db.flushDb().then(() => {
+  return db.flushDb().then(flushResult => {
+    console.log(`Flush result: ${flushResult}`)
     const userCreates = users.map(userWoId => db.createUser({ passwordDigest, ...userWoId }))
-    Promise.all(userCreates)
-      .then(_results => {
-        console.log('users loaded: ', _results)
+    return Promise.all(userCreates)
+      .then(userCreateResults => {
+        console.log('users loaded: ', userCreateResults.filter(result => !result).length === 0)
         return db.deleteUser(victim)
       })
       .then(success => {
@@ -112,12 +113,10 @@ function runPreload(db: Database) {
         return db.getUserByEmail('rob@rob.com')
       })
       .then(user => {
-        console.log('Found rob: ', user)
-        // db.quit()
+        console.log('Found rob: ', user ? user.userName === 'Rob' : false)
       })
       .catch(err => {
         console.log(`not all users loaded: ${err}`)
-        // db.quit()
       })
   })
 }

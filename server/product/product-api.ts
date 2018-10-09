@@ -13,25 +13,24 @@ export interface Category {
 export interface Categories {
   [key: string]: Category
 }
-export interface Product {
+
+export interface ProductWoKey {
   title: string
   price: number
   imageUrl: string
   category: string
+}
+export interface Product extends ProductWoKey {
   key: string
 }
 
-export interface DbProduct extends Product {
+export interface DbProduct extends ProductWoKey {
   _id?: ObjectId
-}
-
-export interface Products {
-  [key: string]: DbProduct
 }
 
 export function resetAllProducts(req: Request, res: Response) {
   const db: Database = req.app.locals.db
-  db.resetAllProducts() // TODO: Decide if this should also reset all categories
+  db.resetAllProducts()
     .then(success => {
       res.status(200).send({ success })
     })
@@ -66,42 +65,54 @@ export function getProduct(req: Request, res: Response) {
     })
 }
 
-export function putPostProduct(req: Request, res: Response) {
+export function putProduct(req: Request, res: Response) {
   const db: Database = req.app.locals.db
-  const product = req.body
+  const dbProduct: DbProduct = {
+    title: req.body.title,
+    price: req.body.number,
+    imageUrl: req.body.imageUrl,
+    category: req.body.category
+  }
   const productId: string = req.params && req.params.id ? req.params.id : undefined
-  db.saveProduct(product, productId)
+  if (!productId) {
+    res.status(403).send(`Id missing in update product request: ${dbProduct}`)
+  }
+  db.saveProduct(dbProduct, productId)
     .then(success => {
       if (success) {
         res.status(200).json({
           success
         })
       } else {
-        res.status(403).send(`Unable to save product: ${product}`)
+        res.status(403).send(`Unable to update product: ${dbProduct}`)
       }
     })
     .catch(err => {
       res.status(500).send(`Internal server error: ${err}`)
     })
-  // redisdb
-  //   .getItem('products')
-  //   .then(sProducts => {
-  //     const products: DbProducts = JSON.parse(sProducts)
-  //     const productId: string =
-  //       req.params && req.params.id ? req.params.id : redisdb.uniqueId()
-  //     const product = req.body
-  //     products[productId] = product
-  //     redisdb.setItem('products', JSON.stringify(products)).then(success => {
-  //       if (success) {
-  //         res.status(200).json({ success })
-  //       } else {
-  //         res.status(403).send(`Unable to save product with id: ${productId}`)
-  //       }
-  //     })
-  //   })
-  //   .catch(err => {
-  //     res.status(500).send(`Internal server error: ${err}`)
-  //   })
+}
+
+export function postProduct(req: Request, res: Response) {
+  const db: Database = req.app.locals.db
+  const dbProduct: DbProduct = {
+    title: req.body.title,
+    price: req.body.number,
+    imageUrl: req.body.imageUrl,
+    category: req.body.category
+  }
+  db.createProduct(dbProduct)
+    .then(success => {
+      if (success) {
+        res.status(200).json({
+          success
+        })
+      } else {
+        res.status(403).send(`Unable to create product: ${dbProduct}`)
+      }
+    })
+    .catch(err => {
+      res.status(500).send(`Internal server error: ${err}`)
+    })
 }
 
 export function getAllCategories(req: Request, res: Response) {
@@ -114,13 +125,3 @@ export function getAllCategories(req: Request, res: Response) {
       res.status(500).send(`Internal server error loading categories: ${err}`)
     })
 }
-// export function getAllCategories(_req: Request, res: Response) {
-//   redisdb
-//     .getItem('categories')
-//     .then(items => {
-//       res.status(200).send(items)
-//     })
-//     .catch(err => {
-//       res.status(500).send(`Internal server error loading categories: ${err}`)
-//     })
-// }

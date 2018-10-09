@@ -68,6 +68,12 @@ redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 node -r "ts-node/register" server/database/pre-load-user-data.ts
 ```
 
+- Local development with debug server with mlab mongo
+
+```bash
+
+```
+
 ## Launch Scenarios - Redis
 
 - Local development with debug server with local redis server

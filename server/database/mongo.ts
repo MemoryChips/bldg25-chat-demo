@@ -2,13 +2,12 @@ import { Db, Collection, MongoClient, ObjectId } from 'mongodb'
 
 import { UserWoId, User, UserWithPwdDigest } from '../auth/models/user'
 // import { serverConfig } from '../server-config'
-import { Products, Product, DbProduct, Categories, Category } from '../product/product-api'
+import { DbProduct, Categories, Category } from '../product/product-api'
 import { getPreloadProducts, categoriesPreload } from './reset-app-db'
 import { Order } from '../order/order-api'
-// TODO: align FE and BE models
-// import { Category } from 'shared/services/product.service'
-export const USERS = 'users'
-export const USER_EMAIL = 'user:email'
+
+// export const USERS = 'users'
+// export const USER_EMAIL = 'user:email'
 
 // function scrubNulls<T>(arr: T[]): T[] {
 //   return arr.filter(x => !!x)
@@ -58,10 +57,11 @@ export interface Database {
   saveAllCategories(cats: Categories): Promise<boolean>
   getAllCategories(): Promise<Categories>
 
-  saveAllProducts(products: Products): Promise<boolean>
+  saveAllProducts(products: DbProduct[]): Promise<boolean>
   resetAllProducts(): Promise<boolean>
-  saveProduct(product: Product, reqProductId: string | undefined): Promise<boolean>
-  getAllProducts(): Promise<Products>
+  saveProduct(product: DbProduct, productId: string): Promise<boolean>
+  createProduct(product: DbProduct): Promise<boolean>
+  getAllProducts(): Promise<DbProduct[]>
   getProductById(productId: string): Promise<DbProduct | null>
 
   getUserById(userId: string): Promise<User | null>
@@ -169,54 +169,40 @@ export class MongoDatabase implements Database {
       })
   }
 
-  saveAllProducts(products: Products): Promise<boolean> {
-    const productsArray: DbProduct[] = Object.keys(products).map(key => ({
-      _id: new ObjectId(key),
-      ...products[key]
-    }))
-    return this.categoriesCollection
+  saveAllProducts(products: DbProduct[]): Promise<boolean> {
+    return this.productsCollection
       .deleteMany({})
-      .then(() => {
-        return this.productsCollection.insertMany(productsArray)
+      .then(_result => {
+        // TODO: verify delete many result
+        return this.productsCollection.insertMany(products)
       })
       .then(result => {
-        return result.insertedCount === productsArray.length
+        return result.insertedCount === products.length
       })
   }
 
   resetAllProducts(): Promise<boolean> {
-    // const host = // NEED TO CONSTRUCT SERVER URL
-    const host = process.env.HOST_URL
+    // FIXME: const host = // NEED TO CONSTRUCT SERVER URL
     const resets = [
-      this.saveAllProducts(getPreloadProducts(host)),
+      this.saveAllProducts(getPreloadProducts()),
       this.saveAllCategories(categoriesPreload)
     ]
     return Promise.all(resets).then(results => results.every(r => r))
   }
 
-  saveProduct(product: Product, reqProductId: string | undefined): Promise<boolean> {
-    const query = reqProductId ? { _id: new ObjectId(reqProductId) } : {}
-    // TODO: make sure this works as intended saving product as a DbProduct
+  saveProduct(product: DbProduct, productId: string): Promise<boolean> {
     return this.productsCollection
-      .updateOne(query, { ...product }, { upsert: true })
-      .then(result => result.upsertedCount === 1)
+      .updateOne({ _id: new ObjectId(productId) }, product)
+      .then(result => result.modifiedCount === 1)
   }
 
-  getAllProducts(): Promise<Products> {
-    return (
-      this.productsCollection
-        .find({})
-        .toArray()
-        // .then(xs => xs.filter(x => !!x))
-        .then(dbProducts => {
-          // TODO: Products is currently defined with DbProduct instead of Product
-          const products: Products = {}
-          dbProducts.forEach(dbProduct => {
-            products[dbProduct.key] = dbProduct
-          })
-          return products
-        })
-    )
+  createProduct(product: DbProduct): Promise<boolean> {
+    return this.productsCollection.insertOne(product).then(result => result.insertedCount === 1)
+  }
+
+  getAllProducts(): Promise<DbProduct[]> {
+    return this.productsCollection.find({}).toArray()
+    // .then(xs => xs.filter(x => !!x))
   }
 
   getProductById(productId: string): Promise<DbProduct | null> {

@@ -2,7 +2,8 @@ import * as express from 'express'
 import {
   getAllProducts,
   getAllCategories,
-  putPostProduct,
+  putProduct,
+  postProduct,
   getProduct,
   resetAllProducts
   // deleteProduct,
@@ -22,19 +23,13 @@ productRouter
   .get('/categories', getAllCategories)
   .get('/:id', getProduct)
   // .put('/:id', putPostProduct)
-  .put(
-    '/:id',
-    checkIfAuthenticated,
-    checkCsrfToken,
-    checkIfAuthorized(['ADMIN']),
-    putPostProduct
-  )
+  .put('/:id', checkIfAuthenticated, checkCsrfToken, checkIfAuthorized(['ADMIN']), putProduct)
   .post(
     '/new-product',
     checkIfAuthenticated,
     checkCsrfToken,
     checkIfAuthorized(['ADMIN']),
-    putPostProduct
+    postProduct
   )
   .post(
     '/reset-all-products',

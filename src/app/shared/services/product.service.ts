@@ -4,19 +4,20 @@ import { addKey, values } from 'shared/utils'
 
 import { map } from 'rxjs/operators'
 
-export interface Product {
-  title: string
-  price: number
-  imageUrl: string
-  category: string
-  key: string
-}
+import { Product, Category } from '../../../../shared/products'
+// export interface Product {
+//   title: string
+//   price: number
+//   imageUrl: string
+//   category: string
+//   key: string
+// }
 
-export interface Category {
-  title: string
-  lead: string
-  key?: string
-}
+// export interface Category {
+//   title: string
+//   lead: string
+//   key?: string
+// }
 
 @Injectable()
 export class ProductService {

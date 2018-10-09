@@ -24,11 +24,12 @@ const host = process.env.HOST_URL || 'localhost'
 const port = process.env.PORT || 9000
 const chatServerPort = Number(port)
 
-const imageHttp = options.secure ? 'https' : 'http'
-const imageFilePort = process.env.PROD || options.prod ? port : 4200
-const defaultAvatarUrl =
-  process.env.DEFAULT_AVATAR_URL ||
-  `${imageHttp}://${host}:${imageFilePort}/assets/default-gravatar.jpg`
+const serverHttp = options.secure ? 'https' : 'http'
+const serverUrl = `${serverHttp}://${host}:${port}`
+
+const imagePort = process.env.PROD || options.prod ? port : 4200
+const imageUrl = `${serverHttp}://${host}:${imagePort}`
+const defaultAvatarUrl = process.env.DEFAULT_AVATAR_URL || `${imageUrl}/assets/default-gravatar.jpg`
 console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 const mongoDbUser = 'chat-demo-user'
@@ -43,6 +44,7 @@ export const serverConfig = {
   host,
   port,
   chatServerPort,
+  serverUrl,
   defaultAvatarUrl,
   secure: !!options.secure,
   prod: !!options.prod

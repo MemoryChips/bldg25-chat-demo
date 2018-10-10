@@ -17,6 +17,8 @@ import { orderRouter } from './order/order-routes'
 import bodyParser from 'body-parser'
 
 import { MongoDatabase } from './database/mongo'
+import { MongoShoppingCartDatabase } from './database/mongo-shopping-cart'
+import { SHOPPING_CART_DB } from './shopping-cart/shopping-cart-api'
 // necessary imports from bldg25 chat server package
 import {
   attachVideoSocketServer,
@@ -71,6 +73,7 @@ MongoClient.connect(
 )
   .then(client => {
     const chatDb = new ChatMongoDataBase(client, mongoDataBase)
+    app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, mongoDataBase)
     app.locals.db = new MongoDatabase(client, mongoDataBase)
     runServer(chatDb)
   })

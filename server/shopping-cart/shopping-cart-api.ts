@@ -24,11 +24,12 @@ export interface ICart {
 
 export interface ShoppingCartDatabase {
   quit(): void
-  flushDb(): Promise<boolean>
   getShoppingCart(_id: string): Promise<ICart | null>
   createShoppingCart(): Promise<string>
   saveShoppingCart(cart: ICart, cartId: string): Promise<boolean>
   deleteShoppingCart(cartId: string): Promise<boolean>
+  clearAllCarts(): Promise<boolean>
+  // flushDb(): Promise<boolean>
 }
 
 // const type = 'shopping-cart'

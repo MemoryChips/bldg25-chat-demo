@@ -2,6 +2,7 @@
 import { Request, Response } from 'express'
 import { ObjectId } from 'mongodb'
 import { Database } from '../database/mongo'
+import { ShoppingCartDatabase, SHOPPING_CART_DB } from '../shopping-cart/shopping-cart-api'
 
 // FIXME: align backend and frontend models
 export interface Category {
@@ -30,9 +31,13 @@ export interface DbProduct extends ProductWoKey {
 
 export function resetAllProducts(req: Request, res: Response) {
   const db: Database = req.app.locals.db
-  db.resetAllProducts()
-    .then(success => {
-      res.status(200).send({ success })
+  const dbSC: ShoppingCartDatabase = req.app.locals[SHOPPING_CART_DB]
+  Promise.all([db.resetAllProducts(), dbSC.clearAllCarts()])
+    .then(results => {
+      if (results.every(result => result)) {
+        res.status(200).send({ success: true })
+      }
+      res.status(403).send({ success: false })
     })
     .catch(err => {
       res.status(500).send(`Internal server error: ${err}`)

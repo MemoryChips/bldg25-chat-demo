@@ -40,7 +40,7 @@ export class MongoShoppingCartDatabase implements ShoppingCartDatabase {
     return this.client.close(() => console.log(`App Mongo client closed`))
   }
 
-  flushDb() {
+  clearAllCarts() {
     const flushes = [this.shoppingCartCollection.deleteMany({})]
     return Promise.all(flushes).then(results => {
       const success = !!results[0].result.ok
@@ -49,7 +49,7 @@ export class MongoShoppingCartDatabase implements ShoppingCartDatabase {
     })
   }
   getShoppingCart(_id: string): Promise<ICart | null> {
-    return this.shoppingCartCollection.findOne({ _id })
+    return this.shoppingCartCollection.findOne({ _id: new ObjectId(_id) })
   }
   createShoppingCart(): Promise<string> {
     const newCart: ICart = {
@@ -62,7 +62,7 @@ export class MongoShoppingCartDatabase implements ShoppingCartDatabase {
   }
   saveShoppingCart(cart: ICart, cartId: string): Promise<boolean> {
     return this.shoppingCartCollection
-      .replaceOne({ _id: cartId }, cart)
+      .replaceOne({ _id: new ObjectId(cartId) }, cart)
       .then(result => result.modifiedCount === 1)
   }
   deleteShoppingCart(cartId: string): Promise<boolean> {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { AuthService, AppUser } from '../../auth/auth.service'
+import { AuthService, User } from '../../auth/auth.service'
 import { OrderService, Order } from '../../shared/services/order.service'
 import { Observable } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
@@ -14,7 +14,7 @@ export class MyOrdersComponent {
 
   constructor(authService: AuthService, orderService: OrderService) {
     this.orders$ = authService.user$.pipe(
-      switchMap((_u: AppUser) => orderService.getOrdersByUser())
+      switchMap((_u: User) => orderService.getMyOrders())
     )
   }
 }

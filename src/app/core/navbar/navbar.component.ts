@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { AuthService, AppUser } from '../../auth/auth.service'
+import { AuthService, User } from '../../auth/auth.service'
 import {
   ShoppingCartService,
   Cart
@@ -14,7 +14,7 @@ import { environment } from 'environments/environment'
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  appUser: AppUser
+  appUser: User
   isAdmin = false
   isLoggedIn = false
   cart: Cart

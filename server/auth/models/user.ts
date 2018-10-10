@@ -1,5 +1,4 @@
-// FIXME: align with front end
-
+// Align FE/BE
 export interface Credentials {
   userName?: string
   email: string
@@ -14,18 +13,18 @@ export interface SignUpInfo {
 }
 
 export interface UserWoId {
-  // _id?: string
   email: string
   userName: string
-  // passwordDigest: string
   roles: string[]
   avatarUrl: string
 }
 
-export interface UserWithPwdDigest extends UserWoId {
-  passwordDigest: string
-}
-
 export interface User extends UserWoId {
   _id: string
+}
+// end Align FE/BE
+
+// BE use only
+export interface UserWithPwdDigest extends UserWoId {
+  passwordDigest: string
 }

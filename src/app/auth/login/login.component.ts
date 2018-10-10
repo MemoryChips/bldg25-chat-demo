@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
-import { AuthService, Credentials, AppUser } from '../auth.service'
+import { AuthService, Credentials, User } from '../auth.service'
 import { Router } from '@angular/router'
 import { Unsubscribe } from 'shared/utils'
 import { MatSnackBar } from '@angular/material'
@@ -13,7 +13,7 @@ import { SignupValidators } from '../signup/signup.validators'
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  user: AppUser
+  user: User
   isLoggedIn = false
   // credentials: Credentials = {
   //   email: 'admin@gmail.com',
@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   submitLogin() {
     const credentials: Credentials = this.form.value
     this.authService.login(credentials).subscribe(
-      (_user: AppUser) => {
+      (_user: User) => {
         console.log('Login Success! Redirecting now...', _user)
         this.routeToRedirect()
       },

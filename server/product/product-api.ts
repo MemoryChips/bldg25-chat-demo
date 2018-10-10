@@ -39,12 +39,18 @@ export function resetAllProducts(req: Request, res: Response) {
     })
 }
 
+function convertToProduct(dbProduct: DbProduct): Product {
+  const p: any = { ...dbProduct }
+  p.key = p._id.toHexString()
+  delete p._id
+  return p
+}
+
 export function getAllProducts(req: Request, res: Response) {
-  // (<Database>req.app.locals.db)
-  // ;(req.app.locals.db as Database)
   const db: Database = req.app.locals.db
   db.getAllProducts()
-    .then(products => {
+    .then(dbProducts => {
+      const products = dbProducts.map(convertToProduct)
       res.status(200).send(products)
     })
     .catch(err => {
@@ -52,12 +58,18 @@ export function getAllProducts(req: Request, res: Response) {
     })
 }
 
+// function convertToProductWoKey(product: Product): ProductWoKey {
+//   const p: any = { ...product }
+//   delete p.key
+//   return p
+// }
+
 export function getProduct(req: Request, res: Response) {
   const db: Database = req.app.locals.db
   const productId: string = req.params.id
   db.getProductById(productId)
-    .then(product => {
-      if (product) res.status(200).json(product)
+    .then(dbProduct => {
+      if (dbProduct) res.status(200).json(convertToProduct(dbProduct))
       else res.status(403).send(`Unable to find product with id: ${productId}`)
     })
     .catch(err => {
@@ -67,6 +79,7 @@ export function getProduct(req: Request, res: Response) {
 
 export function putProduct(req: Request, res: Response) {
   const db: Database = req.app.locals.db
+  // TODO: Should this use ProductWoKey?
   const dbProduct: DbProduct = {
     title: req.body.title,
     price: req.body.number,

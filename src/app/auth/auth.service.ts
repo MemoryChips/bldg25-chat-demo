@@ -7,45 +7,46 @@ import { HttpClient } from '@angular/common/http'
 
 // Must be added to application
 import { ChatLoginService } from 'bldg25-chat'
-// import { ChatLoginService } from '../chat/chat.module' // for debug should remove this
 
+// Align FE/BE
 export interface Credentials {
   userName?: string
   email: string
   password: string
 }
 
-// application user must have the properties for ChatUser
-export interface AppUser {
+export interface SignUpInfo {
   email: string
-  _id: string
-  roles: string[]
+  password: string
   userName: string
-  loginTime: number
-  active: boolean // Some activity in the last 15 mins?
-  unreadMessages?: number
-  isAdmin?: boolean
   avatarUrl?: string
 }
 
-export const ANONYMOUS_USER: AppUser = {
+export interface UserWoId {
+  email: string
+  userName: string
+  roles: string[]
+  avatarUrl: string
+}
+
+export interface User extends UserWoId {
+  _id: string
+}
+
+export const ANONYMOUS_USER: User = {
   email: 'guest',
   _id: '', // keep this falsey
   roles: [],
   userName: 'Guest',
-  loginTime: 0,
-  active: false,
-  isAdmin: false
+  avatarUrl: ''
 }
 
 @Injectable()
 export class AuthService {
-  userSubject$ = new BehaviorSubject<AppUser>(ANONYMOUS_USER)
+  userSubject$ = new BehaviorSubject<User>(ANONYMOUS_USER)
   // TODO: is asObservabel reeallt needed
   // user$: Observable<AppUser> = this.userSubject$.filter(user => !!user)
-  user$: Observable<AppUser> = this.userSubject$
-    .asObservable()
-    .pipe(filter((user: AppUser) => !!user))
+  user$: Observable<User> = this.userSubject$.asObservable().pipe(filter((user: User) => !!user))
 
   returnUrl = '/'
   isLoggedIn$: Observable<boolean> = this.user$.pipe(map(user => !!user._id))
@@ -63,7 +64,7 @@ export class AuthService {
   ) {
     console.log('Auth service created.')
     this.returnUrl = localStorage.getItem('returnUrl') || '/'
-    this.http.get<AppUser>('/api/auth/user-me').subscribe(
+    this.http.get<User>('/api/auth/user-me').subscribe(
       user => {
         if (!!user._id) {
           this._completLogin(user)
@@ -104,7 +105,7 @@ export class AuthService {
   }
 
   signUp(credentials: Credentials) {
-    return this.http.post<AppUser>('/api/auth/signup', credentials).pipe(
+    return this.http.post<User>('/api/auth/signup', credentials).pipe(
       shareReplay(),
       tap(user => {
         this.userSubject$.next(user)
@@ -116,7 +117,7 @@ export class AuthService {
 
   login(credentials: Credentials) {
     this.preLogin()
-    return this.http.post<AppUser>('/api/auth/login', credentials).pipe(
+    return this.http.post<User>('/api/auth/login', credentials).pipe(
       shareReplay(),
       tap(user => {
         this._completLogin(user)
@@ -124,7 +125,7 @@ export class AuthService {
     )
   }
 
-  private _completLogin(user: AppUser) {
+  private _completLogin(user: User) {
     this.userSubject$.next(user)
     // this must be added to alert chat that the user is logged in
     this.chatLoginService.setLoggedInState(true)
@@ -132,7 +133,7 @@ export class AuthService {
 
   socialLogin(provider: string) {
     this.preLogin()
-    return this.http.get<AppUser>('/api/auth/social-login/' + provider).pipe(
+    return this.http.get<User>('/api/auth/social-login/' + provider).pipe(
       shareReplay(),
       tap(user => this.userSubject$.next(user))
     )

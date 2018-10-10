@@ -1,20 +1,18 @@
 import { TestBed, inject } from '@angular/core/testing'
 
-import { AuthService, AppUser } from './auth.service'
+import { AuthService, User } from './auth.service'
 import { ActivatedRoute } from '@angular/router'
 import { RouterTestingModule } from '@angular/router/testing'
 import { ChatLoginService } from 'bldg25-chat'
 import { HttpClient } from '@angular/common/http'
 import { of } from 'rxjs'
 
-const PRETEND_USER: AppUser = {
+const PRETEND_USER: User = {
   email: 'pretend@gmail.com',
-  _id: 'xyz', // keep this falsey
+  _id: 'xyz',
   roles: ['STUDENT'],
   userName: 'Pretend',
-  loginTime: 42,
-  active: false,
-  isAdmin: false
+  avatarUrl: ''
 }
 
 let loggedIn = false

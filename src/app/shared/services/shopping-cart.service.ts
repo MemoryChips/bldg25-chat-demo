@@ -123,7 +123,7 @@ export class ShoppingCartService {
     const cartId = await this.getCartId()
     return this.http
       .get<Cart>(`/api/shopping-carts/${cartId}`)
-      .toPromise()
+      .toPromise() // TODO: Is subscribe better than convert toPromise? Or the same thing?
       .then(c => {
         this.setNewCart(c)
         return true

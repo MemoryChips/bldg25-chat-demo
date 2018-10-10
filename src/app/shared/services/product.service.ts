@@ -3,21 +3,26 @@ import { HttpClient } from '@angular/common/http'
 import { addKey, values } from 'shared/utils'
 
 import { map } from 'rxjs/operators'
+import { Observable } from 'rxjs'
 
-import { Product, Category } from '../../../../shared/products'
-// export interface Product {
-//   title: string
-//   price: number
-//   imageUrl: string
-//   category: string
-//   key: string
-// }
+// import { Product, Category } from '../../../../shared/products'
+export interface Product {
+  title: string
+  price: number
+  imageUrl: string
+  category: string
+  key: string
+}
 
-// export interface Category {
-//   title: string
-//   lead: string
-//   key?: string
-// }
+export interface Products {
+  [key: string]: Product
+}
+
+export interface Category {
+  title: string
+  lead: string
+  key?: string
+}
 
 @Injectable()
 export class ProductService {
@@ -27,18 +32,21 @@ export class ProductService {
     return this.http.post<boolean>('/api/product/new-product', product)
   }
 
-  getAll() {
-    return this.http.get<any>('/api/product/all')
+  getList() {
+    return this.http.get<Product[]>('/api/product/all')
   }
 
   resetAll() {
     return this.http.post<any>('/api/product/reset-all-products', '')
   }
 
-  getList() {
-    return this.getAll().pipe<any, any>(
-      map(addKey),
-      map(values)
+  getIndexedList(): Observable<Products> {
+    return this.getList().pipe(
+      map(products => {
+        const newProducts: Products = {}
+        products.forEach(p => (newProducts[p.key] = p))
+        return newProducts
+      })
     )
   }
 

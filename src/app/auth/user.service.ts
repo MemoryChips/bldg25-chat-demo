@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { AppUser } from 'app/auth/auth.service'
+import { User } from 'app/auth/auth.service'
 import { HttpClient } from '@angular/common/http'
 
 @Injectable()
@@ -14,7 +14,7 @@ export class UserService {
   //   })
   // }
 
-  getUser(uid: string): Observable<AppUser> {
-    return this.http.get<AppUser>('/api/user/' + uid)
+  getUser(uid: string): Observable<User> {
+    return this.http.get<User>('/api/user/' + uid)
   }
 }

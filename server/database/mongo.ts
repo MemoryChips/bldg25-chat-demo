@@ -13,6 +13,8 @@ import { Order } from '../order/order-api'
 //   return arr.filter(x => !!x)
 // }
 
+// FIXME: align with the front endianness
+// TODO: consider moving categories to a sepearte database object
 interface DbUserWoId extends UserWoId {
   passwordDigest: string
 }
@@ -22,7 +24,7 @@ interface DbUser extends DbUserWoId {
 }
 
 interface DbCategory extends Category {
-  _id: ObjectId
+  _id: string
 }
 
 function addUserId(dbUser: DbUser | null): User | null {
@@ -144,7 +146,7 @@ export class MongoDatabase implements Database {
 
   saveAllCategories(cats: Categories): Promise<boolean> {
     const catsArray: DbCategory[] = Object.keys(cats).map(key => ({
-      _id: new ObjectId(key),
+      _id: key,
       ...cats[key]
     }))
     return this.categoriesCollection
@@ -183,6 +185,7 @@ export class MongoDatabase implements Database {
 
   resetAllProducts(): Promise<boolean> {
     // FIXME: const host = // NEED TO CONSTRUCT SERVER URL
+    // FIXME: probably should wipe out shopping carts
     const resets = [
       this.saveAllProducts(getPreloadProducts()),
       this.saveAllCategories(categoriesPreload)

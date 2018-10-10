@@ -3,7 +3,7 @@
 import { Categories, DbProduct } from '../product/product-api'
 import { serverConfig } from '../server-config'
 
-const serverUrl = serverConfig.serverUrl
+const imageUrl = serverConfig.imageUrl
 
 export interface KeyedObj<T> {
   [key: string]: T
@@ -33,36 +33,36 @@ export const categoriesPreload: Categories = {
   }
 }
 
-export function getPreloadProducts(assetsUrl = serverUrl) {
+export function getPreloadProducts(assetsUrl = imageUrl) {
   console.log(`Using ${assetsUrl} for the assetsUrl`)
   const products: DbProduct[] = [
     {
       category: 'database',
-      imageUrl: assetsUrl + 'assets/images/ch.jpg',
+      imageUrl: assetsUrl + '/' + 'assets/images/ch.jpg',
       price: 5,
       title: 'Taxonomy Services Lite'
     },
     {
       category: 'web-dev',
-      imageUrl: assetsUrl + 'assets/images/hot-babe.jpg',
+      imageUrl: assetsUrl + '/' + 'assets/images/hot-babe.jpg',
       price: 10,
       title: 'Web App Testing'
     },
     {
       category: 'manpower',
-      imageUrl: assetsUrl + 'assets/images/mc1.jpg',
+      imageUrl: assetsUrl + '/' + 'assets/images/mc1.jpg',
       price: 10,
       title: 'Web App Testing II'
     },
     {
       category: 'web-dev',
-      imageUrl: assetsUrl + 'assets/images/pretty-lady.jpg',
+      imageUrl: assetsUrl + '/' + 'assets/images/pretty-lady.jpg',
       price: 22,
       title: 'Wordpress Sites'
     },
     {
       category: 'veggies',
-      imageUrl: assetsUrl + 'assets/images/spinach.jpg',
+      imageUrl: assetsUrl + '/' + 'assets/images/spinach.jpg',
       price: 2.5,
       title: 'Spinach'
     },
@@ -74,7 +74,7 @@ export function getPreloadProducts(assetsUrl = serverUrl) {
     },
     {
       category: 'veggies',
-      imageUrl: assetsUrl + 'assets/images/avocado.jpg',
+      imageUrl: assetsUrl + '/' + 'assets/images/avocado.jpg',
       price: 1.75,
       title: 'Avacado'
     },

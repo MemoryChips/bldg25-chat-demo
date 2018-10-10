@@ -45,6 +45,7 @@ export const serverConfig = {
   port,
   chatServerPort,
   serverUrl,
+  imageUrl,
   defaultAvatarUrl,
   secure: !!options.secure,
   prod: !!options.prod

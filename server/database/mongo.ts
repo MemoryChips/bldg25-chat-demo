@@ -184,7 +184,6 @@ export class MongoDatabase implements Database {
   }
 
   resetAllProducts(): Promise<boolean> {
-    // FIXME: const host = // NEED TO CONSTRUCT SERVER URL
     // FIXME: probably should wipe out shopping carts
     const resets = [
       this.saveAllProducts(getPreloadProducts()),
@@ -195,7 +194,7 @@ export class MongoDatabase implements Database {
 
   saveProduct(product: DbProduct, productId: string): Promise<boolean> {
     return this.productsCollection
-      .updateOne({ _id: new ObjectId(productId) }, product)
+      .replaceOne({ _id: new ObjectId(productId) }, product)
       .then(result => result.modifiedCount === 1)
   }
 

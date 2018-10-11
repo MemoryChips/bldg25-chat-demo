@@ -34,7 +34,8 @@ export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit() {
     // const data = this.productService.getListStatic()
     this._subscriptions = [
-      this.productService.getIndexedList().subscribe((products: any) => {
+      this.productService.getList().subscribe((products: Product[]) => {
+        // this.productService.getIndexedList().subscribe((products: any) => {
         // TODO: use Product instead of any
         this.dataSource.data = products
         // this.dataSource.data = data

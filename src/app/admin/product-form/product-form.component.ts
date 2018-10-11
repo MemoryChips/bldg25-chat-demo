@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 // import { CategoryService } from '../../shared/services/category.service'
-import {
-  ProductService,
-  Product,
-  Category
-} from 'shared/services/product.service'
+import { ProductService, Product, Category } from 'shared/services/product.service'
 import { Router } from '@angular/router'
 import { ActivatedRoute } from '@angular/router'
 // import 'rxjs/add/operator/take'
@@ -29,14 +25,9 @@ export class ProductFormComponent implements OnInit {
   buttonText = 'Save'
   newProduct = false
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private ps: ProductService
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute, private ps: ProductService) {
     this.categories$ = ps.getCategories()
-    const path =
-      this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path
+    const path = this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path
     this.newProduct = !!path && path.includes('copy')
     const keyId = this.route.snapshot.paramMap.get('id')
     this.key = keyId ? keyId : ''

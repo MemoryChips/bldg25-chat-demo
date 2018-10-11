@@ -16,6 +16,9 @@ import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 import bodyParser from 'body-parser'
 
+import redis, { RedisClient } from 'redis'
+// import { RedisCategoryDatabase } from './database/redis-categories'
+
 import { MongoDatabase } from './database/mongo'
 import { MongoCategoryDatabase } from './database/mongo-categories'
 import { MongoShoppingCartDatabase } from './database/mongo-shopping-cart'
@@ -69,12 +72,41 @@ if (process.env.PROD || serverConfig.prod) {
 // const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
 // const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
 
+const redisDbHost = 'localhost'
+const redisDbPort = 6379
+const redisDbAuthCode = 'this_should_be_a_secret_authcode'
+const redisDbNum = 0
+// const redisDbHost = !!options.dbHost ? options.dbHost : 'localhost'
+// const redisDbPort = !!options.dbPort ? options.dbPort : 6379
+// const redisDbAuthCode = !!options.dbAuth ? options.dbAuth : 'this_should_be_a_secret_authcode'
+console.log(`Using ${redisDbHost}:${redisDbPort} for redis database`)
+console.log(`Using authcode ${redisDbAuthCode} for redis database`)
+const redisClient: RedisClient = redis.createClient(redisDbPort, redisDbHost, {
+  retry_strategy: options => {
+    console.log(
+      `Trying to reconnect: ${options.attempt} attempt. ${
+        options.total_retry_time
+      } total retry time.`
+    )
+    return 5000
+  }
+})
+redisClient.on('connect', _e => {
+  const authorized = redisClient.auth(redisDbAuthCode)
+  redisClient.select(redisDbNum)
+  console.log(`Database ${redisDbNum} selected with Authorization: ${authorized}`)
+})
+redisClient.on('reconnecting', _e => {
+  console.log(`Attempting reconnect`)
+})
+
 MongoClient.connect(
   mongoUrl,
   { useNewUrlParser: true }
 )
   .then(client => {
     const chatDb = new ChatMongoDataBase(client, mongoDataBase)
+    // app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(redisClient)
     app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, mongoDataBase)
     app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, mongoDataBase)
     app.locals.db = new MongoDatabase(client, mongoDataBase)

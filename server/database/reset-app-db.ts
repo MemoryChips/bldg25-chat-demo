@@ -27,7 +27,7 @@ export const categoriesPreload: Categories = {
     title: 'Web Development'
   },
   veggies: {
-    key: 'web-dev',
+    key: 'veggies',
     lead: 'Kevin Tamlyn',
     title: 'Veggies'
   }

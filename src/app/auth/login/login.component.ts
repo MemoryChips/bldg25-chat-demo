@@ -23,10 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   passwordInputType = 'password'
   hide = true
   form = new FormGroup({
-    email: new FormControl('robert.tamlyn@gmail.com', [
-      Validators.required,
-      Validators.email
-    ]),
+    email: new FormControl('admin@gmail.com', [Validators.required, Validators.email]),
     password: new FormControl('Password10', [
       Validators.required,
       SignupValidators.cannotContainSpace

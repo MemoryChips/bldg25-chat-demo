@@ -97,10 +97,9 @@ export function getProduct(req: Request, res: Response) {
 
 export function putProduct(req: Request, res: Response) {
   const db: Database = req.app.locals.db
-  // TODO: Should this use ProductWoKey?
   const dbProduct: DbProduct = {
     title: req.body.title,
-    price: req.body.number,
+    price: req.body.price,
     imageUrl: req.body.imageUrl,
     category: req.body.category
   }

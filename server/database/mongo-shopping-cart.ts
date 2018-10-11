@@ -11,7 +11,7 @@ export class MongoShoppingCartDatabase implements ShoppingCartDatabase {
   private shoppingCartCollection: Collection<ICart>
 
   constructor(private client: MongoClient, dbName: string) {
-    console.log('Instance of mongo database class created.')
+    console.log('Instance of mongo shopping cart database created.')
     this.db = this.client.db(dbName)
     this.shoppingCartCollection = this.db.collection<ICart>(SHOPPING_CART_COLLECTION)
     // TODO: Do these events happen?

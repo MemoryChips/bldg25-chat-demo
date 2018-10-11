@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { ObjectId } from 'mongodb'
 import { Database } from '../database/mongo'
 import { ShoppingCartDatabase, SHOPPING_CART_DB } from '../shopping-cart/shopping-cart-api'
+import { categoriesPreload } from '../database/reset-app-db'
 
 // FIXME: align backend and frontend models
 export interface Category {
@@ -29,18 +30,30 @@ export interface DbProduct extends ProductWoKey {
   _id?: ObjectId
 }
 
+export const CATEGORY_COLLECTION = 'categories'
+export const CATEGORIES_DB = 'category-db'
+export interface CategoryDatabase {
+  saveAllCategories(cats: Categories): Promise<boolean>
+  getAllCategories(): Promise<Categories>
+}
+
 export function resetAllProducts(req: Request, res: Response) {
   const db: Database = req.app.locals.db
   const dbSC: ShoppingCartDatabase = req.app.locals[SHOPPING_CART_DB]
-  Promise.all([db.resetAllProducts(), dbSC.clearAllCarts()])
+  const dbCats: CategoryDatabase = req.app.locals[CATEGORIES_DB]
+  Promise.all([
+    db.resetAllProducts(),
+    dbSC.clearAllCarts(),
+    dbCats.saveAllCategories(categoriesPreload)
+  ])
     .then(results => {
       if (results.every(result => result)) {
-        res.status(200).send({ success: true })
+        return res.status(200).json({ success: true })
       }
-      res.status(403).send({ success: false })
+      res.status(403).json({ success: false })
     })
     .catch(err => {
-      res.status(500).send(`Internal server error: ${err}`)
+      res.status(500).json(`Internal server error: ${err}`)
     })
 }
 
@@ -134,7 +147,7 @@ export function postProduct(req: Request, res: Response) {
 }
 
 export function getAllCategories(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: CategoryDatabase = req.app.locals[CATEGORIES_DB]
   db.getAllCategories()
     .then(cats => {
       res.status(200).json(cats)

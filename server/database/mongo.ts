@@ -2,8 +2,9 @@ import { Db, Collection, MongoClient, ObjectId } from 'mongodb'
 
 import { UserWoId, User, UserWithPwdDigest } from '../auth/models/user'
 // import { serverConfig } from '../server-config'
-import { DbProduct, Categories, Category } from '../product/product-api'
-import { getPreloadProducts, categoriesPreload } from './reset-app-db'
+import { DbProduct } from '../product/product-api'
+import { getPreloadProducts } from './reset-app-db'
+// import { getPreloadProducts, categoriesPreload } from './reset-app-db'
 import { Order } from '../order/order-api'
 
 // export const USERS = 'users'
@@ -23,10 +24,6 @@ interface DbUser extends DbUserWoId {
   _id?: ObjectId
 }
 
-interface DbCategory extends Category {
-  _id: string
-}
-
 function addUserId(dbUser: DbUser | null): User | null {
   if (!dbUser) {
     return null
@@ -42,7 +39,6 @@ function addUserId(dbUser: DbUser | null): User | null {
 }
 
 const USER_COLLECTION = 'users'
-const CATEGORIES_COLLECTION = 'categories'
 const PRODUCTS_COLLECTION = 'products'
 const ORDERS_COLLECTION = 'orders'
 
@@ -55,9 +51,6 @@ export interface Database {
   createOrder(order: Order, userId: string): Promise<boolean>
   getOrdersById(userId: string): Promise<Order[]>
   getAllOrders(): Promise<Order[]>
-
-  saveAllCategories(cats: Categories): Promise<boolean>
-  getAllCategories(): Promise<Categories>
 
   saveAllProducts(products: DbProduct[]): Promise<boolean>
   resetAllProducts(): Promise<boolean>
@@ -79,7 +72,6 @@ export interface Database {
 export class MongoDatabase implements Database {
   private db: Db
   private usersCollection: Collection<DbUser>
-  private categoriesCollection: Collection<DbCategory>
   private productsCollection: Collection<DbProduct>
   private ordersCollection: Collection<Order>
 
@@ -87,7 +79,6 @@ export class MongoDatabase implements Database {
     console.log('Instance of mongo database class created.')
     this.db = this.client.db(dbName)
     this.usersCollection = this.db.collection<DbUser>(USER_COLLECTION)
-    this.categoriesCollection = this.db.collection(CATEGORIES_COLLECTION)
     this.productsCollection = this.db.collection(PRODUCTS_COLLECTION)
     this.ordersCollection = this.db.collection(ORDERS_COLLECTION)
     // TODO: Do these events happen?
@@ -115,11 +106,7 @@ export class MongoDatabase implements Database {
   // }
 
   flushDb() {
-    const flushes = [
-      this.usersCollection.deleteMany({}),
-      this.categoriesCollection.deleteMany({}),
-      this.productsCollection.deleteMany({})
-    ]
+    const flushes = [this.usersCollection.deleteMany({}), this.productsCollection.deleteMany({})]
     return Promise.all(flushes).then(results => {
       const success = !!results[0].result.ok
       console.log(`Database flushed`)
@@ -144,33 +131,6 @@ export class MongoDatabase implements Database {
     return this.ordersCollection.find({}).toArray()
   }
 
-  saveAllCategories(cats: Categories): Promise<boolean> {
-    const catsArray: DbCategory[] = Object.keys(cats).map(key => ({
-      _id: key,
-      ...cats[key]
-    }))
-    return this.categoriesCollection
-      .deleteMany({})
-      .then(() => {
-        // return this.categoriesCollection.updateMany({}, catsArray, { upsert: true })
-        return this.categoriesCollection.insertMany(catsArray)
-      })
-      .then(result => {
-        return result.insertedCount === catsArray.length
-      })
-  }
-
-  getAllCategories(): Promise<Categories> {
-    return this.categoriesCollection
-      .find({})
-      .toArray()
-      .then(cats => {
-        const categories: Categories = {}
-        cats.forEach(cat => (categories[cat.key] = cat))
-        return categories
-      })
-  }
-
   saveAllProducts(products: DbProduct[]): Promise<boolean> {
     return this.productsCollection
       .deleteMany({})
@@ -184,11 +144,7 @@ export class MongoDatabase implements Database {
   }
 
   resetAllProducts(): Promise<boolean> {
-    // FIXME: probably should wipe out shopping carts
-    const resets = [
-      this.saveAllProducts(getPreloadProducts()),
-      this.saveAllCategories(categoriesPreload)
-    ]
+    const resets = [this.saveAllProducts(getPreloadProducts())]
     return Promise.all(resets).then(results => results.every(r => r))
   }
 

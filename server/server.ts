@@ -17,6 +17,7 @@ import { orderRouter } from './order/order-routes'
 import bodyParser from 'body-parser'
 
 import { MongoDatabase } from './database/mongo'
+import { MongoCategoryDatabase } from './database/mongo-categories'
 import { MongoShoppingCartDatabase } from './database/mongo-shopping-cart'
 import { SHOPPING_CART_DB } from './shopping-cart/shopping-cart-api'
 // necessary imports from bldg25 chat server package
@@ -30,6 +31,7 @@ import { MongoClient } from 'mongodb'
 
 import { mongoUrl, mongoDataBase, serverConfig } from './server-config'
 import { verifySocketConnection } from './auth/security'
+import { CATEGORIES_DB } from './product/product-api'
 
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
@@ -73,6 +75,7 @@ MongoClient.connect(
 )
   .then(client => {
     const chatDb = new ChatMongoDataBase(client, mongoDataBase)
+    app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, mongoDataBase)
     app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, mongoDataBase)
     app.locals.db = new MongoDatabase(client, mongoDataBase)
     runServer(chatDb)

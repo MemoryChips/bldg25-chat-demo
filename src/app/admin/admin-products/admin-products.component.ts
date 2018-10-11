@@ -84,7 +84,8 @@ export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy 
   resetAllProductsRequest() {
     console.log(`Reset all products data requested.`)
     this.productService.resetAll().subscribe(resp => {
-      console.log(`Response to reset all products: ${resp}`)
+      // TODO: add snackbar message here with result of reset all products
+      console.log(`Response to reset all products: ${resp.success}`)
     })
   }
 }

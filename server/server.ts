@@ -68,10 +68,6 @@ if (process.env.PROD || serverConfig.prod) {
   })
 }
 
-// Create database connection for chat
-// const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
-// const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
-
 const redisDbHost = 'localhost'
 const redisDbPort = 6379
 const redisDbAuthCode = 'this_should_be_a_secret_authcode'
@@ -99,6 +95,10 @@ redisClient.on('connect', _e => {
 redisClient.on('reconnecting', _e => {
   console.log(`Attempting reconnect`)
 })
+
+// Create database connection for chat
+// const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
+// const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
 
 MongoClient.connect(
   mongoUrl,

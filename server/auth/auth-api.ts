@@ -47,7 +47,7 @@ export function getJwtUser(req: any, res: any) {
         res.status(403).json(`Error trying to get jwt user: ${err}`)
       })
   } else {
-    res.status(403).json(userNotFound)
+    res.status(200).json(userNotFound)
   }
 }
 

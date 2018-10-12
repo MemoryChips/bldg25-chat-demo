@@ -67,7 +67,7 @@ export class AuthService {
     this.http.get<User>('/api/auth/user-me').subscribe(
       user => {
         if (!!user._id) {
-          this._completLogin(user)
+          this._completeLogin(user)
         } else {
           this.userSubject$.next(user._id ? user : ANONYMOUS_USER)
         }
@@ -120,12 +120,12 @@ export class AuthService {
     return this.http.post<User>('/api/auth/login', credentials).pipe(
       shareReplay(),
       tap(user => {
-        this._completLogin(user)
+        this._completeLogin(user)
       })
     )
   }
 
-  private _completLogin(user: User) {
+  private _completeLogin(user: User) {
     this.userSubject$.next(user)
     // this must be added to alert chat that the user is logged in
     this.chatLoginService.setLoggedInState(true)

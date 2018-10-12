@@ -75,7 +75,7 @@ if (process.env.PROD || serverConfig.prod) {
 const redisDbHost = 'localhost'
 const redisDbPort = 6379
 const redisDbAuthCode = 'this_should_be_a_secret_authcode'
-const redisDbNum = 0
+const redisDbNum = 2 // use 0 when using a cloud redis server
 // const redisDbHost = !!options.dbHost ? options.dbHost : 'localhost'
 // const redisDbPort = !!options.dbPort ? options.dbPort : 6379
 // const redisDbAuthCode = !!options.dbAuth ? options.dbAuth : 'this_should_be_a_secret_authcode'

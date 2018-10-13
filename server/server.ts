@@ -20,9 +20,10 @@ import redis, { RedisClient } from 'redis'
 import { RedisCategoryDatabase } from './database/redis-categories'
 
 import { MongoDatabase } from './database/mongo'
-// import { MongoCategoryDatabase } from './database/mongo-categories'
+import { MongoCategoryDatabase } from './database/mongo-categories'
 import { MongoShoppingCartDatabase } from './database/mongo-shopping-cart'
 import { SHOPPING_CART_DB } from './shopping-cart/shopping-cart-api'
+import { CATEGORIES_DB } from './product/product-api'
 // necessary imports from bldg25 chat server package
 import {
   attachVideoSocketServer,
@@ -33,8 +34,11 @@ import {
 import { MongoClient } from 'mongodb'
 
 import { mongoUrl, mongoDataBase, serverConfig } from './server-config'
+
+/*
+This must be provided by the parent application to the Chat Server
+*/
 import { verifySocketConnection } from './auth/security'
-import { CATEGORIES_DB } from './product/product-api'
 
 // const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
@@ -68,33 +72,36 @@ if (process.env.PROD || serverConfig.prod) {
   })
 }
 
-const redisDbHost = 'localhost'
-const redisDbPort = 6379
-const redisDbAuthCode = 'this_should_be_a_secret_authcode'
-const redisDbNum = 2 // use 0 when using a cloud redis server
-// const redisDbHost = !!options.dbHost ? options.dbHost : 'localhost'
-// const redisDbPort = !!options.dbPort ? options.dbPort : 6379
-// const redisDbAuthCode = !!options.dbAuth ? options.dbAuth : 'this_should_be_a_secret_authcode'
-console.log(`Using ${redisDbHost}:${redisDbPort} for redis database`)
-console.log(`Using authcode ${redisDbAuthCode} for redis database`)
-const redisClient: RedisClient = redis.createClient(redisDbPort, redisDbHost, {
-  retry_strategy: options => {
-    console.log(
-      `Trying to reconnect: ${options.attempt} attempt. ${
-        options.total_retry_time
-      } total retry time.`
-    )
-    return 5000
-  }
-})
-redisClient.on('connect', _e => {
-  const authorized = redisClient.auth(redisDbAuthCode)
-  redisClient.select(redisDbNum)
-  console.log(`Database ${redisDbNum} selected with Authorization: ${authorized}`)
-})
-redisClient.on('reconnecting', _e => {
-  console.log(`Attempting reconnect`)
-})
+function getRedisClient() {
+  const redisDbHost = 'localhost'
+  const redisDbPort = 6379
+  const redisDbAuthCode = 'this_should_be_a_secret_authcode'
+  const redisDbNum = 2 // use 0 when using a cloud redis server
+  // const redisDbHost = !!options.dbHost ? options.dbHost : 'localhost'
+  // const redisDbPort = !!options.dbPort ? options.dbPort : 6379
+  // const redisDbAuthCode = !!options.dbAuth ? options.dbAuth : 'this_should_be_a_secret_authcode'
+  console.log(`Using ${redisDbHost}:${redisDbPort} for redis database`)
+  console.log(`Using authcode ${redisDbAuthCode} for redis database`)
+  const redisClient: RedisClient = redis.createClient(redisDbPort, redisDbHost, {
+    retry_strategy: options => {
+      console.log(
+        `Trying to reconnect: ${options.attempt} attempt. ${
+          options.total_retry_time
+        } total retry time.`
+      )
+      return 5000
+    }
+  })
+  redisClient.on('connect', _e => {
+    const authorized = redisClient.auth(redisDbAuthCode)
+    redisClient.select(redisDbNum)
+    console.log(`Database ${redisDbNum} selected with Authorization: ${authorized}`)
+  })
+  redisClient.on('reconnecting', _e => {
+    console.log(`Attempting reconnect`)
+  })
+  return redisClient
+}
 
 // Create database connection for chat
 // const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
@@ -106,8 +113,11 @@ MongoClient.connect(
 )
   .then(client => {
     const chatDb = new ChatMongoDataBase(client, mongoDataBase)
-    app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(redisClient)
-    // app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, mongoDataBase)
+    if (serverConfig.useRedisLocal) {
+      app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(getRedisClient())
+    } else {
+      app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, mongoDataBase)
+    }
     app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, mongoDataBase)
     app.locals.db = new MongoDatabase(client, mongoDataBase)
     runServer(chatDb)

@@ -66,7 +66,7 @@ redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 ```bash
 # run current file debug on pre-load-user-data.ts OR
 node -r "ts-node/register" server/database/pre-load-user-data.ts
-# reset app data using admin user
+# reset app data using admin user to pre load app data
 ```
 
 - Local development with debug server with mlab mongo
@@ -91,8 +91,7 @@ npm run start
 ```
 
 ```bash
-# if running with some data stored in local redis server
-redis-server ./server/database/redis.conf # launch local redis server
+# to run redis shell start server as above
 redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
 ```
 

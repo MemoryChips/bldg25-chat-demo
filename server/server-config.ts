@@ -45,6 +45,7 @@ export const serverConfig = {
   port,
   chatServerPort,
   serverUrl,
+  useRedisLocal: true, // FIXME: Heroku will not be using local redis
   imageUrl,
   defaultAvatarUrl,
   secure: !!options.secure,

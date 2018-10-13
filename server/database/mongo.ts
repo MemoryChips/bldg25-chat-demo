@@ -197,9 +197,3 @@ export class MongoDatabase implements Database {
     return this.usersCollection.deleteOne({ email }).then(result => result.deletedCount === 1)
   }
 }
-
-// FIXME: put this in the server code
-// required by chat server
-// export function getAppUserById(id: string): Promise<DbUser> {
-//   return redisdb.getUserById(id)
-// }

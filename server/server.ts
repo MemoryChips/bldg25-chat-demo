@@ -33,7 +33,7 @@ import {
 } from 'bldg25-chat-server'
 import { MongoClient } from 'mongodb'
 
-import { mongoUrl, mongoDataBase, serverConfig } from './server-config'
+import { serverConfig } from './server-config'
 
 /*
 This must be provided by the parent application to the Chat Server
@@ -108,18 +108,18 @@ function getRedisClient() {
 // const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
 
 MongoClient.connect(
-  mongoUrl,
+  serverConfig.mongoUrl,
   { useNewUrlParser: true }
 )
   .then(client => {
-    const chatDb = new ChatMongoDataBase(client, mongoDataBase)
+    const chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)
     if (serverConfig.useRedisLocal) {
       app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(getRedisClient())
     } else {
-      app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, mongoDataBase)
+      app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, serverConfig.mongoDataBase)
     }
-    app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, mongoDataBase)
-    app.locals.db = new MongoDatabase(client, mongoDataBase)
+    app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, serverConfig.mongoDataBase)
+    app.locals.db = new MongoDatabase(client, serverConfig.mongoDataBase)
     runServer(chatDb)
   })
   .catch(err => {

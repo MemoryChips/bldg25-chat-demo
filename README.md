@@ -27,6 +27,109 @@ cd ~/redis-4.0.6/src/  # location of redis-server and redis-cli
 
 #### Add Image Files to ./src/assets/images as desired
 
+## Launch - Mongo
+
+- pre load users data
+
+```bash
+# run current file debug on pre-load-user-data.ts OR
+node -r "ts-node/register" server/database/pre-load-user-data.ts
+# reset app data using admin user to pre load app data
+```
+
+- Local development with debug server with mlab mongo
+
+```bash
+# if running with some data stored in local redis server
+redis-server ./server/database/redis.conf # launch local redis server
+mongo ds031541.mlab.com:31541/my-world-robt -u 'chat-dev' -p 6j7u6ihhrb # optional
+# start debug server from vs-code
+npm run start
+```
+
+```bash
+# mongo ds131763.mlab.com:31763/chat-demo-local -u <dbuser> -p <dbpassword>
+# mongodb://<dbuser>:<dbpassword>@ds131763.mlab.com:31763/chat-demo-local
+# ustbqv605f
+# chat-demo-local-user
+# to run mongo shell on mlab demo-local database
+mongoDbUser='chat-demo-local-user'
+mongoDbPassword='ustbqv605f'
+mongoDbLocation='ds131763.mlab.com:31763' # note: no @
+mongoDataBase='chat-demo-local'
+mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
+# to run mongo shell on mlab demo database
+mongoDbUser='chat-demo-user'
+mongoDbPassword='xi3bye949h'
+mongoDbLocation='ds223653.mlab.com:23653' # note: no @
+mongoDataBase='chat-demo'
+mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
+```
+
+```bash
+# to run redis shell start server as above
+redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
+```
+
+- Local test of prod - currently using dev database server TODO: create heroku demo server
+
+```bash
+npm outdated
+npm update # to get latest published version of chat modules
+npm run build # to build demo app angular code and server code
+node dist/server.js --prod
+node dist/server.js --prod --useRedisLocal
+MONGO_DB_USER='chat-demo-user'
+MONGO_DB_PASSWORD='xi3bye949h'
+MONGO_DB_LOCATION='@ds223653.mlab.com:23653'
+MONGO_DATABASE='chat-demo'
+node dist/server.js --prod --mongoDbUser $MONGO_DB_USER --mongoDbPassword $MONGO_DB_PASSWORD --mongoDbLocation $MONGODB_LOCATION --mongoDataBase $MONGO_DATABASE
+# TODO:
+node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
+```
+
+- Run tests
+
+```bash
+# if running with some data stored in local redis server
+redis-server ./server/database/redis.conf  # launch local redis server
+npm run start-server # launch api server OR run vs-code debugger
+npm run api-test
+```
+
+- Heroku Deploy
+
+```bash
+heroku create
+git remote -v  # verify heroku remote has been added to git
+# create postinstall script
+# create Procfile
+# good idea - add engines to package.json
+# "engines": {
+#   "node": "x.x.x",
+#   "npm": "x.x.x"
+# }
+# verify build worked
+# set heroku env
+heroku config:set MONGO_DB_USER='chat-demo-user'
+heroku config:set MONGO_DB_PASSWORD='xi3bye949h'
+heroku config:set MONGO_DB_LOCATION='@ds223653.mlab.com:23653'
+heroku config:set MONGO_DATABASE='chat-demo'
+# TODO: are these used by Heroku?
+heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
+heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
+heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com
+heroku config:set DEFAULT_AVATAR_URL=https://stormy-mountain-18015.herokuapp.com/assets/default-gravatar.jpg
+heroku config
+
+git push heroku master  # deploy to heroku. commit first!
+heroku ps:scale web=1   # start an instance of the app running
+heroku open  # open in chrome
+heroku logs --tail
+heroku ps:scale web=0  # stop the running instance
+heroku local web  # run the app locally
+```
+
 ## Initialize redis database(s)
 
 - Local Redis
@@ -57,51 +160,6 @@ DBPORT=10568
 DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
 ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
-```
-
-## Launch - Mongo
-
-- pre load users data
-
-```bash
-# run current file debug on pre-load-user-data.ts OR
-node -r "ts-node/register" server/database/pre-load-user-data.ts
-# reset app data using admin user to pre load app data
-```
-
-- Local development with debug server with mlab mongo
-
-```bash
-# if running with some data stored in local redis server
-redis-server ./server/database/redis.conf # launch local redis server
-mongo ds031541.mlab.com:31541/my-world-robt -u 'chat-dev' -p 6j7u6ihhrb # optional
-# start debug server from vs-code
-npm run start
-```
-
-```bash
-# to run mongo shell on mlab demo database
-mongoDbUser='chat-demo-user'
-mongoDbPassword='xi3bye949h'
-mongoDbLocation='ds223653.mlab.com:23653' # note: no @
-mongoDataBase='chat-demo'
-mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
-# start debug server from vs-code
-npm run start
-```
-
-```bash
-# to run redis shell start server as above
-redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
-```
-
-- Run tests
-
-```bash
-# if running with some data stored in local redis server
-redis-server ./server/database/redis.conf  # launch local redis server
-npm run start-server # launch api server OR run vs-code debugger
-npm run api-test
 ```
 
 ## Launch Scenarios - Redis - These need updating
@@ -169,7 +227,7 @@ DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH KEYS chat* | xargs redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH DEL
 ```
 
-- Heroku Deploy
+- Heroku Deploy - deprecated Redis
 
 ```bash
 heroku create

@@ -1,19 +1,29 @@
 // Command line settings
-// FIXME: change command ling args to mongo version
 const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
   { name: 'secure', type: Boolean },
-  { name: 'prod', type: Boolean }
-  // { name: 'dbHost', type: String },
-  // { name: 'dbAuth', type: String },
-  // { name: 'dbPort', type: Number }
+  { name: 'prod', type: Boolean },
+  { name: 'useRedisLocal', type: Boolean },
+  { name: 'mongoDbLocation', type: String },
+  { name: 'mongoDbUser', type: String },
+  { name: 'mongoDbPassword', type: String },
+  { name: 'mongoDataBase', type: Number }
 ]
+// FIXME: align options with heroku procfile
+// TODO: create temp override to new heroku demo database
 export const options = commandLineArgs(optionDefinitions)
-// const dbHost = !!options.dbHost ? options.dbHost : 'localhost'
-// const dbPort = !!options.dbPort ? options.dbPort : 6379
-// const redisDbAuthCode = !!options.dbAuth ? options.dbAuth : 'this_should_be_a_secret_authcode'
-// console.log(`Using ${dbHost}:${dbPort} for redis database`)
-// console.log(`Using authcode ${redisDbAuthCode} for redis database`)
+const mongoDbUser = !!options.mongoDbUser ? options.mongoDbUser : 'chat-demo-local-user'
+const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : 'ustbqv605f'
+const mongoDbLocation = !!options.mongoDbLocation
+  ? options.mongoDbLocation
+  : '@ds131763.mlab.com:31763'
+const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-demo-local'
+// const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : 'xi3bye949h'
+// const mongoDbLocation = !!options.mongoDbLocation
+//   ? options.mongoDbLocation
+//   : '@ds223653.mlab.com:23653'
+// const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-demo'
+const mongoUrl = `mongodb://${mongoDbUser}:${mongoDbPassword}${mongoDbLocation}/${mongoDataBase}`
 // END command line args
 
 // heroku host format
@@ -32,12 +42,6 @@ const imageUrl = `${serverHttp}://${host}:${imagePort}`
 const defaultAvatarUrl = process.env.DEFAULT_AVATAR_URL || `${imageUrl}/assets/default-gravatar.jpg`
 console.log(`default avatar url: ${defaultAvatarUrl}`)
 
-const mongoDbUser = 'chat-demo-user'
-const mongoDbPassword = 'xi3bye949h'
-const mongoDbLocation = '@ds223653.mlab.com:23653'
-export const mongoDataBase = 'chat-demo'
-export const mongoUrl = `mongodb://${mongoDbUser}:${mongoDbPassword}${mongoDbLocation}/${mongoDataBase}`
-
 export const serverConfig = {
   verbose: true,
   log: console.log,
@@ -45,7 +49,9 @@ export const serverConfig = {
   port,
   chatServerPort,
   serverUrl,
-  useRedisLocal: true, // FIXME: Heroku will not be using local redis
+  mongoUrl,
+  mongoDataBase,
+  useRedisLocal: !!options.useRedisLocal,
   imageUrl,
   defaultAvatarUrl,
   secure: !!options.secure,

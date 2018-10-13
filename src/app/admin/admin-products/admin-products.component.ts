@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material'
+import { MatSnackBar } from '@angular/material'
 import { DomSanitizer } from '@angular/platform-browser'
 import { ProductService, Product } from '../../shared/services/product.service'
 import { Subscription } from 'rxjs'
@@ -26,7 +27,8 @@ export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(
     private productService: ProductService,
     private domSanitizer: DomSanitizer,
-    private router: Router
+    private router: Router,
+    public snackBar: MatSnackBar
   ) {
     this.dataSource = new MatTableDataSource<Product>([])
   }
@@ -35,10 +37,7 @@ export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy 
     // const data = this.productService.getListStatic()
     this._subscriptions = [
       this.productService.getList().subscribe((products: Product[]) => {
-        // this.productService.getIndexedList().subscribe((products: any) => {
-        // TODO: use Product instead of any
         this.dataSource.data = products
-        // this.dataSource.data = data
       })
     ]
   }
@@ -84,8 +83,10 @@ export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy 
   resetAllProductsRequest() {
     console.log(`Reset all products data requested.`)
     this.productService.resetAll().subscribe(resp => {
-      // TODO: add snackbar message here with result of reset all products
       console.log(`Response to reset all products: ${resp.success}`)
+      this.snackBar.open(`All Products reset result: ${resp.success}`, 'dismiss', {
+        duration: 2000
+      })
     })
   }
 }

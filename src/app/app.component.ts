@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   constructor(private auth: AuthService, private router: Router) {
     this.auth.user$.subscribe(_user => {
-      // TODO: Why is this important?
+      // Why is this important?
       // this.userService.saveUser(user)  // ensures we have the update name in the database
       const returnUrl = localStorage.getItem('returnUrl')
       if (!returnUrl) return

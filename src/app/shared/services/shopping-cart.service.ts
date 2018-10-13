@@ -123,13 +123,12 @@ export class ShoppingCartService {
     const cartId = await this.getCartId()
     return this.http
       .get<Cart>(`/api/shopping-carts/${cartId}`)
-      .toPromise() // TODO: Is subscribe better than convert toPromise? Or the same thing?
+      .toPromise()
       .then(c => {
         this.setNewCart(c)
         return true
       })
       .catch(_err => {
-        // TODO: Verify when cart is not found, create new one - do this by clearing database
         return this.createCartDb().then((cartId2: string) => {
           return this.http
             .get<Cart>(`/api/shopping-carts/${cartId2}`)
@@ -145,17 +144,6 @@ export class ShoppingCartService {
         })
       })
   }
-
-  // private async getCart(): Promise<boolean> {
-  //   const cartId = await this.getCartId()
-  //   return this.http
-  //     .get<Cart>(`/api/shopping-carts/${cartId}`)
-  //     .toPromise() // TODO: Is subscribe better than convert toPromise? Or the same thing?
-  //     .then(c => {
-  //       this.setNewCart(c)
-  //       return true
-  //     })
-  // }
 
   private async createCartDb() {
     return this.http.post<string>('/api/shopping-carts', { newCart: new Cart() }).toPromise()

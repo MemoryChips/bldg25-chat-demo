@@ -5,23 +5,26 @@ import { addKey, values } from 'shared/utils'
 import { map } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 
-// import { Product, Category } from '../../../../shared/products'
-export interface Product {
+// align models FE: product.service BE: product.api
+export interface ProductWoKey {
   title: string
   price: number
   imageUrl: string
   category: string
-  key: string
 }
-
-export interface Products {
-  [key: string]: Product
+export interface Product extends ProductWoKey {
+  key: string
 }
 
 export interface Category {
   title: string
   lead: string
-  key?: string
+  key: string
+}
+// end align models
+
+export interface Products {
+  [key: string]: Product
 }
 
 @Injectable()

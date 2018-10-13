@@ -9,8 +9,8 @@ const optionDefinitions = [
   { name: 'mongoDbPassword', type: String },
   { name: 'mongoDataBase', type: Number }
 ]
-// FIXME: align options with heroku procfile
-// TODO: create temp override to new heroku demo database
+
+// defaults to chat-demo-local
 export const options = commandLineArgs(optionDefinitions)
 const mongoDbUser = !!options.mongoDbUser ? options.mongoDbUser : 'chat-demo-local-user'
 const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : 'ustbqv605f'
@@ -18,11 +18,16 @@ const mongoDbLocation = !!options.mongoDbLocation
   ? options.mongoDbLocation
   : '@ds131763.mlab.com:31763'
 const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-demo-local'
+// end default chat-demo-local
+
+// heroku mlab settings (for local test)
 // const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : 'xi3bye949h'
 // const mongoDbLocation = !!options.mongoDbLocation
 //   ? options.mongoDbLocation
 //   : '@ds223653.mlab.com:23653'
 // const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-demo'
+// end heroku mlab settings
+
 const mongoUrl = `mongodb://${mongoDbUser}:${mongoDbPassword}${mongoDbLocation}/${mongoDataBase}`
 // END command line args
 

@@ -5,17 +5,7 @@ import { Database } from '../database/mongo'
 import { ShoppingCartDatabase, SHOPPING_CART_DB } from '../shopping-cart/shopping-cart-api'
 import { categoriesPreload } from '../database/reset-app-db'
 
-// FIXME: align backend and frontend models
-export interface Category {
-  title: string
-  lead: string
-  key: string
-}
-
-export interface Categories {
-  [key: string]: Category
-}
-
+// align models FE: product.service BE: product.api
 export interface ProductWoKey {
   title: string
   price: number
@@ -24,6 +14,18 @@ export interface ProductWoKey {
 }
 export interface Product extends ProductWoKey {
   key: string
+}
+
+export interface Category {
+  title: string
+  lead: string
+  key: string
+}
+// end align models
+
+// BE models only
+export interface Categories {
+  [key: string]: Category
 }
 
 export interface DbProduct extends ProductWoKey {

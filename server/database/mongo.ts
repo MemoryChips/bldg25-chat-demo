@@ -1,26 +1,10 @@
 import { Db, Collection, MongoClient, ObjectId } from 'mongodb'
-
 import { UserWoId, User, UserWithPwdDigest } from '../auth/models/user'
-// import { serverConfig } from '../server-config'
 import { DbProduct } from '../product/product-api'
 import { getPreloadProducts } from './reset-app-db'
-// import { getPreloadProducts, categoriesPreload } from './reset-app-db'
 import { Order } from '../order/order-api'
 
-// export const USERS = 'users'
-// export const USER_EMAIL = 'user:email'
-
-// function scrubNulls<T>(arr: T[]): T[] {
-//   return arr.filter(x => !!x)
-// }
-
-// FIXME: align with the front endianness
-// TODO: consider moving categories to a sepearte database object
-interface DbUserWoId extends UserWoId {
-  passwordDigest: string
-}
-
-interface DbUser extends DbUserWoId {
+interface DbUser extends UserWithPwdDigest {
   _id?: ObjectId
 }
 
@@ -100,10 +84,6 @@ export class MongoDatabase implements Database {
       if (!result.ok) console.log(`Indexes ok: ${result.ok}`)
     })
   }
-
-  // quit() {
-  //   return this.client.close(() => console.log(`App Mongo client closed`))
-  // }
 
   flushDb() {
     const flushes = [this.usersCollection.deleteMany({}), this.productsCollection.deleteMany({})]
@@ -186,7 +166,6 @@ export class MongoDatabase implements Database {
       .find({})
       .toArray()
       .then(users => users.map(addUserId) as User[])
-    // .then(xs => xs.filter(x => !!x)) // TODO: verify filter is not needed
   }
 
   createUser(user: UserWithPwdDigest): Promise<boolean> {

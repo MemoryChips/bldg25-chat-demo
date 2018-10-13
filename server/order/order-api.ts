@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { Database } from '../database/mongo'
+import { MongoProductDatabase, PRODUCT_DB } from '../database/mongo-products'
 import { User } from '../auth/models/user'
 
 // const type = 'order'
@@ -16,7 +16,7 @@ export interface Order {
 }
 
 export function postOrder(req: any, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   const order: Order = req.body
   const user: User = res.locals.user
   db.createOrder(order, user._id).then(result => {
@@ -26,7 +26,7 @@ export function postOrder(req: any, res: Response) {
 }
 
 export function getMyOrders(req: any, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   // const userId = req.user.sub
   const userId: string = req.app.locals.userId
   db.getOrdersById(userId)
@@ -39,7 +39,7 @@ export function getMyOrders(req: any, res: Response) {
 }
 
 export function getAllOrders(req: any, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   db.getAllOrders().then(orders => {
     if (orders) {
       res.send(200).json({ orders })

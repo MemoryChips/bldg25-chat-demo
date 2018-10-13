@@ -1,7 +1,7 @@
 // import { redisdb } from '../database/redis'
 import { Request, Response } from 'express'
 import { ObjectId } from 'mongodb'
-import { Database } from '../database/mongo'
+import { MongoProductDatabase, PRODUCT_DB } from '../database/mongo-products'
 import { ShoppingCartDatabase, SHOPPING_CART_DB } from '../shopping-cart/shopping-cart-api'
 import { categoriesPreload } from '../database/reset-app-db'
 
@@ -40,7 +40,7 @@ export interface CategoryDatabase {
 }
 
 export function resetAllProducts(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   const dbSC: ShoppingCartDatabase = req.app.locals[SHOPPING_CART_DB]
   const dbCats: CategoryDatabase = req.app.locals[CATEGORIES_DB]
   Promise.all([
@@ -67,7 +67,7 @@ function convertToProduct(dbProduct: DbProduct): Product {
 }
 
 export function getAllProducts(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   db.getAllProducts()
     .then(dbProducts => {
       const products = dbProducts.map(convertToProduct)
@@ -85,7 +85,7 @@ export function getAllProducts(req: Request, res: Response) {
 // }
 
 export function getProduct(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   const productId: string = req.params.id
   db.getProductById(productId)
     .then(dbProduct => {
@@ -98,7 +98,7 @@ export function getProduct(req: Request, res: Response) {
 }
 
 export function putProduct(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   const dbProduct: DbProduct = {
     title: req.body.title,
     price: req.body.price,
@@ -125,7 +125,7 @@ export function putProduct(req: Request, res: Response) {
 }
 
 export function postProduct(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   const dbProduct: DbProduct = {
     title: req.body.title,
     price: req.body.number,

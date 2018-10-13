@@ -20,6 +20,7 @@ import redis, { RedisClient } from 'redis'
 import { RedisCategoryDatabase } from './database/redis-categories'
 
 import { MongoDatabase } from './database/mongo'
+import { MongoProductDatabase, PRODUCT_DB } from './database/mongo-products'
 import { MongoCategoryDatabase } from './database/mongo-categories'
 import { MongoShoppingCartDatabase } from './database/mongo-shopping-cart'
 import { SHOPPING_CART_DB } from './shopping-cart/shopping-cart-api'
@@ -118,6 +119,7 @@ MongoClient.connect(
     } else {
       app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, serverConfig.mongoDataBase)
     }
+    app.locals[PRODUCT_DB] = new MongoProductDatabase(client, serverConfig.mongoDataBase)
     app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, serverConfig.mongoDataBase)
     app.locals.db = new MongoDatabase(client, serverConfig.mongoDataBase)
     runServer(chatDb)

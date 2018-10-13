@@ -12,6 +12,7 @@
     "build": "ng build --prod --aot && npm run build-server",
     "test": "ng test --watch",
     "api-test": "jasmine-ts server/__test__/* --config=server/__test__/jasmine.json",
+    "api-test-single": "jasmine-ts server/__test__/login* --config=server/__test__/jasmine.json",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "npm run build",

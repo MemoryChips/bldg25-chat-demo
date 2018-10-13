@@ -74,9 +74,35 @@ node -r "ts-node/register" server/database/pre-load-user-data.ts
 ```bash
 # if running with some data stored in local redis server
 redis-server ./server/database/redis.conf # launch local redis server
-redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
+mongo ds031541.mlab.com:31541/my-world-robt -u 'chat-dev' -p 6j7u6ihhrb # optional
 # start debug server from vs-code
 npm run start
+```
+
+```bash
+# to run mongo shell on mlab demo database
+mongoDbUser='chat-demo-user'
+mongoDbPassword='xi3bye949h'
+mongoDbLocation='ds223653.mlab.com:23653' # note: no @
+mongoDataBase='chat-demo'
+mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
+# start debug server from vs-code
+npm run start
+```
+
+```bash
+# if running with some data stored in local redis server
+redis-server ./server/database/redis.conf # launch local redis server
+redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
+```
+
+- Run tests
+
+```bash
+# if running with some data stored in local redis server
+redis-server ./server/database/redis.conf  # launch local redis server
+npm run start-server # launch api server OR run vs-code debugger
+npm run api-test
 ```
 
 ## Launch Scenarios - Redis - These need updating
@@ -142,14 +168,6 @@ DBHOST='catfish.redistogo.com'
 DBPORT=9782
 DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH KEYS chat* | xargs redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH DEL
-```
-
-- Run tests
-
-```bash
-redis-server ./server/database/redis.conf  # launch local redis server
-npm run start-server # launch api server OR run vs-code debugger
-npm run api-test
 ```
 
 - Heroku Deploy

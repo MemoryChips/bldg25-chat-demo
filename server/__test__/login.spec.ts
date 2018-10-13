@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 const verbose = false
 const serverType = 'http'
 
-const serverUrl = `${serverType}://${serverConfig.chatServerHost}:${serverConfig.chatServerPort}`
+const serverUrl = `${serverType}://${serverConfig.serverHost}:${serverConfig.serverPort}`
 const loginRequestUrl = `${serverUrl}/api/auth/login`
 const signupRequestUrl = `${serverUrl}/api/auth/signup`
 const deleteRequestUrl = `${serverUrl}/api/auth/user/${testConfig.signupCredentials.email}`
@@ -14,7 +14,7 @@ let nonAdminCookie = 'get a non admin cookie in here'
 
 describe('Api Auth endpoints with node-fetch', () => {
   it(`should block ${
-    testConfig.goodCredentials.email
+    testConfig.badCredentials.email
   } login with bad credentials`, (done: DoneFn) => {
     fetch(loginRequestUrl, {
       method: 'POST',

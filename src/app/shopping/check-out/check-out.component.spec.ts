@@ -6,10 +6,7 @@ import { CheckOutComponent } from './check-out.component'
 // import { ShippingFormComponent } from '../shipping-form/shipping-form.component'
 // import { ShoppingCartSummaryComponent } from '../shopping-cart-summary/shopping-cart-summary.component'
 
-import {
-  ShoppingCartService,
-  Cart
-} from 'shared/services/shopping-cart.service'
+import { ShoppingCartService, Cart } from 'shared/services/shopping-cart.service'
 import { Observable, of } from 'rxjs'
 class MockShoppingCartService {
   cart$: Observable<Cart> = of<Cart>(new Cart())
@@ -23,9 +20,7 @@ describe('CheckOutComponent', () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       imports: [FormsModule],
-      providers: [
-        { provide: ShoppingCartService, useClass: MockShoppingCartService }
-      ],
+      providers: [{ provide: ShoppingCartService, useClass: MockShoppingCartService }],
       declarations: [
         CheckOutComponent
         // ShippingFormComponent,

@@ -1,15 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  AbstractControl
-} from '@angular/forms'
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms'
 import { Router } from '@angular/router'
 
 import { Credentials, AuthService } from '../auth.service'
 
 import { SignupValidators } from './signup.validators'
+import { MatSnackBar } from '@angular/material'
 
 @Component({
   selector: 'app-signup',
@@ -24,10 +20,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   form = new FormGroup(
     {
-      email: new FormControl('robert.tamlyn@gmail.com', [
-        Validators.required,
-        Validators.email
-      ]),
+      email: new FormControl('robert.tamlyn@gmail.com', [Validators.required, Validators.email]),
       password: new FormControl('Password10', [
         Validators.required,
         Validators.minLength(3),
@@ -36,11 +29,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       confirmPassword: new FormControl('Password10', [Validators.required]),
       userName: new FormControl(
         'Robert',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          SignupValidators.cannotContainSpace
-        ],
+        [Validators.required, Validators.minLength(3), SignupValidators.cannotContainSpace],
         [SignupValidators.shouldBeUniqueUserName]
       )
     },
@@ -59,7 +48,11 @@ export class SignupComponent implements OnInit, OnDestroy {
     return this.form.get('confirmPassword')
   }
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    public snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {}
 
@@ -80,8 +73,9 @@ export class SignupComponent implements OnInit, OnDestroy {
           console.log('No user recieved and no error in response.')
         }
       },
-      error => {
-        console.log(`Error while signing up: ${error}`)
+      err => {
+        console.log(`Error while signing up: ${err}`)
+        this.snackBar.open(err.error.errors[0], 'dismiss', { duration: 2000 })
       }
     )
   }

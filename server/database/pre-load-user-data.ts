@@ -1,7 +1,7 @@
 // tslint:disable:max-line-length
 import { UserWoId } from '../auth/models/user'
 import { MongoClient } from 'mongodb'
-import { Database, MongoDatabase } from './mongo'
+import { Database, MongoDatabase } from './mongo-users'
 import { serverConfig } from '../server-config'
 const mongoUrl = serverConfig.mongoUrl
 const mongoDataBase = serverConfig.mongoDataBase

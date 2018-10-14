@@ -8,7 +8,7 @@ import { createCsrfToken, createSessionToken } from './security'
 import { serverConfig } from '../server-config'
 
 import { TOKEN_AGE_MS } from '../server-config'
-import { Database } from '../database/mongo'
+import { Database } from '../database/mongo-users'
 
 export function createUser(req: Request, res: Response) {
   const db: Database = req.app.locals.db

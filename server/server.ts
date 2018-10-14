@@ -19,7 +19,7 @@ import bodyParser from 'body-parser'
 import redis, { RedisClient } from 'redis'
 import { RedisCategoryDatabase } from './database/redis-categories'
 
-import { MongoDatabase } from './database/mongo'
+import { MongoDatabase } from './database/mongo-users'
 import { MongoProductDatabase, PRODUCT_DB } from './database/mongo-products'
 import { MongoCategoryDatabase } from './database/mongo-categories'
 import { MongoShoppingCartDatabase } from './database/mongo-shopping-cart'

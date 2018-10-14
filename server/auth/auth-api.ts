@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 // import { redisdb } from '../database/redis'
-import { User, SignUpInfo, Credentials, UserWithPwdDigest } from './models/user'
+import { User, SignUpInfo, Credentials, UserWoId } from './models/user'
 import * as argon2 from 'argon2'
 import { validatePassword } from './password-validation'
 import { createCsrfToken, createSessionToken } from './security'
@@ -8,10 +8,10 @@ import { createCsrfToken, createSessionToken } from './security'
 import { serverConfig } from '../server-config'
 
 import { TOKEN_AGE_MS } from '../server-config'
-import { Database } from '../database/mongo-users'
+import { UserDatabase, USER_DB } from '../database/mongo-users'
 
 export function createUser(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: UserDatabase = req.app.locals[USER_DB]
   const signUpInfo: SignUpInfo = req.body
   const errors: string[] = validatePassword(signUpInfo.password)
   db.getUserByEmail(signUpInfo.email).then(dbUser => {
@@ -37,7 +37,7 @@ export function getJwtUser(req: any, res: any) {
   }
   const jwtUser: User = res.locals.user
   if (!!jwtUser) {
-    const db: Database = req.app.locals.db
+    const db: UserDatabase = req.app.locals[USER_DB]
     db.getUserById(jwtUser._id)
       .then(user => {
         if (!user) return res.status(403).json(userNotFound)
@@ -52,7 +52,7 @@ export function getJwtUser(req: any, res: any) {
 }
 
 export function getUser(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: UserDatabase = req.app.locals[USER_DB]
   if (req.params._id) {
     const userId = req.params._id
     db.getUserById(userId).then(user => {
@@ -65,7 +65,7 @@ export function getUser(req: Request, res: Response) {
 }
 
 export function deleteUser(req: any, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: UserDatabase = req.app.locals[USER_DB]
   const email = req.params.email
   db.deleteUser(email).then(success => {
     if (success) {
@@ -78,34 +78,12 @@ export function deleteUser(req: any, res: Response) {
   })
 }
 
-// export function saveUser(req: any, res: any) {
-//   const db: Database = req.app.locals.db
-//   const userId = req.params._id
-//   db.getUserById(userId).then(dbUser => {
-//     const userEmail = dbUser.email
-//     redisdb
-//       .deleteUser(userEmail)
-//       .then(_results => {
-//         console.log(`Results of deleting old records${_results}`)
-//         if (_results < 2) {
-//           createUser(req, res)
-//         } else {
-//           res.status(403).json({ success: false, reason: 'error deleting old records' })
-//         }
-//       })
-//       .catch(err => {
-//         res.status(403).json({ success: false, reason: err })
-//       })
-//   })
-// }
-
 async function createUserAndSession(req: Request, res: Response, signUpInfo: SignUpInfo) {
-  const db: Database = req.app.locals.db
+  const db: UserDatabase = req.app.locals[USER_DB]
   const passwordDigest = await argon2.hash(signUpInfo.password)
-  const user: UserWithPwdDigest = {
+  const user: UserWoId = {
     email: signUpInfo.email,
     userName: signUpInfo.userName,
-    passwordDigest,
     roles: ['STUDENT'],
     avatarUrl: signUpInfo.avatarUrl || serverConfig.defaultAvatarUrl
     // avatarUrl: ''
@@ -113,7 +91,7 @@ async function createUserAndSession(req: Request, res: Response, signUpInfo: Sig
   if (user.email.toLowerCase() === 'robert.tamlyn@gmail.com') {
     user.roles = ['STUDENT', 'ADMIN']
   }
-  const success = await db.createUser(user)
+  const success = await db.createUser(user, passwordDigest)
   if (success) {
     // const dbUser = await redisdb.getUserByEmail(signUpInfo.email)
     const newUser = await db.getUserByEmail(signUpInfo.email)
@@ -140,7 +118,7 @@ async function sendSuccess(res: Response, user: User) {
 }
 
 export async function login(req: Request, res: Response) {
-  const db: Database = req.app.locals.db
+  const db: UserDatabase = req.app.locals[USER_DB]
   const credentials: Credentials = req.body
   const userPwdDigest = await db.getUserPwdDigest(credentials.email)
   if (!userPwdDigest) {

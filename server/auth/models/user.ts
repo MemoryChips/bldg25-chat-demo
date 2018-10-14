@@ -25,6 +25,6 @@ export interface User extends UserWoId {
 // end Align FE/BE
 
 // BE use only
-export interface UserWithPwdDigest extends UserWoId {
-  passwordDigest: string
-}
+// export interface UserWithPwdDigest extends UserWoId {
+//   passwordDigest: string
+// }

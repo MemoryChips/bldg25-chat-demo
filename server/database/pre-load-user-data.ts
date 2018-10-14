@@ -1,8 +1,9 @@
 // tslint:disable:max-line-length
 import { UserWoId } from '../auth/models/user'
 import { MongoClient } from 'mongodb'
-import { Database, MongoDatabase } from './mongo-users'
+import { UserDatabase, MongoUserDatabase } from './mongo-users'
 import { serverConfig } from '../server-config'
+import { IChatDataBase, ChatMongoDataBase } from 'bldg25-chat-server'
 const mongoUrl = serverConfig.mongoUrl
 const mongoDataBase = serverConfig.mongoDataBase
 
@@ -86,7 +87,11 @@ MongoClient.connect(
   { useNewUrlParser: true }
 )
   .then(client => {
-    const db = new MongoDatabase(client, mongoDataBase)
+    const db = new MongoUserDatabase(client, mongoDataBase)
+    const chatDb: IChatDataBase = new ChatMongoDataBase(client, mongoDataBase)
+    chatDb.flushdb().then(result => {
+      console.log(`Chat data base flushed: ${result}`)
+    })
     runPreload(db).then(() => {
       client.close().then(() => {
         console.log(`Mongo client closed`)
@@ -97,10 +102,10 @@ MongoClient.connect(
     console.log(`Error while connecting: ${err}`)
   })
 
-function runPreload(db: Database) {
+function runPreload(db: UserDatabase) {
   return db.flushDb().then(flushResult => {
     console.log(`Flush result: ${flushResult}`)
-    const userCreates = users.map(userWoId => db.createUser({ passwordDigest, ...userWoId }))
+    const userCreates = users.map(userWoId => db.createUser(userWoId, passwordDigest))
     return Promise.all(userCreates)
       .then(userCreateResults => {
         console.log('users loaded: ', userCreateResults.filter(result => !result).length === 0)

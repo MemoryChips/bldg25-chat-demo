@@ -56,7 +56,7 @@ export class MongoUserDatabase implements UserDatabase {
   }
 
   flushDb() {
-    const flushes = [this.usersCollection.deleteMany({})]
+    const flushes = [this.usersCollection.deleteMany({}), this.passwordsCollection.deleteMany({})]
     return Promise.all(flushes).then(results => {
       const success = !!results[0].result.ok
       console.log(`Database flushed`)
@@ -99,7 +99,10 @@ export class MongoUserDatabase implements UserDatabase {
   // }
 
   deleteUser(email: string): Promise<boolean> {
-    return this.usersCollection.deleteOne({ email }).then(result => result.deletedCount === 1)
+    return Promise.all([
+      this.usersCollection.deleteOne({ email }),
+      this.passwordsCollection.deleteOne({ email })
+    ]).then(results => results.every(r => r.deletedCount === 1))
   }
 }
 

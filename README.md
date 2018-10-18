@@ -59,10 +59,10 @@ mongoDbLocation='ds131763.mlab.com:31763' # note: no @
 mongoDataBase='chat-demo-local'
 mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
 # to run mongo shell on mlab demo database
-mongoDbUser='chat-demo-user'
-mongoDbPassword='xi3bye949h'
-mongoDbLocation='ds223653.mlab.com:23653' # note: no @
-mongoDataBase='chat-demo'
+mongoDbUser='chat-demo-local-user'
+mongoDbPassword='ustbqv605f'
+mongoDbLocation='ds131763.mlab.com:31763' # note: no @
+mongoDataBase='chat-demo-local'
 mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
 ```
 
@@ -71,7 +71,7 @@ mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
 redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
 ```
 
-- Local test of prod - currently using dev database server TODO: create heroku demo server
+- Local test of prod
 
 ```bash
 npm outdated
@@ -92,7 +92,7 @@ node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $
 
 ```bash
 # if running with some data stored in local redis server
-redis-server ./server/database/redis.conf  # launch local redis server
+# redis-server ./server/database/redis.conf  # ONLY if needed launch local redis server
 npm run start-server # launch api server OR run vs-code debugger
 npm run api-test
 # front end tests

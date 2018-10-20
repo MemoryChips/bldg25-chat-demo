@@ -28,9 +28,10 @@ import { CATEGORIES_DB } from './product/product-api'
 // necessary imports from bldg25 chat server package
 import {
   attachVideoSocketServer,
-  IChatDataBase,
+  // IChatDataBase,
   // ChatRedisDatabase
-  ChatMongoDataBase
+  ChatMongoDataBase,
+  ChatDatabase
 } from 'bldg25-chat-server'
 import { MongoClient } from 'mongodb'
 
@@ -128,7 +129,7 @@ MongoClient.connect(
     console.log(`Error while connecting: ${err}`)
   })
 
-function runServer(dbChat: IChatDataBase) {
+function runServer(dbChat: ChatDatabase) {
   if (serverConfig.secure) {
     // launch an HTTPS Server. Note: this does NOT mean that the application is secure
     const httpsServer = https.createServer(

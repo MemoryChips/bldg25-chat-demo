@@ -98,10 +98,6 @@ export class MongoUserDatabase implements UserDatabase {
     ]).then(results => results.every(r => r))
   }
 
-  // createUser(user: UserWithPwdDigest): Promise<boolean> {
-  //   return this.usersCollection.insertOne(user).then(result => result.insertedCount === 1)
-  // }
-
   deleteUser(email: string): Promise<boolean> {
     return Promise.all([
       this.usersCollection.deleteOne({ email }),

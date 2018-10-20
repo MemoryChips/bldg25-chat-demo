@@ -78,12 +78,6 @@ export function getAllProducts(req: Request, res: Response) {
     })
 }
 
-// function convertToProductWoKey(product: Product): ProductWoKey {
-//   const p: any = { ...product }
-//   delete p.key
-//   return p
-// }
-
 export function getProduct(req: Request, res: Response) {
   const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
   const productId: string = req.params.id

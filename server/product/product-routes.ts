@@ -6,7 +6,6 @@ import {
   postProduct,
   getProduct,
   resetAllProducts
-  // deleteProduct,
 } from './product-api'
 import { checkIfAuthenticated } from '../auth/mware/authentication'
 import { checkCsrfToken } from '../auth/mware/csrf'
@@ -22,7 +21,6 @@ productRouter
   .get('/all', getAllProducts)
   .get('/categories', getAllCategories)
   .get('/:id', getProduct)
-  // .put('/:id', putPostProduct)
   .put('/:id', checkIfAuthenticated, checkCsrfToken, checkIfAuthorized(['ADMIN']), putProduct)
   .post(
     '/new-product',
@@ -38,4 +36,3 @@ productRouter
     checkIfAuthorized(['ADMIN']),
     resetAllProducts
   )
-// .delete('/:id', deleteProduct)

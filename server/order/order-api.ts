@@ -2,12 +2,6 @@ import { Response } from 'express'
 import { MongoProductDatabase, PRODUCT_DB } from '../database/mongo-products'
 import { User } from '../auth/models/user'
 
-// const type = 'order'
-
-// interface Req extends Request {
-//   user: any
-// }
-
 export interface Order {
   userId: string
   email: string

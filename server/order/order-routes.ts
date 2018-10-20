@@ -18,11 +18,4 @@ orderRouter
   // .get('/myOrders', checkIfAuthenticated, checkCsrfToken, getMyOrders)
   // TODO: checkCsrfToken failed and was removed - diagnose? transient issue?
   .get('/myOrders', checkIfAuthenticated, getMyOrders)
-  .get(
-    '/allOrders',
-    checkIfAuthenticated,
-    checkIfAuthorized(['ADMIN']),
-    getAllOrders
-  )
-// .get('/allOrders', checkIfAuthenticated, checkCsrfToken, checkIfAuthorized(['ADMIN']), getAllOrders)
-// .get('/allOrders', getAllOrders)
+  .get('/allOrders', checkIfAuthenticated, checkIfAuthorized(['ADMIN']), getAllOrders)

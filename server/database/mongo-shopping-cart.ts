@@ -25,16 +25,7 @@ export class MongoShoppingCartDatabase implements ShoppingCartDatabase {
     this.db.on('reconnecting', _e => {
       console.log(`Attempting reconnect`)
     })
-    // this._createIndexes()
   }
-
-  // private _createIndexes() {
-  //   this.shoppingCartCollection
-  //     .createIndexes([{ key: { email: -1 }, unique: true }])
-  //     .then(result => {
-  //       if (!result.ok) console.log(`Indexes ok: ${result.ok}`)
-  //     })
-  // }
 
   quit() {
     return this.client.close(() => console.log(`App Mongo client closed`))

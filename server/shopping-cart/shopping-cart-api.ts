@@ -29,13 +29,7 @@ export interface ShoppingCartDatabase {
   saveShoppingCart(cart: ICart, cartId: string): Promise<boolean>
   deleteShoppingCart(cartId: string): Promise<boolean>
   clearAllCarts(): Promise<boolean>
-  // flushDb(): Promise<boolean>
 }
-
-// const type = 'shopping-cart'
-// function createShoppingCartId(id: string): string {
-//   return (id = `${type}:${id}`)
-// }
 
 export function createShoppingCart(req: Request, res: Response) {
   const db: ShoppingCartDatabase = req.app.locals[SHOPPING_CART_DB]

@@ -51,7 +51,6 @@ export class MongoCategoryDatabase implements CategoryDatabase {
         } else {
           console.log(`All categories deleted successfully`)
         }
-        // return this.categoryCollection.updateMany({}, catsArray, { upsert: true })
         // return this.categoryCollection.insertMany(catsArray)
         return saveThis.categoryCollection.insertMany(catsArray)
       })

@@ -1,8 +1,5 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
-// This style is needed by ts-node
-// import * as express from 'express'
-// import * as cookieParser from 'cookie-parser'
 
 import * as http from 'http'
 import * as https from 'https'
@@ -25,10 +22,10 @@ import { MongoCategoryDatabase } from './database/mongo-categories'
 import { MongoShoppingCartDatabase } from './database/mongo-shopping-cart'
 import { SHOPPING_CART_DB } from './shopping-cart/shopping-cart-api'
 import { CATEGORIES_DB } from './product/product-api'
+
 // necessary imports from bldg25 chat server package
 import {
   attachVideoSocketServer,
-  // IChatDataBase,
   // ChatRedisDatabase
   ChatMongoDataBase,
   ChatDatabase
@@ -51,7 +48,6 @@ app.use(bodyParser.json())
 
 // for serving in production
 if (process.env.PROD || serverConfig.prod) {
-  // const webDir = `/home/rob/Documents/Training-GreenLanternOnly/bldg25-chat-6/bldg25-chat-demo/dist`
   const webDir = `${__dirname}`
   console.log(`Serving app from ${webDir}`)
   app.use(express.static(webDir))
@@ -106,9 +102,7 @@ function getRedisClient() {
 }
 
 // Create database connection for chat
-// const dbChat = new ChatDatabase(chatConfig) // configure either redis, TODO: mongo, or TODO: default to memory
-// const dbChat = new ChatRedisDatabase(chatConfig.dbConfig as IChatRedisDb)
-
+// configure either TODO: redis, mongo, or TODO: default to memory
 MongoClient.connect(
   serverConfig.mongoUrl,
   { useNewUrlParser: true }

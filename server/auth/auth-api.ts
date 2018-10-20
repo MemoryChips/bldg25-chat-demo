@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-// import { redisdb } from '../database/redis'
 import { User, SignUpInfo, Credentials, UserWoId } from './models/user'
 import * as argon2 from 'argon2'
 import { validatePassword } from './password-validation'

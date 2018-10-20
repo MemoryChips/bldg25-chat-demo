@@ -1,5 +1,4 @@
 // tslint:disable:max-line-length
-// import { RedisDatabase } from './redis'
 import { Categories, DbProduct } from '../product/product-api'
 import { serverConfig } from '../server-config'
 

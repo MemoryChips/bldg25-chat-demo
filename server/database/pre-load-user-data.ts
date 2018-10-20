@@ -3,13 +3,9 @@ import { UserWoId } from '../auth/models/user'
 import { MongoClient } from 'mongodb'
 import { UserDatabase, MongoUserDatabase } from './mongo-users'
 import { serverConfig } from '../server-config'
-import { IChatDataBase, ChatMongoDataBase } from 'bldg25-chat-server'
+import { ChatMongoDataBase, ChatDatabase } from 'bldg25-chat-server'
 const mongoUrl = serverConfig.mongoUrl
 const mongoDataBase = serverConfig.mongoDataBase
-
-// export interface KeyedObj<T> {
-//   [key: string]: T
-// }
 
 const catUrl = 'http://localhost:4200/assets/cat.jpg'
 const dogUrl = 'http://localhost:4200/assets/dog.jpg'
@@ -88,8 +84,8 @@ MongoClient.connect(
 )
   .then(client => {
     const db = new MongoUserDatabase(client, mongoDataBase)
-    const chatDb: IChatDataBase = new ChatMongoDataBase(client, mongoDataBase)
-    chatDb.flushdb().then(result => {
+    const chatDb = new ChatMongoDataBase(client, mongoDataBase)
+    chatDb.flushDb().then(result => {
       console.log(`Chat data base flushed: ${result}`)
     })
     runPreload(db).then(() => {

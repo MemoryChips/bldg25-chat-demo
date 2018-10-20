@@ -18,6 +18,10 @@ function addUserId(dbUser: DbUser | null): User | null {
   return { ...dbUser, _id }
 }
 
+function insertResult(result: any) {
+  return result.insertedCount === 1
+}
+
 export const USER_DB = 'user-db'
 const USER_COLLECTION = 'users'
 const PASSWORD_COLLECTION = 'passwords'
@@ -58,7 +62,7 @@ export class MongoUserDatabase implements UserDatabase {
   flushDb() {
     const flushes = [this.usersCollection.deleteMany({}), this.passwordsCollection.deleteMany({})]
     return Promise.all(flushes).then(results => {
-      const success = !!results[0].result.ok
+      const success = results.every(r => !!r.result.ok)
       console.log(`Database flushed`)
       return success
     })
@@ -104,8 +108,4 @@ export class MongoUserDatabase implements UserDatabase {
       this.passwordsCollection.deleteOne({ email })
     ]).then(results => results.every(r => r.deletedCount === 1))
   }
-}
-
-function insertResult(result: any) {
-  return result.insertedCount === 1
 }

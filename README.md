@@ -40,9 +40,7 @@ node -r "ts-node/register" server/database/pre-load-user-data.ts
 - Local development with debug server with mlab mongo
 
 ```bash
-# if running with some data stored in local redis server
-redis-server ./server/database/redis.conf # launch local redis server
-mongo ds031541.mlab.com:31541/my-world-robt -u 'chat-dev' -p 6j7u6ihhrb # optional
+# if needed: redis-server ./server/database/redis.conf # launch local redis server
 # start debug server from vs-code
 npm run start
 ```

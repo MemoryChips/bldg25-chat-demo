@@ -29,7 +29,7 @@ export function createUser(req: Request, res: Response) {
   })
 }
 
-export function getJwtUser(req: any, res: any) {
+export function getJwtUser(req: Request, res: Response) {
   const userNotFound = {
     _id: undefined,
     email: undefined,

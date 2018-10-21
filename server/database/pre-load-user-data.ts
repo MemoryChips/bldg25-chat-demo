@@ -3,7 +3,7 @@ import { UserWoId } from '../auth/models/user'
 import { MongoClient } from 'mongodb'
 import { UserDatabase, MongoUserDatabase } from './mongo-users'
 import { serverConfig } from '../server-config'
-import { ChatMongoDataBase, ChatDatabase } from 'bldg25-chat-server'
+import { ChatMongoDataBase } from 'bldg25-chat-server'
 const mongoUrl = serverConfig.mongoUrl
 const mongoDataBase = serverConfig.mongoDataBase
 

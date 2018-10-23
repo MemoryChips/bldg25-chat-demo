@@ -120,6 +120,7 @@ MongoClient.connect(
     runServer(chatDb)
   })
   .catch(err => {
+    console.log(`Mongo url used: ${serverConfig.mongoUrl}`)
     console.log(`Error while connecting: ${err}`)
   })
 

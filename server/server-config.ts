@@ -7,7 +7,7 @@ const optionDefinitions = [
   { name: 'mongoDbLocation', type: String },
   { name: 'mongoDbUser', type: String },
   { name: 'mongoDbPassword', type: String },
-  { name: 'mongoDataBase', type: Number }
+  { name: 'mongoDataBase', type: String }
 ]
 
 // defaults to chat-demo-local

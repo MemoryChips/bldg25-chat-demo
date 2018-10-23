@@ -57,10 +57,10 @@ mongoDbLocation='ds131763.mlab.com:31763' # note: no @
 mongoDataBase='chat-demo-local'
 mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
 # to run mongo shell on mlab demo database
-mongoDbUser='chat-demo-local-user'
-mongoDbPassword='ustbqv605f'
-mongoDbLocation='ds131763.mlab.com:31763' # note: no @
-mongoDataBase='chat-demo-local'
+mongoDbUser='chat-demo-user'
+mongoDbPassword='xi3bye949h'
+mongoDbLocation='ds223653.mlab.com:23653' # note: no @
+mongoDataBase='chat-demo'
 mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
 ```
 
@@ -81,8 +81,8 @@ MONGO_DB_USER='chat-demo-user'
 MONGO_DB_PASSWORD='xi3bye949h'
 MONGO_DB_LOCATION='@ds223653.mlab.com:23653'
 MONGO_DATABASE='chat-demo'
-node dist/server.js --prod --mongoDbUser $MONGO_DB_USER --mongoDbPassword $MONGO_DB_PASSWORD --mongoDbLocation $MONGODB_LOCATION --mongoDataBase $MONGO_DATABASE
-# TODO:
+node dist/server.js --prod --mongoDbUser $MONGO_DB_USER --mongoDbPassword $MONGO_DB_PASSWORD --mongoDbLocation $MONGO_DB_LOCATION --mongoDataBase $MONGO_DATABASE
+# TODO: Why did Ralph type this?
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 

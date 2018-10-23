@@ -41,21 +41,18 @@ export class MongoCategoryDatabase implements CategoryDatabase {
       _id: key,
       ...cats[key]
     }))
-    // TODO: why does this have to be saved?
-    const saveThis = this
     return this.categoryCollection
       .deleteMany({})
-      .then(_result => {
-        if (!_result) {
+      .then(deleteResult => {
+        if (!deleteResult) {
           console.error(`Failed to delete all categories. Aborting category reset.`)
         } else {
           console.log(`All categories deleted successfully`)
         }
-        // return this.categoryCollection.insertMany(catsArray)
-        return saveThis.categoryCollection.insertMany(catsArray)
+        return this.categoryCollection.insertMany(catsArray)
       })
-      .then(result => {
-        return result.insertedCount === catsArray.length
+      .then(insertResult => {
+        return insertResult.insertedCount === catsArray.length
       })
   }
 

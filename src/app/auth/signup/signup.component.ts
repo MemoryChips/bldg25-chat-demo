@@ -31,6 +31,11 @@ export class SignupComponent implements OnInit, OnDestroy {
         'Robert',
         [Validators.required, Validators.minLength(3), SignupValidators.cannotContainSpace],
         [SignupValidators.shouldBeUniqueUserName]
+      ),
+      avatarUrl: new FormControl(
+        'http://localhost:4200/assets/cat.jpg'
+        // [Validators.required, Validators.minLength(3), SignupValidators.cannotContainSpace],
+        // [SignupValidators.shouldBeUniqueUserName]
       )
     },
     SignupValidators.matchPassword

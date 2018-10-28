@@ -109,6 +109,7 @@ MongoClient.connect(
 )
   .then(client => {
     const chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)
+    app.locals.CHAT_DB = chatDb // Optionally add chatDb to app.locals for use when main app signs up a user
     if (serverConfig.useRedisLocal) {
       app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(getRedisClient())
     } else {

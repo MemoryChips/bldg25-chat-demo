@@ -1,15 +1,15 @@
 // Align FE/BE
 export interface Credentials {
-  userName?: string
   email: string
   password: string
+  userName?: string
 }
 
 export interface SignUpInfo {
   email: string
   password: string
   userName: string
-  avatarUrl?: string
+  avatarUrl: string
 }
 
 export interface UserWoId {

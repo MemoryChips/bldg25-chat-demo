@@ -10,16 +10,16 @@ import { ChatLoginService } from 'bldg25-chat'
 
 // Align FE/BE
 export interface Credentials {
-  userName?: string
   email: string
   password: string
+  userName?: string
 }
 
 export interface SignUpInfo {
   email: string
   password: string
   userName: string
-  avatarUrl?: string
+  avatarUrl: string
 }
 
 export interface UserWoId {
@@ -32,6 +32,7 @@ export interface UserWoId {
 export interface User extends UserWoId {
   _id: string
 }
+// end Align FE/BE
 
 export const ANONYMOUS_USER: User = {
   email: 'guest',

@@ -9,6 +9,8 @@ import { serverConfig } from '../server-config'
 import { TOKEN_AGE_MS } from '../server-config'
 import { UserDatabase, USER_DB } from '../database/mongo-users'
 
+import { ChatDatabase } from 'bldg25-chat-server'
+
 export function createUser(req: Request, res: Response) {
   const db: UserDatabase = req.app.locals[USER_DB]
   const signUpInfo: SignUpInfo = req.body
@@ -79,6 +81,7 @@ export function deleteUser(req: any, res: Response) {
 
 async function createUserAndSession(req: Request, res: Response, signUpInfo: SignUpInfo) {
   const db: UserDatabase = req.app.locals[USER_DB]
+  const chatDb: ChatDatabase = req.app.locals.CHAT_DB // optionally to allow chat user sign up at user signup
   const passwordDigest = await argon2.hash(signUpInfo.password)
   const user: UserWoId = {
     email: signUpInfo.email,
@@ -97,6 +100,25 @@ async function createUserAndSession(req: Request, res: Response, signUpInfo: Sig
     if (!newUser) {
       return res.status(500).json(`Server error while creating user: ${signUpInfo.email}`)
     }
+    //
+    // Optionally create chat user at the same time as creating a user
+    //
+    const chatUser = await chatDb.getUserOrCreate({
+      // required prop
+      appId: newUser._id,
+      email: newUser.email,
+      // optional prop
+      avatarUrl: newUser.avatarUrl || '',
+      userName: newUser.userName || newUser.email
+    })
+    if (chatUser) {
+      console.log(
+        `Created chat user with app user: ${chatUser.userName} with avatar: ${chatUser.avatarUrl}`
+      )
+    }
+    //
+    // end of optional create user
+    //
     await sendSuccess(res, newUser) // TODO: is await necessary
   } else {
     console.log(`Unable to create user: ${user.email}`)

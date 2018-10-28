@@ -3,7 +3,7 @@ import { UserWoId } from '../auth/models/user'
 import { MongoClient } from 'mongodb'
 import { UserDatabase, MongoUserDatabase } from './mongo-users'
 import { serverConfig } from '../server-config'
-import { ChatMongoDataBase } from 'bldg25-chat-server'
+import { ChatMongoDataBase, ChatDatabase } from 'bldg25-chat-server'
 const mongoUrl = serverConfig.mongoUrl
 const mongoDataBase = serverConfig.mongoDataBase
 
@@ -88,7 +88,7 @@ MongoClient.connect(
     chatDb.flushDb().then(result => {
       console.log(`Chat data base flushed: ${result}`)
     })
-    runPreload(db).then(() => {
+    runPreload(db, chatDb).then(() => {
       client.close().then(() => {
         console.log(`Mongo client closed`)
       })
@@ -98,13 +98,31 @@ MongoClient.connect(
     console.log(`Error while connecting: ${err}`)
   })
 
-function runPreload(db: UserDatabase) {
+function runPreload(db: UserDatabase, chatDb: ChatDatabase) {
   return db.flushDb().then(flushResult => {
     console.log(`Flush result: ${flushResult}`)
     const userCreates = users.map(userWoId => db.createUser(userWoId, passwordDigest))
     return Promise.all(userCreates)
       .then(userCreateResults => {
-        console.log('users loaded: ', userCreateResults.filter(result => !result).length === 0)
+        console.log('users loaded: ', userCreateResults.every(result => result))
+        const getSomeUsers = ['student@gmail.com', 'admin@gmail.com'].map(email =>
+          db.getUserByEmail(email)
+        )
+        return Promise.all(getSomeUsers).then(someUsers => {
+          return Promise.all(
+            someUsers.map(u =>
+              chatDb.getUserOrCreate({
+                email: !!u ? u.email : 'missing email?',
+                appId: !!u ? u._id : 'missing user id',
+                userName: !!u ? u.userName : 'missing user',
+                avatarUrl: !!u ? u.avatarUrl : 'missing user'
+              })
+            )
+          )
+        })
+      })
+      .then(chatUserCreateResults => {
+        console.log('users loaded: ', chatUserCreateResults.every(result => !!result))
         return db.deleteUser(victim)
       })
       .then(success => {

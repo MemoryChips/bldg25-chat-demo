@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core'
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms'
 import { Router } from '@angular/router'
 
-import { Credentials, AuthService } from '../auth.service'
+import { AuthService, SignUpInfo } from '../auth.service'
 
 import { SignupValidators } from './signup.validators'
 import { MatSnackBar } from '@angular/material'
@@ -60,7 +60,8 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   submitSignUp() {
     console.log(this.form.value)
-    const credentials: Credentials = this.form.value
+    const credentials: SignUpInfo = this.form.value
+    credentials.avatarUrl = credentials.avatarUrl || '' // TODO: form should set this value
     if (!credentials.userName) {
       credentials.userName = credentials.email
     }

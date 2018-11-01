@@ -14,8 +14,6 @@ import { MatSnackBar } from '@angular/material'
 })
 export class SignupComponent implements OnInit, OnDestroy {
   confirmPasswordText = 'Password10'
-  // credentials: Credentials
-  passwordMatch = false // TODO: this needs to be fixed
   hide = true
 
   form = new FormGroup(
@@ -66,7 +64,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   submitSignUp() {
     console.log(this.form.value)
     const credentials: SignUpInfo = this.form.value
-    credentials.avatarUrl = credentials.avatarUrl || '' // TODO: form should set this value
+    credentials.avatarUrl = credentials.avatarUrl || ''
     if (!credentials.userName) {
       credentials.userName = credentials.email
     }

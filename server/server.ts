@@ -67,7 +67,7 @@ if (process.env.PROD || serverConfig.prod) {
   })
 }
 
-// FIXME: Detect which databases are needed instead of requiring all of them
+// TODO: Detect which databases are needed instead of requiring all of them
 Promise.all([createMongoClient(), createRedisClient()])
   .then(clients => {
     const [client, redisClient] = clients

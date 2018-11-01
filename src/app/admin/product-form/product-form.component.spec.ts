@@ -54,29 +54,24 @@ describe('ProductFormComponent', () => {
   let component: ProductFormComponent
   let fixture: ComponentFixture<ProductFormComponent>
 
-  beforeEach(
-    fakeAsync(() => {
-      // TODO: Is fakeasync needed here?
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        declarations: [ProductFormComponent],
-        imports: [FormsModule],
-        providers: [
-          { provide: Router, useClass: MockRouter },
-          { provide: ActivatedRoute, useClass: MockActivatedRoute },
-          { provide: ProductService, useClass: MockProductService }
-        ]
-      }).compileComponents()
-    })
-  )
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [ProductFormComponent],
+      imports: [FormsModule],
+      providers: [
+        { provide: Router, useClass: MockRouter },
+        { provide: ActivatedRoute, useClass: MockActivatedRoute },
+        { provide: ProductService, useClass: MockProductService }
+      ]
+    }).compileComponents()
+  }))
 
-  beforeEach(
-    fakeAsync(() => {
-      fixture = TestBed.createComponent(ProductFormComponent)
-      component = fixture.componentInstance
-      fixture.detectChanges()
-    })
-  )
+  beforeEach(fakeAsync(() => {
+    fixture = TestBed.createComponent(ProductFormComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  }))
 
   it('should create', () => {
     expect(component).toBeTruthy()
@@ -85,12 +80,9 @@ describe('ProductFormComponent', () => {
   it('should have new product setting of false', () => {
     expect(component.newProduct).toBeFalsy()
   })
-  it(
-    'should get product with correct title',
-    fakeAsync(() => {
-      expect(component.product.title).toBe('fake_title')
-    })
-  )
+  it('should get product with correct title', fakeAsync(() => {
+    expect(component.product.title).toBe('fake_title')
+  }))
   it('should get product with correct key', () => {
     expect(component.product.key).toBe('fake_key')
   })

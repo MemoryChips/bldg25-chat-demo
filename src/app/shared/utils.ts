@@ -12,22 +12,6 @@ export function addKey(obj: KeyedObj) {
   return obj
 }
 
-// export interface KeyedObj<T> {
-//   [key: string]: T
-// }
-// export function addKey<T>(obj: KeyedObj<T>) {
-// export function addKey(obj: any) {
-//   Object.keys(obj).forEach((key: string) => {
-//     obj[key]['key'] = key
-//   })
-//   return obj
-// }
-
-// TODO: can this be combined with above
-// export interface IdedObj<T> {
-//   [id: string]: T
-// }
-// export function addId<T>(obj: IdedObj<T>) {
 export function addId(obj: any) {
   Object.keys(obj).forEach(key => {
     obj[key]['id'] = key
@@ -39,9 +23,7 @@ export function addId(obj: any) {
 export function AutoUnsubscribe(constructor: any) {
   const original = constructor.prototype.ngOnDestroy
   if (!original || typeof original !== 'function') {
-    console.warn(
-      'Warning: You must implement ngOnDestroy method to use AutoUnsubscribe.'
-    )
+    console.warn('Warning: You must implement ngOnDestroy method to use AutoUnsubscribe.')
   } else {
     constructor.prototype.ngOnDestroy = function() {
       Object.keys(this).forEach(prop => {
@@ -62,11 +44,7 @@ export function Unsubscribe(subArray = '_subscriptions') {
     const original = descriptor.value
     descriptor.value = function() {
       if (!this[subArray]) {
-        console.log(
-          'class must have property <',
-          subArray,
-          '> to use Unsubscribe decorator.'
-        )
+        console.log('class must have property <', subArray, '> to use Unsubscribe decorator.')
       } else {
         this[subArray].forEach((s: any) => {
           // console.log('unsubscribing from: ', s)
@@ -126,9 +104,7 @@ export function AutoUnsubscribeFactory(verbose = true) {
     const original = constructor.prototype.ngOnDestroy
     if (!original || typeof original !== 'function') {
       if (verbose) {
-        console.log(
-          'You must implement ngOnDestroy method to use AutoUnsubscribe'
-        )
+        console.log('You must implement ngOnDestroy method to use AutoUnsubscribe')
       }
     } else {
       constructor.prototype.ngOnDestroy = function() {

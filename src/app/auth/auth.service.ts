@@ -45,8 +45,6 @@ export const ANONYMOUS_USER: User = {
 @Injectable()
 export class AuthService {
   userSubject$ = new BehaviorSubject<User>(ANONYMOUS_USER)
-  // TODO: is asObservabel reeallt needed
-  // user$: Observable<AppUser> = this.userSubject$.filter(user => !!user)
   user$: Observable<User> = this.userSubject$.asObservable().pipe(filter((user: User) => !!user))
 
   returnUrl = '/'

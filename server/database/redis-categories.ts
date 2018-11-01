@@ -9,7 +9,6 @@ import { CategoryDatabase, Categories, CATEGORY_COLLECTION } from '../product/pr
 export class RedisCategoryDatabase implements CategoryDatabase {
   constructor(private client: RedisClient) {
     console.log('Instance of redis category database created.')
-    // TODO: move this reconnect stuff to server.ts
   }
 
   private getItem(key: string): Promise<string> {

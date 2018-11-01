@@ -7,7 +7,7 @@ const PRODUCTS_COLLECTION = 'products'
 const ORDERS_COLLECTION = 'orders'
 export const PRODUCT_DB = 'product-db'
 
-// TODO: move this interface to products api
+// move this interface to products api if another client type is created
 export interface ProductDatabase {
   // quit(): void
   flushDb(): Promise<boolean>

@@ -73,11 +73,9 @@ Promise.all([createMongoClient(), createRedisClient()])
     const [client, redisClient] = clients
     const chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)
     app.locals.CHAT_DB = chatDb // Optionally add chatDb to app.locals for use when main app signs up a user
-    if (serverConfig.useRedisLocal) {
-      app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(redisClient)
-    } else {
-      app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, serverConfig.mongoDataBase)
-    }
+    app.locals[CATEGORIES_DB] = serverConfig.useRedisCategories
+      ? new RedisCategoryDatabase(redisClient)
+      : new MongoCategoryDatabase(client, serverConfig.mongoDataBase)
     app.locals[PRODUCT_DB] = new MongoProductDatabase(client, serverConfig.mongoDataBase)
     app.locals[SHOPPING_CART_DB] = new MongoShoppingCartDatabase(client, serverConfig.mongoDataBase)
     app.locals[USER_DB] = new MongoUserDatabase(client, serverConfig.mongoDataBase)

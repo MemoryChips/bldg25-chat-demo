@@ -30,6 +30,7 @@ export class MongoProductDatabase implements ProductDatabase {
   private ordersCollection: Collection<Order>
 
   constructor(private client: MongoClient, dbName: string) {
+    // TODO: Consider using client.s.options.db for the dbName
     console.log('Instance of mongo product database class created.')
     this.db = this.client.db(dbName)
     this.productsCollection = this.db.collection(PRODUCTS_COLLECTION)

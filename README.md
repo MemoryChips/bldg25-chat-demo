@@ -89,7 +89,6 @@ MONGO_DB_PASSWORD='xi3bye949h'
 MONGO_DB_LOCATION='@ds223653.mlab.com:23653'
 MONGO_DATABASE='chat-demo'
 node dist/server.js --prod --mongoDbUser $MONGO_DB_USER --mongoDbPassword $MONGO_DB_PASSWORD --mongoDbLocation $MONGO_DB_LOCATION --mongoDataBase $MONGO_DATABASE
-# TODO: Why did Ralph type this?
 node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 ```
 
@@ -155,7 +154,7 @@ npm run pre-load-app-data # initializes local redis database
 DBHOST='catfish.redistogo.com'
 DBPORT=9782
 DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
-ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
+ts-node ./server/database/pre-load-user-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 ```
 
@@ -203,7 +202,7 @@ node dist/server.js --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
 npm start
 ```
 
-- Local test of prod with Redislabs Server
+- Local test of prod with Redislabs Server (used by heroku server)
 
 ```bash
 npm outdated

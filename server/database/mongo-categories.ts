@@ -14,17 +14,6 @@ export class MongoCategoryDatabase implements CategoryDatabase {
     console.log('Instance of mongo category database created.')
     this.db = this.client.db(dbName)
     this.categoryCollection = this.db.collection<Category>(CATEGORY_COLLECTION)
-    // TODO: Do these events happen?
-    this.db.on('error', err => {
-      // Can I reconnect here?
-      console.error(`Error in client: ${err} Can I reconnect?`)
-    })
-    this.db.on('connect', _e => {
-      console.log(`Database ${dbName} connected`)
-    })
-    this.db.on('reconnecting', _e => {
-      console.log(`Attempting reconnect`)
-    })
   }
 
   flushDb() {

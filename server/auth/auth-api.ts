@@ -119,7 +119,7 @@ async function createUserAndSession(req: Request, res: Response, signUpInfo: Sig
     //
     // end of optional create user
     //
-    await sendSuccess(res, newUser) // TODO: is await necessary
+    sendSuccess(res, newUser)
   } else {
     console.log(`Unable to create user: ${user.email}`)
     res.status(403).json({

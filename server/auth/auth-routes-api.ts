@@ -18,5 +18,5 @@ authRouter
   .get('/user-me', getJwtUser)
   .get('/user/:id', checkIfAuthenticated, getUser)
   // .get('/user/:id', checkIfAuthenticated, checkCsrfToken, getUser)
-  // .put('/user/:id', checkIfAuthenticated, saveUser) // TODO: this route does not use the id in the route
+  // .put('/user/:id', checkIfAuthenticated, saveUser)
   .delete('/user/:email', checkIfAuthenticated, checkIfAuthorized(['ADMIN']), deleteUser)

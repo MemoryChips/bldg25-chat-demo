@@ -13,9 +13,9 @@ import { shoppingCartRouter } from './shopping-cart/shopping-cart-routes'
 import { orderRouter } from './order/order-routes'
 import bodyParser from 'body-parser'
 
-import redis, { RedisClient } from 'redis'
 import { RedisCategoryDatabase } from './database/redis-categories'
-
+import { createRedisClient } from './database/create-redis-client'
+import { createMongoClient } from './database/create-mongo-client'
 import { MongoUserDatabase, USER_DB } from './database/mongo-users'
 import { MongoProductDatabase, PRODUCT_DB } from './database/mongo-products'
 import { MongoCategoryDatabase } from './database/mongo-categories'
@@ -30,7 +30,6 @@ import {
   ChatMongoDataBase,
   ChatDatabase
 } from 'bldg25-chat-server'
-import { MongoClient } from 'mongodb'
 
 import { serverConfig } from './server-config'
 
@@ -39,7 +38,6 @@ This must be provided by the parent application to the Chat Server
 */
 import { verifySocketConnection } from './auth/security'
 
-// const env = process.env.NODE_ENV || 'development'
 const app: express.Application = express()
 
 app.use(cookieParser())
@@ -66,53 +64,17 @@ if (process.env.PROD || serverConfig.prod) {
   // gives response when user refreshes some random url in angular
   app.all('*', (_req: any, res: any) => {
     res.status(200).sendFile(__dirname + '/index.html')
-    // res.status(200).sendFile(__dirname + '/index.html')
   })
 }
 
-// FIXME: rework this into a promise as in done in dev version
-function getRedisClient() {
-  const redisDbHost = 'localhost'
-  const redisDbPort = 6379
-  const redisDbAuthCode = 'this_should_be_a_secret_authcode'
-  const redisDbNum = 2 // use 0 when using a cloud redis server
-  // const redisDbHost = !!options.dbHost ? options.dbHost : 'localhost'
-  // const redisDbPort = !!options.dbPort ? options.dbPort : 6379
-  // const redisDbAuthCode = !!options.dbAuth ? options.dbAuth : 'this_should_be_a_secret_authcode'
-  console.log(`Using ${redisDbHost}:${redisDbPort} for redis database`)
-  console.log(`Using authcode ${redisDbAuthCode} for redis database`)
-  const redisClient: RedisClient = redis.createClient(redisDbPort, redisDbHost, {
-    retry_strategy: options => {
-      console.log(
-        `Trying to reconnect: ${options.attempt} attempt. ${
-          options.total_retry_time
-        } total retry time.`
-      )
-      return 5000
-    }
-  })
-  redisClient.on('connect', _e => {
-    const authorized = redisClient.auth(redisDbAuthCode)
-    redisClient.select(redisDbNum)
-    console.log(`Database ${redisDbNum} selected with Authorization: ${authorized}`)
-  })
-  redisClient.on('reconnecting', _e => {
-    console.log(`Attempting reconnect`)
-  })
-  return redisClient
-}
-
-// Create database connection for chat
-// configure either TODO: redis, mongo, or TODO: default to memory
-MongoClient.connect(
-  serverConfig.mongoUrl,
-  { useNewUrlParser: true }
-)
-  .then(client => {
+// FIXME: Detect which databases are needed instead of requiring all of them
+Promise.all([createMongoClient(), createRedisClient()])
+  .then(clients => {
+    const [client, redisClient] = clients
     const chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)
     app.locals.CHAT_DB = chatDb // Optionally add chatDb to app.locals for use when main app signs up a user
     if (serverConfig.useRedisLocal) {
-      app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(getRedisClient())
+      app.locals[CATEGORIES_DB] = new RedisCategoryDatabase(redisClient)
     } else {
       app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, serverConfig.mongoDataBase)
     }

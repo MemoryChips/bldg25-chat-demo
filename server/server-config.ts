@@ -10,6 +10,12 @@ const optionDefinitions = [
   { name: 'mongoDataBase', type: String }
 ]
 
+// local redis db options - TODO: create option to set this to one of the redis servers
+const redisDbHost = 'localhost'
+const redisDbPort = 6379
+const redisDbAuthCode = 'this_should_be_a_secret_authcode'
+const redisDbNum = 2 // use 0 when using a cloud redis server
+
 // defaults to chat-demo-local
 export const options = commandLineArgs(optionDefinitions)
 const mongoDbUser = !!options.mongoDbUser ? options.mongoDbUser : 'chat-demo-local-user'
@@ -60,7 +66,12 @@ export const serverConfig = {
   imageUrl,
   defaultAvatarUrl,
   secure: !!options.secure,
-  prod: !!options.prod
+  prod: !!options.prod,
+  // redis db options
+  redisDbHost,
+  redisDbPort,
+  redisDbAuthCode,
+  redisDbNum
 }
 
 export const TOKEN_AGE_MS = 24 * 60 * 60 * 1000

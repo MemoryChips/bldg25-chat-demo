@@ -70,6 +70,7 @@ if (process.env.PROD || serverConfig.prod) {
   })
 }
 
+// FIXME: rework this into a promise as in done in dev version
 function getRedisClient() {
   const redisDbHost = 'localhost'
   const redisDbPort = 6379

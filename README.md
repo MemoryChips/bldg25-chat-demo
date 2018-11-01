@@ -29,6 +29,13 @@ cd ~/redis-4.0.6/src/  # location of redis-server and redis-cli
 
 ## Launch - Mongo
 
+- if needed, clear process using port 9000
+
+```bash
+lsof -i tcp:9000
+kill <pid of process using port 9000>
+```
+
 - pre load users data
 
 ```bash

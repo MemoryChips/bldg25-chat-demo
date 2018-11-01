@@ -1,3 +1,5 @@
+// import * as fs from 'fs'
+
 // Command line settings
 const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
@@ -22,6 +24,9 @@ function getOption(option: string, defOption: any) {
 const redisDbHost = getOption('redisDbHost', 'catfish.redistogo.com')
 const redisDbPort = getOption('redisDbHost', 9782)
 const redisDbAuthCode = getOption('redisDbHost', '63cf95b9b1a52f2fe6d0a9c5a67fa527')
+// const fsAuthCode = fs.readFileSync('./server/keys/redis-togo-dbauath.key').toString()
+// console.log(fsAuthCode)
+// const redisDbAuthCode = getOption('redisDbHost', fsAuthCode)
 // use 0 when using a cloud redis server
 const redisDbNum = getOption('redisDbHost', 0)
 const useRedisCategories = getOption('useRedisCategories', true)

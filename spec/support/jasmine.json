@@ -1,0 +1,14 @@
+{
+  "spec_dir": "spec",
+  "spec_files": ["out-tsc/**/*[sS]pec.js"],
+  "helpers": ["out-tsc/spec/helpers/**/*.js"],
+  "stopSpecOnExpectationFailure": false,
+  "random": false,
+  "reporters": [
+    {
+      "options": {
+        "displayStacktrace": "all"
+      }
+    }
+  ]
+}

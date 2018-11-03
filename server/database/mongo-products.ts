@@ -61,13 +61,12 @@ export class MongoProductDatabase implements ProductDatabase {
 
   saveAllProducts(products: DbProduct[]): Promise<boolean> {
     return this.productsCollection.deleteMany({}).then(_result => {
-      if (!!_result.deletedCount) {
-        return this.productsCollection.insertMany(products).then(result => {
-          return result.insertedCount === products.length
-        })
-      } else {
-        return false
+      if (!_result.deletedCount) {
+        console.log(`No products deleted. Inserting products anyway.`)
       }
+      return this.productsCollection.insertMany(products).then(result => {
+        return result.insertedCount === products.length
+      })
     })
   }
 

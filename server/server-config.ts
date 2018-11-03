@@ -39,14 +39,23 @@ const useRedisCategories = getOption('useRedisCategories', true)
 // const redisDbNum = getOption('redisDbHost', 2)
 // const useRedisCategories = getOption('useRedisCategories', true)
 
-// defaults to chat-demo-local
-const mongoDbUser = !!options.mongoDbUser ? options.mongoDbUser : 'chat-demo-local-user'
-const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : 'ustbqv605f'
+// defaults to demo on Atlas
+const mongoDbUser = !!options.mongoDbUser ? options.mongoDbUser : 'chat-dev-server'
+const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : '21d2oe66yv'
 const mongoDbLocation = !!options.mongoDbLocation
   ? options.mongoDbLocation
-  : '@ds131763.mlab.com:31763'
-const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-demo-local'
+  : '@dev-vejwg.mongodb.net'
+const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'demo'
 // end default chat-demo-local
+
+// // defaults to chat-demo-local on Mlab
+// const mongoDbUser = !!options.mongoDbUser ? options.mongoDbUser : 'chat-demo-local-user'
+// const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : 'ustbqv605f'
+// const mongoDbLocation = !!options.mongoDbLocation
+//   ? options.mongoDbLocation
+//   : '@ds131763.mlab.com:31763'
+// const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-demo-local'
+// // end default chat-demo-local
 
 // heroku mlab settings (for local test)
 // const mongoDbPassword = !!options.mongoDbPassword ? options.mongoDbPassword : 'xi3bye949h'
@@ -56,7 +65,10 @@ const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-de
 // const mongoDataBase = !!options.mongoDataBase ? options.mongoDataBase : 'chat-demo'
 // end heroku mlab settings
 
-const mongoUrl = `mongodb://${mongoDbUser}:${mongoDbPassword}${mongoDbLocation}/${mongoDataBase}`
+// Mlab version
+// const mongoUrl = `mongodb://${mongoDbUser}:${mongoDbPassword}${mongoDbLocation}/${mongoDataBase}`
+// Atlas version
+const mongoUrl = `mongodb+srv://${mongoDbUser}:${mongoDbPassword}${mongoDbLocation}/${mongoDataBase}?retryWrites=true`
 // END command line args
 
 // heroku host format

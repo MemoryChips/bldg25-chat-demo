@@ -51,6 +51,16 @@
       "cwd": "${workspaceRoot}",
       "runtimeArgs": ["-r", "ts-node/register"],
       "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "build-tests",
+      "name": "Api Test",
+      "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine.js",
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector"
     }
   ]
 }

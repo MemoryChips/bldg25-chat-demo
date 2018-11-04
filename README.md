@@ -2,19 +2,7 @@
 
 This demo shows how to add bldg25-chat to an existing angular 6+ application
 
-- git clone
-- npm install
-- setup databases at least one
-  - install redis server or obtain redistogo or redislabs credentials
-  - obtain Atlas mongo server credentials
-
-```bash
-# download redis tar ball from [Redis.io](https://redis.io/) and unzip
-make
-make test
-cd ~/redis-4.0.6/src/  # location of redis-server and redis-cli
-# Add above dir to your path so scripts can find redis
-```
+See Setup Demo App below
 
 ## Pre-Launch
 
@@ -24,19 +12,10 @@ cd ~/redis-4.0.6/src/  # location of redis-server and redis-cli
 
 - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
 - private.key and public.key: RSA private and public keys for encoding JSON webtokens
-- redis-labs-dbauth.key: Auth key for redis-labs
-- redis-togo-dbauth.key: Auth key for redistogo
 
 #### Add Image Files to ./src/assets/images as desired
 
 ## Launch - Mongo
-
-- if needed, clear process using port 9000
-
-```bash
-lsof -i tcp:9000
-kill <pid of process using port 9000>
-```
 
 - pre load users data
 
@@ -54,44 +33,11 @@ node -r "ts-node/register" server/database/pre-load-user-data.ts
 npm run start
 ```
 
-```bash
-# mongo ds131763.mlab.com:31763/chat-demo-local -u <dbuser> -p <dbpassword>
-# mongodb://<dbuser>:<dbpassword>@ds131763.mlab.com:31763/chat-demo-local
-# ustbqv605f
-# chat-demo-local-user
-# to run mongo shell on mlab demo-local database
-mongoDbUser='chat-demo-local-user'
-mongoDbPassword='ustbqv605f'
-mongoDbLocation='ds131763.mlab.com:31763' # note: no @
-mongoDataBase='chat-demo-local'
-mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
-# to run mongo shell on mlab demo database
-mongoDbUser='chat-demo-user'
-mongoDbPassword='xi3bye949h'
-mongoDbLocation='ds223653.mlab.com:23653' # note: no @
-mongoDataBase='chat-demo'
-mongo $mongoDbLocation/$mongoDataBase -u $mongoDbUser -p $mongoDbPassword
-```
+- Mongo Shell commands if needed
 
 ```bash
-# to run redis shell start server as above
-redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
-```
-
-- Local test of prod
-
-```bash
-npm outdated
-npm update # to get latest published version of chat modules
-npm run build # to build demo app angular code and server code
-node dist/server.js --prod
-node dist/server.js --prod --useRedisLocal
-MONGO_DB_USER='chat-demo-user'
-MONGO_DB_PASSWORD='xi3bye949h'
-MONGO_DB_LOCATION='@ds223653.mlab.com:23653'
-MONGO_DATABASE='chat-demo'
-node dist/server.js --prod --mongoDbUser $MONGO_DB_USER --mongoDbPassword $MONGO_DB_PASSWORD --mongoDbLocation $MONGO_DB_LOCATION --mongoDataBase $MONGO_DATABASE
-node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
+mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username chat-dev-admin -p xi3bye949h
+mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username chat-dev-server -p 21d2oe66yv
 ```
 
 - Run tests
@@ -112,6 +58,18 @@ npm run test
 REDIS_DB_HOST='catfish.redistogo.com'; REDIS_DB_PORT=9782; REDIS_DB_NUM=0;REDIS_DB_AUTHCODE='63cf95b9b1a52f2fe6d0a9c5a67fa527'
 # mongo config
 MONGO_DB_USER='chat-dev-user'; MONGO_DB_PASSWORD='21d2oe66yv'; MONGO_DB_LOCATION='@dev-vejwg.mongodb.net' MONGO_DATABASE='demo'
+```
+
+- Local test of prod
+
+```bash
+# setup env as above
+MONGO_DATABASE='demo-heroku'
+npm outdated
+npm update # to get latest published version of chat modules
+npm run build # to build demo app angular code and server code
+node dist/server.js --prod # test with Mongo only
+node dist/server.js --prod --useRedisCategories  # OR test with some redis
 ```
 
 - Heroku Deploy
@@ -137,8 +95,7 @@ heroku config:set REDIS_DB_AUTHCODE='63cf95b9b1a52f2fe6d0a9c5a67fa527'
 heroku config:set MONGO_DB_USER='chat-dev-user'
 heroku config:set MONGO_DB_PASSWORD='21d2oe66yv'
 heroku config:set MONGO_DB_LOCATION='@dev-vejwg.mongodb.net'
-heroku config:set MONGO_DATABASE='demo'
-# TODO: are these used by Heroku?
+heroku config:set MONGO_DATABASE='demo-heroku'
 heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
 heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
 heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com
@@ -153,7 +110,22 @@ heroku ps:scale web=0  # stop the running instance
 heroku local web  # run the app locally
 ```
 
-## Initialize redis database(s)
+## Launch Redis Version
+
+- only redis categories is available
+- TODO: setup example of using redis for the chat server
+
+- redis install:
+
+```bash
+# download redis tar ball from [Redis.io](https://redis.io/) and unzip
+make
+make test
+cd ~/redis-4.0.6/src/  # location of redis-server and redis-cli
+# Add above dir to your path so scripts can find redis
+```
+
+### Initialize redis database(s)
 
 - Local Redis
 
@@ -185,7 +157,14 @@ ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort 
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
 ```
 
-## Launch Scenarios - Redis - These need updating
+- Redis Shell command if needed
+
+```bash
+# to run redis shell start server as above
+redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
+```
+
+### Redis Launch Scenarios - These need updating
 
 - Local development with debug server with local redis server
 
@@ -250,66 +229,16 @@ DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
 redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH KEYS chat* | xargs redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH DEL
 ```
 
-- Heroku Deploy - Mongo + Redis Work in Progres
+- Heroku Deploy - Mongo + Redis TODO: Do I want to bother with this version on Heroku?
 
 ```bash
-heroku create
-git remote -v  # verify heroku remote has been added to git
-# create postinstall script
-# create Procfile
-# good idea - add engines to package.json
-# "engines": {
-#   "node": "x.x.x",
-#   "npm": "x.x.x"
-# }
-# verify build worked
-# set heroku env
-heroku config:set DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
-heroku config:set DBPORT=10568
-heroku config:set DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
-heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
-heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
-heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com
-heroku config:set DEFAULT_AVATAR_URL=https://stormy-mountain-18015.herokuapp.com/assets/default-gravatar.jpg
-heroku config
 
-git push heroku master  # deploy to heroku. commit first!
-heroku ps:scale web=1   # start an instance of the app running
-heroku open  # open in chrome
-heroku logs --tail
-heroku ps:scale web=0  # stop the running instance
-heroku local web  # run the app locally
 ```
 
-- Heroku Deploy - deprecated Redis
+- Heroku Deploy - Redis TODO: Do I want to bother with this version on Heroku?
 
 ```bash
-heroku create
-git remote -v  # verify heroku remote has been added to git
-# create postinstall script
-# create Procfile
-# good idea - add engines to package.json
-# "engines": {
-#   "node": "x.x.x",
-#   "npm": "x.x.x"
-# }
-# verify build worked
-# set heroku env
-heroku config:set DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
-heroku config:set DBPORT=10568
-heroku config:set DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
-heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
-heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
-heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com
-heroku config:set DEFAULT_AVATAR_URL=https://stormy-mountain-18015.herokuapp.com/assets/default-gravatar.jpg
-heroku config
 
-git push heroku master  # deploy to heroku. commit first!
-heroku ps:scale web=1   # start an instance of the app running
-heroku open  # open in chrome
-heroku logs --tail
-heroku ps:scale web=0  # stop the running instance
-heroku local web  # run the app locally
 ```
 
 ### Setup on Github
@@ -323,7 +252,12 @@ git push git-hub master
 
 ### Setup Demo App
 
-- clone repo at git@bitbucket.org:robkat/chat-5.git
+- clone repo
+
+```bash
+git clone https://github.com/MemoryChips/bldg25-chat-demo.git
+```
+
 - run npm install
 
   - confirm build works; correct any errors
@@ -332,8 +266,8 @@ git push git-hub master
 - Add Key Files not committed to repo to ./server/keys Folder
   - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
   - private.key and public.key: RSA private and public keys for encoding JSON webtokens
-  - redis-labs-dbauth.key: Auth key for redis-labs
-  - redis-togo-dbauth.key: Auth key for redistogo
+- Obtain MongoDb credentials at Atlas mongodb provider
+  - set your credentials in the server-config.ts file
 
 ```bash
 # cd to project dir
@@ -356,3 +290,12 @@ cp $SOURCE_OF_IMAGEFILES ./src/assets/images
 ```
 
 - choose and run a launch scenario listed above
+
+### Miscellaneous
+
+- if needed, clear process using port 9000
+
+```bash
+lsof -i tcp:9000
+kill <pid of process using port 9000>
+```

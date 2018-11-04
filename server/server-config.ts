@@ -34,14 +34,17 @@ const mongoUrl = `mongodb+srv://${mongoDbUser}:${mongoDbPassword}${mongoDbLocati
 // heroku host format
 // https://stormy-mountain-18015.herokuapp.com
 
-// Environment Settings
-const host = process.env.HOST_URL || 'localhost'
-const port = process.env.PORT || 9000
-
+// Environment Settings from Heroku
+const host = process.env.HOST_URL || 'localhost' // TODO: set by me?
+// PORT was set to 48759 on heroku
+const port = process.env.PORT || 9000 // TODO: set by heroku? or should I set this?
+// TODO: serverUrl appears to no longer be used
 const serverHttp = options.secure ? 'https' : 'http'
-const serverUrl = `${serverHttp}://${host}:${port}`
-
-const imagePort = process.env.PROD || options.prod ? port : 4200
+const serverUrlXX = `${serverHttp}://${host}:${port}`
+console.log(`server url: ${serverUrlXX}`)
+// PORT was set to 48759 on heroku
+const imagePort = process.env.PORT || 4200 // TODO: this should be 9000 when testing prod mode locally (I think)
+// const imagePort = process.env.PORT || options.port ? port : 4200
 const imageUrl = `${serverHttp}://${host}:${imagePort}`
 const defaultAvatarUrl = process.env.DEFAULT_AVATAR_URL || `${imageUrl}/assets/default-gravatar.jpg`
 console.log(`default avatar url: ${defaultAvatarUrl}`)
@@ -50,7 +53,7 @@ export const serverConfig = {
   verbose: true,
   host,
   port,
-  serverUrl,
+  // serverUrl, // TODO: this guy appears to not be used anymore
   imageUrl,
   defaultAvatarUrl,
   secure: !!options.secure,

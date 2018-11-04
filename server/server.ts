@@ -67,8 +67,14 @@ if (process.env.PROD || serverConfig.prod) {
   })
 }
 
-// TODO: Detect which databases are needed instead of requiring all of them
-Promise.all([createMongoClient(), createRedisClient()])
+// TODO: This is clumsy. Find cleaner way
+const dataBases: any[] = []
+dataBases.push(createMongoClient())
+if (serverConfig.useRedisCategories) {
+  dataBases.push(createRedisClient())
+}
+// Promise.all([createMongoClient(), createRedisClient()])
+Promise.all(dataBases)
   .then(clients => {
     const [client, redisClient] = clients
     const chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)

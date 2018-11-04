@@ -106,6 +106,14 @@ ng test
 npm run test
 ```
 
+- env setup
+
+```bash
+REDIS_DB_HOST='catfish.redistogo.com'; REDIS_DB_PORT=9782; REDIS_DB_NUM=0;REDIS_DB_AUTHCODE='63cf95b9b1a52f2fe6d0a9c5a67fa527'
+# mongo config
+MONGO_DB_USER='chat-dev-user'; MONGO_DB_PASSWORD='21d2oe66yv'; MONGO_DB_LOCATION='@dev-vejwg.mongodb.net' MONGO_DATABASE='demo'
+```
+
 - Heroku Deploy
 
 ```bash
@@ -120,10 +128,16 @@ git remote -v  # verify heroku remote has been added to git
 # }
 # verify build worked
 # set heroku env
-heroku config:set MONGO_DB_USER='chat-demo-user'
-heroku config:set MONGO_DB_PASSWORD='xi3bye949h'
-heroku config:set MONGO_DB_LOCATION='@ds223653.mlab.com:23653'
-heroku config:set MONGO_DATABASE='chat-demo'
+# redis config
+heroku config:set REDIS_DB_HOST='catfish.redistogo.com'
+heroku config:set REDIS_DB_PORT=9782
+heroku config:set REDIS_DB_NUM=0
+heroku config:set REDIS_DB_AUTHCODE='63cf95b9b1a52f2fe6d0a9c5a67fa527'
+# mongo config
+heroku config:set MONGO_DB_USER='chat-dev-user'
+heroku config:set MONGO_DB_PASSWORD='21d2oe66yv'
+heroku config:set MONGO_DB_LOCATION='@dev-vejwg.mongodb.net'
+heroku config:set MONGO_DATABASE='demo'
 # TODO: are these used by Heroku?
 heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
 heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"

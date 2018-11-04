@@ -35,15 +35,17 @@ const mongoUrl = `mongodb+srv://${mongoDbUser}:${mongoDbPassword}${mongoDbLocati
 // https://stormy-mountain-18015.herokuapp.com
 
 // Environment Settings from Heroku
-const host = process.env.HOST_URL || 'localhost' // TODO: set by me?
-// PORT was set to 48759 on heroku
-const port = process.env.PORT || 9000 // TODO: set by heroku? or should I set this?
+const host = process.env.HOST_URL || 'localhost'
+
 // TODO: serverUrl appears to no longer be used
+const port = process.env.PORT || 9000
 const serverHttp = options.secure ? 'https' : 'http'
 const serverUrlXX = `${serverHttp}://${host}:${port}`
 console.log(`server url: ${serverUrlXX}`)
-// PORT was set to 48759 on heroku
-const imagePort = process.env.PORT || 4200 // TODO: this should be 9000 when testing prod mode locally (I think)
+// End no longer used
+
+// PORT was set to 48759 on heroku for stormy mountain
+const imagePort = process.env.PORT || 4200 // 4200 for dev mode; prod sets PORT to 9000
 // const imagePort = process.env.PORT || options.port ? port : 4200
 const imageUrl = `${serverHttp}://${host}:${imagePort}`
 const defaultAvatarUrl = process.env.DEFAULT_AVATAR_URL || `${imageUrl}/assets/default-gravatar.jpg`

@@ -4,17 +4,6 @@ This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 See Setup Demo App below
 
-## Pre-Launch
-
-### Add Files not committed in the Repo
-
-#### Add Key Files to ./server/keys Folder
-
-- cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
-- private.key and public.key: RSA private and public keys for encoding JSON webtokens
-
-#### Add Image Files to ./src/assets/images as desired
-
 ## Launch - Mongo
 
 - pre load users data
@@ -65,11 +54,12 @@ MONGO_DB_USER='chat-dev-user'; MONGO_DB_PASSWORD='21d2oe66yv'; MONGO_DB_LOCATION
 ```bash
 # setup env as above
 MONGO_DATABASE='demo-heroku'
+PORT='9000'
 npm outdated
 npm update # to get latest published version of chat modules
 npm run build # to build demo app angular code and server code
 node dist/server.js --prod # test with Mongo only
-node dist/server.js --prod --useRedisCategories  # OR test with some redis
+node dist/server.js --prod --useRedisCategories  # OR test with some redis TODO: test this
 ```
 
 - Heroku Deploy
@@ -258,7 +248,7 @@ git push git-hub master
 git clone https://github.com/MemoryChips/bldg25-chat-demo.git
 ```
 
-- run npm install
+- npm install
 
   - confirm build works; correct any errors
   - package.lock.json will likely be modified
@@ -266,8 +256,6 @@ git clone https://github.com/MemoryChips/bldg25-chat-demo.git
 - Add Key Files not committed to repo to ./server/keys Folder
   - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
   - private.key and public.key: RSA private and public keys for encoding JSON webtokens
-- Obtain MongoDb credentials at Atlas mongodb provider
-  - set your credentials in the server-config.ts file
 
 ```bash
 # cd to project dir
@@ -277,6 +265,10 @@ SOURCE_OF_KEYFILES=../../bldg25-chat-demo/server/server/keys
 mkdir ./server/keys/.
 cp $SOURCE_OF_KEYFILES ./server/keys
 ```
+
+- Obtain MongoDb credentials at Atlas mongodb provider
+
+  - set your credentials in the server-config.ts file
 
 - add image files as desired to ./src/assets/images
 

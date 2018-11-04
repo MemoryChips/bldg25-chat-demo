@@ -1,19 +1,19 @@
 // import * as fs from 'fs'
 
 // Command line settings
-const commandLineArgs = require('command-line-args')
+import commandLineArgs from 'command-line-args'
 const optionDefinitions = [
   { name: 'secure', type: Boolean },
   { name: 'prod', type: Boolean },
-  { name: 'mongoDbLocation', type: String },
-  { name: 'mongoDbUser', type: String },
-  { name: 'mongoDbPassword', type: String },
-  { name: 'mongoDataBase', type: String },
   { name: 'useRedisCategories', type: Boolean },
   { name: 'redisDbHost', type: String },
   { name: 'redisDbPort', type: Number },
   { name: 'redisDbAuthCode', type: String },
-  { name: 'redisDbNum', type: Number }
+  { name: 'redisDbNum', type: Number },
+  { name: 'mongoDbLocation', type: String },
+  { name: 'mongoDbUser', type: String },
+  { name: 'mongoDbPassword', type: String },
+  { name: 'mongoDataBase', type: String }
 ]
 export const options = commandLineArgs(optionDefinitions)
 function getOption(option: string, defOption: any) {
@@ -23,7 +23,7 @@ function getOption(option: string, defOption: any) {
 // defaults to redistogo
 const redisDbHost = getOption('redisDbHost', 'catfish.redistogo.com')
 const redisDbPort = getOption('redisDbHost', 9782)
-const redisDbAuthCode = getOption('redisDbHost', '63cf95b9b1a52f2fe6d0a9c5a67fa527')
+const redisDbAuthCode = getOption('redisDbAuthCode', '63cf95b9b1a52f2fe6d0a9c5a67fa527')
 // const fsAuthCode = fs.readFileSync('./server/keys/redis-togo-dbauath.key').toString()
 // console.log(fsAuthCode)
 // const redisDbAuthCode = getOption('redisDbHost', fsAuthCode)
@@ -77,7 +77,6 @@ const mongoUrl = `mongodb+srv://${mongoDbUser}:${mongoDbPassword}${mongoDbLocati
 // Environment Settings
 const host = process.env.HOST_URL || 'localhost'
 const port = process.env.PORT || 9000
-const chatServerPort = Number(port)
 
 const serverHttp = options.secure ? 'https' : 'http'
 const serverUrl = `${serverHttp}://${host}:${port}`
@@ -89,19 +88,18 @@ console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 export const serverConfig = {
   verbose: true,
-  log: console.log,
   host,
   port,
-  chatServerPort,
   serverUrl,
-  mongoUrl,
-  mongoDataBase,
-  useRedisCategories,
   imageUrl,
   defaultAvatarUrl,
   secure: !!options.secure,
   prod: !!options.prod,
+  // mongo db options
+  mongoUrl,
+  mongoDataBase,
   // redis db options
+  useRedisCategories,
   redisDbHost,
   redisDbPort,
   redisDbAuthCode,

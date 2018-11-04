@@ -1,6 +1,5 @@
 import * as express from 'express'
 import { postOrder, getMyOrders, getAllOrders } from './order-api'
-import { serverConfig } from '../server-config'
 import { checkIfAuthenticated } from '../auth/mware/authentication'
 import { checkIfAuthorized } from '../auth/mware/authorization'
 import { checkCsrfToken } from '../auth/mware/csrf'
@@ -8,7 +7,7 @@ import { checkCsrfToken } from '../auth/mware/csrf'
 export const orderRouter = express.Router()
 
 orderRouter.use((req, _res, next) => {
-  serverConfig.log(`${req.url} Time: `, Date.now())
+  console.log(`${req.url} Time: `, Date.now())
   next()
 })
 

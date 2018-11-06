@@ -26,7 +26,8 @@ import { CATEGORIES_DB } from './product/product-api'
 // necessary imports from bldg25 chat server package
 import {
   attachVideoSocketServer,
-  // ChatRedisDatabase
+  // ChatRedisDatabase,
+  ChatMemoryDataBase,
   ChatMongoDataBase,
   ChatDatabase
 } from 'bldg25-chat-server'
@@ -77,7 +78,13 @@ if (serverConfig.useRedisCategories) {
 Promise.all(dataBases)
   .then(clients => {
     const [client, redisClient] = clients
-    const chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)
+    let chatDb: ChatDatabase
+    if (!serverConfig.useChatMemDb) {
+      chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)
+    } else {
+      console.log(`Using chat memory database`)
+      chatDb = new ChatMemoryDataBase()
+    }
     app.locals.CHAT_DB = chatDb // Optionally add chatDb to app.locals for use when main app signs up a user
     app.locals[CATEGORIES_DB] = serverConfig.useRedisCategories
       ? new RedisCategoryDatabase(redisClient)

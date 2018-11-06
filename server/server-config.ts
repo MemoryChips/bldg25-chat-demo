@@ -3,7 +3,8 @@ import commandLineArgs from 'command-line-args'
 const optionDefinitions = [
   { name: 'secure', type: Boolean },
   { name: 'prod', type: Boolean },
-  { name: 'useRedisCategories', type: Boolean }
+  { name: 'useRedisCategories', type: Boolean },
+  { name: 'useChatMemDb', type: Boolean }
 ]
 export const options = commandLineArgs(optionDefinitions)
 function getOption(option: string, defOption: any) {
@@ -60,6 +61,7 @@ export const serverConfig = {
   defaultAvatarUrl,
   secure: !!options.secure,
   prod: !!options.prod,
+  useChatMemDb: !!options.useChatMemDb,
   // mongo db options
   mongoUrl,
   mongoDataBase,

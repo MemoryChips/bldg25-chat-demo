@@ -12,7 +12,7 @@ function getOption(option: string, defOption: any) {
 }
 
 // defaults to localhost and false
-const useRedisCategories = getOption('useRedisCategories', false)
+const useRedisCategories: boolean = getOption('useRedisCategories', false)
 const redisDbHost = process.env.REDIS_DB_HOST || 'localhost'
 const redisDbPort = Number(process.env.REDIS_DB_PORT || 6379)
 const redisDbNum = process.env.REDIS_DB_NUM || 2

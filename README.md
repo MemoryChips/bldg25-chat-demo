@@ -25,7 +25,8 @@ npm run start
 - Mongo Shell commands if needed
 
 ```bash
-source server/keys/app-env.sh
+source server/keys/env-dev.sh # for dev
+source server/keys/env-app.sh # for app (heroku)
 mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_ADMIN_USER -p $MONGO_DB_ADMIN_PASSWORD
 mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_USER -p $MONGO_DB_PASSWORD
 ```
@@ -68,7 +69,7 @@ git remote -v  # verify heroku remote has been added to git
 # }
 # verify build worked
 # set heroku env
-source server/keys/app-env.sh
+source server/keys/env-dev.sh
 # redis config
 heroku config:set REDIS_DB_HOST=$REDIS_DB_HOST
 heroku config:set REDIS_DB_PORT=$REDIS_DB_PORT
@@ -120,7 +121,7 @@ npm run pre-load-app-data # TODO: create Redis version
 
 ```bash
 # to run redis shell start server as above
-source server/keys/app-env.sh
+source server/keys/env-dev.sh
 redis-cli -h $REDIS_DB_HOST -p $REDIS_DB_PORT -a $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM
 ```
 
@@ -146,7 +147,7 @@ npm start
 - Local Devlopment with RedisToGo Server
 
 ```bash
-source server/keys/app-env.sh
+source server/keys/env-dev.sh
 # cntl-shft-b to build server code in vs-code
 node dist/server.js --dbHost $REDIS_DB_HOST --dbPort $REDIS_DB_PORT --dbAuth $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM
 npm start
@@ -192,68 +193,66 @@ git push git-hub master
 git clone https://github.com/MemoryChips/bldg25-chat-demo.git
 ```
 
-- Setup Keys Folder
+- Setup Keys Folder at server/keys
 
-  - make dir server/keys and add the following files
+  - Create app.env
 
-  ```bash
-  # file: app.env
-  # Atlas mongo database
-  # Users
-  MONGO_DB_USER='your db user'
-  MONGO_DB_PASSWORD='your db user password'
-  # end Users
-  MONGO_DATABASE='your database name'
-  MONGO_URL='url from Atlas'
-  # redis to go
-  REDIS_DB_HOST="catfish.redistogo.com"
-  REDIS_DB_PORT="9782"
-  REDIS_DB_AUTHCODE="63cf95b9b1a52f2fe6d0a9c5a67fa527"
-  REDIS_DB_NUM="0"
-  # redis labs
-  # REDIS_DB_HOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
-  # REDIS_DB_PORT=10568
-  # REDIS_DB_AUTH="$(cat server/keys/redis-labs-dbauath.key)"
-  # REDIS_DB_NUM="0"
-  ```
+    ```bash
+    # file: app.env
+    # Atlas mongo database
+    # Users
+    MONGO_DB_USER='your db user'
+    MONGO_DB_PASSWORD='your db user password'
+    # end Users
+    MONGO_DATABASE='your database name'
+    MONGO_URL='url from Atlas'
+    # redis to go
+    REDIS_DB_HOST="catfish.redistogo.com"
+    REDIS_DB_PORT="9782"
+    REDIS_DB_AUTHCODE="63cf95b9b1a52f2fe6d0a9c5a67fa527"
+    REDIS_DB_NUM="0"
+    # redis labs
+    # REDIS_DB_HOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
+    # REDIS_DB_PORT=10568
+    # REDIS_DB_AUTH="$(cat server/keys/redis-labs-dbauath.key)"
+    # REDIS_DB_NUM="0"
+    ```
 
-  - Add Key Files not committed to repo to ./server/keys Folder
+  - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
 
-    - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
+    - cert.pem example
 
-      - cert.pem example
+      ```text
+      -----BEGIN CERTIFICATE-----
+      your certificate
+      -----END CERTIFICATE-----
+      ```
 
-        ```text
-        -----BEGIN CERTIFICATE-----
-        your certificate
-        -----END CERTIFICATE-----
-        ```
+    - key.pem example
 
-      - key.pem example
+      ```text
+      -----BEGIN RSA PRIVATE KEY-----
+      your certificate key
+      -----END RSA PRIVATE KEY-----
+      ```
 
-        ```text
-        -----BEGIN RSA PRIVATE KEY-----
-        your certificate key
-        -----END RSA PRIVATE KEY-----
-        ```
+  - RSA private and public keys for encoding JSON webtokens
 
-    - RSA private and public keys for encoding JSON webtokens
+    - private.key
 
-      - private.key
+      ```text
+      -----BEGIN RSA PRIVATE KEY-----
+      your private key
+      -----END RSA PRIVATE KEY-----
+      ```
 
-        ```text
-        -----BEGIN RSA PRIVATE KEY-----
-        your private key
-        -----END RSA PRIVATE KEY-----
-        ```
+    - public.key
 
-      - public.key
-
-        ```text
-        -----BEGIN RSA PUBLIC KEY-----
-        your public key
-        -----END RSA PUBLIC KEY-----
-        ```
+      ```text
+      -----BEGIN RSA PUBLIC KEY-----
+      your public key
+      -----END RSA PUBLIC KEY-----
+      ```
 
 - npm install
 

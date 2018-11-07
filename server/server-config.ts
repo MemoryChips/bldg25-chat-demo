@@ -11,13 +11,7 @@ function getOption(option: string, defOption: any) {
   return options[option] ? options[option] : defOption
 }
 
-// defaults to redistogo
-// const useRedisCategories = getOption('useRedisCategories', true)
-// const redisDbHost = process.env.REDIS_DB_HOST || 'catfish.redistogo.com'
-// const redisDbPort = Number(process.env.REDIS_DB_PORT || 9782)
-// const redisDbNum = process.env.REDIS_DB_NUM || 0
-// const redisDbAuthCode = process.env.REDIS_DB_AUTHCODE || '63cf95b9b1a52f2fe6d0a9c5a67fa527'
-// // defaults to localhost and false
+// defaults to localhost and false
 const useRedisCategories = getOption('useRedisCategories', false)
 const redisDbHost = process.env.REDIS_DB_HOST || 'localhost'
 const redisDbPort = Number(process.env.REDIS_DB_PORT || 6379)
@@ -25,24 +19,21 @@ const redisDbNum = process.env.REDIS_DB_NUM || 2
 const redisDbAuthCode = process.env.REDIS_DB_AUTHCODE || 'this_should_be_a_secret_authcode'
 
 // defaults to demo on Atlas
-// const mongoDbUser = process.env.MONGO_DB_USER || 'chat-demo-server' // This user does not exist yet
-const mongoDbUser = process.env.MONGO_DB_USER || 'chat-dev-server'
-const mongoDbPassword = process.env.MONGO_DB_PASSWORD || '21d2oe66yv'
-const mongoDbLocation = process.env.MONGO_DB_LOCATION || '@dev-vejwg.mongodb.net'
 const mongoDataBase = process.env.MONGO_DATABASE || 'demo'
-const mongoUrl = `mongodb+srv://${mongoDbUser}:${mongoDbPassword}${mongoDbLocation}/${mongoDataBase}?retryWrites=true`
+const mongoUrl = process.env.MONGO_URL || 'atlas-mongo-url-here'
 
 // heroku host format
 // https://stormy-mountain-18015.herokuapp.com
 
-// Environment Settings from Heroku
+// Environment Settings from/for Heroku
 const host = process.env.HOST_URL || 'localhost'
+const port = process.env.PORT || 9000
+
+const serverHttp = options.secure ? 'https' : 'http'
 
 // TODO: serverUrl appears to no longer be used
-const port = process.env.PORT || 9000
-const serverHttp = options.secure ? 'https' : 'http'
-const serverUrlXX = `${serverHttp}://${host}:${port}`
-console.log(`server url: ${serverUrlXX}`)
+// const serverUrlXX = `${serverHttp}://${host}:${port}`
+// console.log(`server url: ${serverUrlXX}`)
 // End no longer used
 
 // PORT was set to 48759 on heroku for stormy mountain

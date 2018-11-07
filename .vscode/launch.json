@@ -14,12 +14,7 @@
       "cwd": "${workspaceFolder}",
       "protocol": "inspector",
       "args": ["--useRedisCategories"],
-      "env": {
-        "REDIS_DB_HOST": "catfish.redistogo.com",
-        "REDIS_DB_PORT": "9782",
-        "REDIS_DB_NUM": "0",
-        "REDIS_DB_AUTHCODE": "63cf95b9b1a52f2fe6d0a9c5a67fa527"
-      }
+      "envFile": "${workspaceFolder}/server/keys/app-env.sh"
     },
     {
       "type": "node",

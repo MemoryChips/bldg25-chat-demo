@@ -76,16 +76,15 @@ git remote -v  # verify heroku remote has been added to git
 # }
 # verify build worked
 # set heroku env
+source server/keys/app-env.sh
 # redis config
-heroku config:set REDIS_DB_HOST='catfish.redistogo.com'
-heroku config:set REDIS_DB_PORT=9782
-heroku config:set REDIS_DB_NUM=0
-heroku config:set REDIS_DB_AUTHCODE='63cf95b9b1a52f2fe6d0a9c5a67fa527'
+heroku config:set REDIS_DB_HOST=$REDIS_DB_HOST
+heroku config:set REDIS_DB_PORT=$REDIS_DB_PORT
+heroku config:set REDIS_DB_NUM=$REDIS_DB_NUM
+heroku config:set REDIS_DB_AUTHCODE=$REDIS_DB_AUTHCODE
 # mongo config
-heroku config:set MONGO_DB_USER='chat-dev-user'
-heroku config:set MONGO_DB_PASSWORD='21d2oe66yv'
-heroku config:set MONGO_DB_LOCATION='@dev-vejwg.mongodb.net'
-heroku config:set MONGO_DATABASE='demo-heroku'
+heroku config:set MONGO_DATABASE=$MONGO_DATABASE
+heroku config:set MONGO_URL=$MONGO_URL
 heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
 heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
 heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com

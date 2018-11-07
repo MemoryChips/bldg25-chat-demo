@@ -4,7 +4,7 @@ This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 See Setup Demo App below
 
-## Launch - Mongo
+## Develop with Mongo
 
 - pre load users data
 
@@ -25,8 +25,9 @@ npm run start
 - Mongo Shell commands if needed
 
 ```bash
-mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username chat-dev-admin -p xi3bye949h
-mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username chat-dev-server -p 21d2oe66yv
+source server/keys/app-env.sh
+mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_ADMIN_USER -p $MONGO_DB_ADMIN_PASSWORD
+mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_USER -p $MONGO_DB_PASSWORD
 ```
 
 - Run tests
@@ -34,19 +35,10 @@ mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username chat-dev-server -p 2
 ```bash
 # if running with some data stored in local redis server
 # redis-server ./server/database/redis.conf  # ONLY if needed launch local redis server
-npm run start-server # launch api server OR run vs-code debugger
 npm run api-test
 # front end tests
 ng test
 npm run test
-```
-
-- env setup
-
-```bash
-REDIS_DB_HOST='catfish.redistogo.com'; REDIS_DB_PORT=9782; REDIS_DB_NUM=0;REDIS_DB_AUTHCODE='63cf95b9b1a52f2fe6d0a9c5a67fa527'
-# mongo config
-MONGO_DB_USER='chat-dev-user'; MONGO_DB_PASSWORD='21d2oe66yv'; MONGO_DB_LOCATION='@dev-vejwg.mongodb.net' MONGO_DATABASE='demo'
 ```
 
 - Local test of prod
@@ -59,7 +51,7 @@ npm outdated
 npm update # to get latest published version of chat modules
 npm run build # to build demo app angular code and server code
 node dist/server.js --prod # test with Mongo only
-node dist/server.js --prod --useRedisCategories  # OR test with some redis TODO: test this
+node dist/server.js --prod --useRedisCategories  # OR test with some redis categories
 ```
 
 - Heroku Deploy
@@ -121,36 +113,15 @@ cd ~/redis-4.0.6/src/  # location of redis-server and redis-cli
 ```bash
 redis-server ./server/database/redis.conf
 redis-cli -p 6379 -a this_should_be_a_secret_authcode
-npm run pre-load-app-data # initializes local redis database
-```
-
-- RedisToGo
-
-```bash
-# obtain RedisToGo database and set up credentials
-DBHOST='catfish.redistogo.com'
-DBPORT=9782
-DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
-ts-node ./server/database/pre-load-user-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
-redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
-```
-
-- RedisLabs
-
-```bash
-# obtain RedisLabs database and set up credentials
-DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
-DBPORT=10568
-DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
-ts-node ./server/database/pre-load-app-data.ts --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
-redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
+npm run pre-load-app-data # TODO: create Redis version
 ```
 
 - Redis Shell command if needed
 
 ```bash
 # to run redis shell start server as above
-redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
+source server/keys/app-env.sh
+redis-cli -h $REDIS_DB_HOST -p $REDIS_DB_PORT -a $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM
 ```
 
 ### Redis Launch Scenarios - These need updating
@@ -159,7 +130,6 @@ redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
 
 ```bash
 redis-server ./server/database/redis.conf # launch local redis server
-redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
 # Launch server with vs-code debugger
 npm start
 ```
@@ -168,7 +138,6 @@ npm start
 
 ```bash
 redis-server ./server/database/redis.conf  # launch local redis server
-redis-cli -p 6379 -a this_should_be_a_secret_authcode # optional
 # run server build in vs code with ctrl-shft-b
 npm run start-server
 npm start
@@ -177,12 +146,9 @@ npm start
 - Local Devlopment with RedisToGo Server
 
 ```bash
-DBHOST='catfish.redistogo.com'
-DBPORT=9782
-DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
-redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH
+source server/keys/app-env.sh
 # cntl-shft-b to build server code in vs-code
-node dist/server.js --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
+node dist/server.js --dbHost $REDIS_DB_HOST --dbPort $REDIS_DB_PORT --dbAuth $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM
 npm start
 ```
 
@@ -192,45 +158,24 @@ npm start
 npm outdated
 npm update # to get latest published version of chat modules
 npm run build # to build demo app angular code and server code
-DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
-DBPORT=10568
-DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
-# redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH # optional
 # cntl-shft-b to build server in vs-code
 # npm run build-server to build only server code
 #
 # If errors in build occur, try deleting npm_modules and npm i
 #
-node dist/server.js --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
-node dist/server.js --secure --prod --dbHost $DBHOST --dbPort $DBPORT --dbAuth $DBAUTH
+node dist/server.js --prod --dbHost $REDIS_DB_HOST --dbPort $REDIS_DB_PORT --dbAuth $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM
+node dist/server.js --secure --prod --dbHost $REDIS_DB_HOST --dbPort $REDIS_DB_PORT --dbAuth $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM
 ```
 
 - remove all chat keys from database
 
 ```bash
-DBHOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
-DBPORT=10568
-DBAUTH="$(cat server/keys/redis-labs-dbauath.key)"
-# OR
-DBHOST='catfish.redistogo.com'
-DBPORT=9782
-DBAUTH="$(cat server/keys/redis-togo-dbauath.key)"
-redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH KEYS chat* | xargs redis-cli -h $DBHOST -p $DBPORT -a $DBAUTH DEL
+redis-cli -h $REDIS_DB_HOST -p $REDIS_DB_PORT -a $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM KEYS chat* | xargs redis-cli -h $REDIS_DB_HOST -p $REDIS_DB_PORT -a $REDIS_DB_AUTHCODE -n $REDIS_DB_NUM DEL
 ```
 
-- Heroku Deploy - Mongo + Redis TODO: Do I want to bother with this version on Heroku?
+- Heroku Deploy - TODO: Create Heroku redis version
 
-```bash
-
-```
-
-- Heroku Deploy - Redis TODO: Do I want to bother with this version on Heroku?
-
-```bash
-
-```
-
-### Setup on Github
+- Push to git hub remote
 
 ```bash
 # - create repo
@@ -239,7 +184,7 @@ git remote add git-hub https://github.com/MemoryChips/bldg25-chat-demo.git
 git push git-hub master
 ```
 
-### Setup Demo App
+## Setup
 
 - clone repo
 
@@ -247,46 +192,91 @@ git push git-hub master
 git clone https://github.com/MemoryChips/bldg25-chat-demo.git
 ```
 
+- Setup Keys Folder
+
+  - make dir server/keys and add the following files
+
+  ```bash
+  # file: app.env
+  # Atlas mongo database
+  # Users
+  MONGO_DB_USER='your db user'
+  MONGO_DB_PASSWORD='your db user password'
+  # end Users
+  MONGO_DATABASE='your database name'
+  MONGO_URL='url from Atlas'
+  # redis to go
+  REDIS_DB_HOST="catfish.redistogo.com"
+  REDIS_DB_PORT="9782"
+  REDIS_DB_AUTHCODE="63cf95b9b1a52f2fe6d0a9c5a67fa527"
+  REDIS_DB_NUM="0"
+  # redis labs
+  # REDIS_DB_HOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
+  # REDIS_DB_PORT=10568
+  # REDIS_DB_AUTH="$(cat server/keys/redis-labs-dbauath.key)"
+  # REDIS_DB_NUM="0"
+  ```
+
+  - Add Key Files not committed to repo to ./server/keys Folder
+
+    - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
+
+      - cert.pem example
+
+        ```text
+        -----BEGIN CERTIFICATE-----
+        your certificate
+        -----END CERTIFICATE-----
+        ```
+
+      - key.pem example
+
+        ```text
+        -----BEGIN RSA PRIVATE KEY-----
+        your certificate key
+        -----END RSA PRIVATE KEY-----
+        ```
+
+    - RSA private and public keys for encoding JSON webtokens
+
+      - private.key
+
+        ```text
+        -----BEGIN RSA PRIVATE KEY-----
+        your private key
+        -----END RSA PRIVATE KEY-----
+        ```
+
+      - public.key
+
+        ```text
+        -----BEGIN RSA PUBLIC KEY-----
+        your public key
+        -----END RSA PUBLIC KEY-----
+        ```
+
 - npm install
 
   - confirm build works; correct any errors
   - package.lock.json will likely be modified
 
-- Add Key Files not committed to repo to ./server/keys Folder
-  - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)
-  - private.key and public.key: RSA private and public keys for encoding JSON webtokens
-
-```bash
-# cd to project dir
-# set the next line to the source of your key files
-# TODO: set up example set of files
-SOURCE_OF_KEYFILES=../../bldg25-chat-demo/server/server/keys
-mkdir ./server/keys/.
-cp $SOURCE_OF_KEYFILES ./server/keys
-```
-
-- Obtain MongoDb credentials at Atlas mongodb provider
-
-  - set your credentials in the server-config.ts file
-
 - add image files as desired to ./src/assets/images
 
-```bash
-# cd to project dir
-# set the next line to the source of your image files
-# TODO: set up example set of files
-SOURCE_OF_IMAGEFILES=../../bldg25-chat-demo/src/assets/images/*
-mkdir ./src/assets/images
-cp $SOURCE_OF_IMAGEFILES ./src/assets/images
-```
+  ```bash
+  # cd to project dir
+  # set the next line to the source of your image files
+  SOURCE_OF_IMAGEFILES=../../bldg25-chat-demo/src/assets/images/*
+  mkdir ./src/assets/images
+  cp $SOURCE_OF_IMAGEFILES ./src/assets/images
+  ```
 
 - choose and run a launch scenario listed above
 
-### Miscellaneous
+## Miscellaneous
 
-- if needed, clear process using port 9000
+- if needed, clear debug process using port 9000 that failed to terminate
 
-```bash
-lsof -i tcp:9000
-kill <pid of process using port 9000>
-```
+  ```bash
+  lsof -i tcp:9000
+  kill <pid of process using port 9000>
+  ```

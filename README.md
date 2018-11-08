@@ -45,14 +45,12 @@ npm run test
 - Local test of prod
 
 ```bash
-# setup env as above
-MONGO_DATABASE='demo-heroku'
-PORT='9000'
 npm outdated
 npm update # to get latest published version of chat modules
 npm run build # to build demo app angular code and server code
+source server/keys/env-prod.sh
 node dist/server.js --prod # test with Mongo only
-node dist/server.js --prod --useRedisCategories  # OR test with some redis categories
+node dist/server.js --prod --useRedisCategories  # OR test with redis categories
 ```
 
 - Heroku Deploy
@@ -78,6 +76,8 @@ heroku config:set REDIS_DB_AUTHCODE=$REDIS_DB_AUTHCODE
 # mongo config
 heroku config:set MONGO_DATABASE=$MONGO_DATABASE
 heroku config:set MONGO_URL=$MONGO_URL
+# must add heroku server to the ip whitelist of Atlas
+# currently for heroku whitelist all addresses
 heroku config:set RSA_PUBLIC_KEY="$(cat server/keys/public.key)"
 heroku config:set RSA_PRIVATE_KEY="$(cat server/keys/private.key)"
 heroku config:set HOST_URL=https://stormy-mountain-18015.herokuapp.com
@@ -195,10 +195,9 @@ git clone https://github.com/MemoryChips/bldg25-chat-demo.git
 
 - Setup Keys Folder at server/keys
 
-  - Create app.env
+  - Create env-dev.sh
 
     ```bash
-    # file: app.env
     # Atlas mongo database
     # Users
     MONGO_DB_USER='your db user'
@@ -206,16 +205,11 @@ git clone https://github.com/MemoryChips/bldg25-chat-demo.git
     # end Users
     MONGO_DATABASE='your database name'
     MONGO_URL='url from Atlas'
-    # redis to go
-    REDIS_DB_HOST="catfish.redistogo.com"
-    REDIS_DB_PORT="9782"
-    REDIS_DB_AUTHCODE="63cf95b9b1a52f2fe6d0a9c5a67fa527"
+    # redis to go or redis labs for example
+    REDIS_DB_HOST="redis togo or redis labs host name"
+    REDIS_DB_PORT="your redis provider port"
+    REDIS_DB_AUTHCODE="your redis authcode"
     REDIS_DB_NUM="0"
-    # redis labs
-    # REDIS_DB_HOST='redis-10568.c9.us-east-1-2.ec2.cloud.redislabs.com'
-    # REDIS_DB_PORT=10568
-    # REDIS_DB_AUTH="$(cat server/keys/redis-labs-dbauath.key)"
-    # REDIS_DB_NUM="0"
     ```
 
   - cert.pem and key.pem: RSA private and public keys for running an encrypted server (https)

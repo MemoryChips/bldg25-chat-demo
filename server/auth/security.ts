@@ -1,7 +1,7 @@
 const util = require('util')
 const crypto = require('crypto')
-import * as jwt from 'jsonwebtoken'
-import * as fs from 'fs'
+import jwt from 'jsonwebtoken'
+import fs from 'fs'
 import { User } from './models/user'
 import { VerifySocketConnection } from 'bldg25-chat-server'
 import { TOKEN_AGE_MS } from '../server-config'

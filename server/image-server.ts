@@ -1,5 +1,5 @@
-import * as express from 'express'
-import * as http from 'http'
+import express from 'express'
+import http from 'http'
 
 const imageServerPort = process.env.IMAGE_SERVER_PORT || 9001
 

@@ -1,4 +1,4 @@
-import * as express from 'express'
+import express from 'express'
 import { createUser, login, logout, getJwtUser, getUser, deleteUser } from './auth-api'
 import { checkIfAuthenticated } from './mware/authentication'
 import { checkIfAuthorized } from './mware/authorization'

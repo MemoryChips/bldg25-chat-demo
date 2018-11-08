@@ -49,6 +49,7 @@ npm outdated
 npm update # to get latest published version of chat modules
 npm run build # to build demo app angular code and server code
 source server/keys/env-prod.sh
+node -r "ts-node/register" server/database/pre-load-user-data.ts # pre load data if desired for prod
 node dist/server.js --prod # test with Mongo only
 node dist/server.js --prod --useRedisCategories  # OR test with redis categories
 ```

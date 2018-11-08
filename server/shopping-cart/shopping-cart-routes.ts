@@ -1,9 +1,9 @@
-import * as express from 'express'
+import express from 'express'
 import {
   putShoppingCart,
   getShoppingCart,
   deleteShoppingCart,
-  createShoppingCart,
+  createShoppingCart
 } from './shopping-cart-api'
 
 export const shoppingCartRouter = express.Router()

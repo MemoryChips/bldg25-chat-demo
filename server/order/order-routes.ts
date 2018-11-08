@@ -1,4 +1,4 @@
-import * as express from 'express'
+import express from 'express'
 import { postOrder, getMyOrders, getAllOrders } from './order-api'
 import { checkIfAuthenticated } from '../auth/mware/authentication'
 import { checkIfAuthorized } from '../auth/mware/authorization'

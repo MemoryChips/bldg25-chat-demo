@@ -1,4 +1,4 @@
-// import * as redis from 'redis'
+// import redis from 'redis'
 // import { UserWoId } from '../auth/models/user'
 // import { serverConfig } from '../server-config'
 // import { Products, DbProduct, Categories } from '../product/product-api'

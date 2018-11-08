@@ -1,9 +1,9 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 
-import * as http from 'http'
-import * as https from 'https'
-import * as fs from 'fs'
+import http from 'http'
+import https from 'https'
+import fs from 'fs'
 
 import { getUserFromRequest } from './auth/mware/get-user'
 

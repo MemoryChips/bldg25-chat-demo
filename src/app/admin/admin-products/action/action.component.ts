@@ -1,16 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Router } from '@angular/router'
 
-// import { CellComponent } from 'ng5-data-table'
-
 import { Product } from '../../../shared/services/product.service'
 
 @Component({
-  // selector: 'chat-action',
   templateUrl: './action.component.html',
   styleUrls: ['./action.component.scss']
 })
-// export class ActionComponent implements OnInit, CellComponent {
 export class ActionComponent implements OnInit {
   @Input() data: Product
   @Input() column: any

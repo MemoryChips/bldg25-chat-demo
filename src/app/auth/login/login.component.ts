@@ -15,10 +15,6 @@ import { SignupValidators } from '../signup/signup.validators'
 export class LoginComponent implements OnInit, OnDestroy {
   user: User
   isLoggedIn = false
-  // credentials: Credentials = {
-  //   email: 'admin@gmail.com',
-  //   password: 'Password10'
-  // }
   showPassword = false
   passwordInputType = 'password'
   hide = true

@@ -6,15 +6,12 @@ import { DomSanitizer } from '@angular/platform-browser'
 import { ProductService, Product } from '../../shared/services/product.service'
 import { Subscription } from 'rxjs'
 
-// import { Item } from '../../shared/services/shopping-cart.service'
-
 @Component({
   selector: 'app-admin-products',
   templateUrl: './admin-products.component.html',
   styleUrls: ['./admin-products.component.scss']
 })
 export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy {
-  // displayedColumns = ['key', 'category', 'title', 'price', 'imageUrl']
   displayedColumns = ['title', 'action', 'category', 'price', 'image-url']
   dataSource: MatTableDataSource<Product>
 
@@ -34,7 +31,6 @@ export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnInit() {
-    // const data = this.productService.getListStatic()
     this._subscriptions = [
       this.productService.getList().subscribe((products: Product[]) => {
         this.dataSource.data = products
@@ -58,7 +54,6 @@ export class AdminProductsComponent implements OnInit, AfterViewInit, OnDestroy 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim() // Remove whitespace
     filterValue = filterValue.toLowerCase() // Datasource defaults to lowercase matches
-    // this.dataSource.filter = ` ${filterValue}` // to force data source to filter
     this.dataSource.filter = filterValue
   }
 

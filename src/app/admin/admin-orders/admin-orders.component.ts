@@ -13,12 +13,5 @@ export class AdminOrdersComponent {
 
   constructor(orderService: OrderService) {
     this.orders$ = orderService.getAllOrders()
-    // this.orders$ = orderService.getAllOrders().pipe(
-    //   map((orderArrays: string[][]) => {
-    //     return [].concat
-    //       .apply([], orderArrays)
-    //       .map((sOrder: string) => JSON.parse(sOrder) as Order)
-    //   })
-    // )
   }
 }

@@ -84,7 +84,6 @@ export class SignupComponent implements OnInit, OnDestroy {
     )
   }
 
-  // <mat-error * ngIf="" > {{ "User Name is already in use" }}</mat-error>
   formControlError(input: AbstractControl | null, error: string): boolean {
     if (!input) return false
     else return !!input.errors && input.touched && input.errors[error]

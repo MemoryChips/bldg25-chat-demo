@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Cart, ShoppingCartService } from './shopping-cart.service'
-// import { AngularFireDatabase } from 'angularfire2/database'
 import { Observable } from 'rxjs'
-// import { map } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http'
-// import { addKey, values, KeyedObj } from 'shared/utils'
-// import { addKey, values } from 'shared/utils'
 
 export class Order {
   datePlaced: number
@@ -54,13 +50,4 @@ export class OrderService {
   getMyOrders(): Observable<Order[]> {
     return this.http.get<Order[]>('/api/order/myOrders')
   }
-  //   return this.http.get<string[]>('/api/order/myOrders').pipe(
-  //     map(sOrders => {
-  //       const orders = sOrders.map(sOrder => {
-  //         return JSON.parse(sOrder) as Order
-  //       })
-  //       return orders
-  //     })
-  //   )
-  // }
 }

@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { AuthService, User } from '../../auth/auth.service'
-import {
-  ShoppingCartService,
-  Cart
-} from '../../shared/services/shopping-cart.service'
+import { ShoppingCartService, Cart } from '../../shared/services/shopping-cart.service'
 import { Subscription } from 'rxjs'
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks'
 import { environment } from 'environments/environment'
@@ -15,7 +12,6 @@ import { environment } from 'environments/environment'
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   appUser: User
-  isAdmin = false
   isLoggedIn = false
   cart: Cart
   development = ''
@@ -23,10 +19,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[]
 
-  constructor(
-    private authService: AuthService,
-    private shoppingCartService: ShoppingCartService
-  ) {}
+  constructor(private authService: AuthService, private shoppingCartService: ShoppingCartService) {}
 
   ngOnInit() {
     this.development = environment.production ? '' : '*** DEVELOPMENT ***'
@@ -34,11 +27,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.shoppingCartService.cart$.subscribe(cart => (this.cart = cart)),
       this.authService.user$.subscribe(appUser => {
         this.appUser = appUser
-        this.isAdmin = appUser.roles && appUser.roles.includes('ADMIN')
       }),
-      this.authService.isLoggedIn$.subscribe(
-        isLoggedIn => (this.isLoggedIn = isLoggedIn)
-      )
+      this.authService.isLoggedIn$.subscribe(isLoggedIn => (this.isLoggedIn = isLoggedIn))
     ]
   }
 

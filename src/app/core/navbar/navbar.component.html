@@ -50,17 +50,6 @@
             <a mat-menu-item routerLink="/my/orders">
               <i class="fa fa-suitcase" aria-hidden="true"></i> My Orders</a
             >
-            <ng-container *ngIf="isAdmin">
-              <a mat-menu-item routerLink="/admin/orders">
-                <i class="fa fa-tasks" aria-hidden="true"></i> Manage Orders</a
-              >
-              <a mat-menu-item routerLink="/admin/products">
-                <i class="fa fa-product-hunt" aria-hidden="true"></i> Manage Products</a
-              >
-              <a mat-menu-item routerLink="/admin/broadcastMessage">
-                <i class="fa fa-podcast" aria-hidden="true"></i> Send Broadcast Message</a
-              >
-            </ng-container>
             <a mat-menu-item (click)="logout()">
               <i class="fa fa-sign-out" aria-hidden="true"></i> Log Out
             </a>

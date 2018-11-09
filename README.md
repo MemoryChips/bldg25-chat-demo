@@ -274,3 +274,10 @@ git clone https://github.com/MemoryChips/bldg25-chat-demo.git
   lsof -i tcp:9000
   kill <pid of process using port 9000>
   ```
+
+- Angular generate commands
+
+  ```bash
+  # to create a directive
+  ng g directive shared/directives/rbacAllow -d
+  ```

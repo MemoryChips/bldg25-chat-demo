@@ -1,48 +1,68 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <div class="container">
-    <a class="navbar-brand" routerLink="/">
-      <i class="fa fa-leaf" area-hidden="true"></i>
-    </a>
-    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
-      aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button> -->
-    <button class="navbar-toggler" (click)="collapse=!collapse" type="button" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon">
-      </span>
+    <a class="navbar-brand" routerLink="/"> <i class="fa fa-leaf" area-hidden="true"></i> </a>
+    <!--
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    -->
+    <button
+      class="navbar-toggler"
+      (click)="collapse = !collapse"
+      type="button"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"> </span>
     </button>
 
     <div class="navbar-collapse" id="navbarsExampleDefault" [hidden]="collapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/">Home {{ development }}
-            <span class="sr-only">(current)</span>
+          <a class="nav-link" routerLink="/"
+            >Home {{ development }} <span class="sr-only">(current)</span>
           </a>
+        </li>
+        <li class="nav-item dropdown" ngbDropdown *appRbacAllow="['ADMIN']">
+          <a class="nav-link dropdown-toggle" [matMenuTriggerFor]="menu">
+            <span>{{ 'Admin' || 'logging in ...' }}</span>
+          </a>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item routerLink="/admin/orders">
+              <i class="fa fa-tasks" aria-hidden="true"></i> Manage Orders</a
+            >
+            <a mat-menu-item routerLink="/admin/products">
+              <i class="fa fa-product-hunt" aria-hidden="true"></i> Manage Products</a
+            >
+            <a mat-menu-item routerLink="/admin/broadcastMessage">
+              <i class="fa fa-podcast" aria-hidden="true"></i> Send Broadcast Message</a
+            >
+          </mat-menu>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="nav-item dropdown" ngbDropdown *ngIf="isLoggedIn; else anonymousUser">
+        <li class="nav-item dropdown" ngbDropdown *ngIf="isLoggedIn; else: anonymousUser">
           <a class="nav-link dropdown-toggle" [matMenuTriggerFor]="menu">
-            <span>{{ appUser?.userName || "logging in ..." }}</span>
+            <span>{{ appUser?.userName || 'logging in ...' }}</span>
           </a>
           <mat-menu #menu="matMenu">
             <a mat-menu-item routerLink="/my/orders">
-              <i class="fa fa-suitcase" aria-hidden="true"></i>
-              My Orders</a>
+              <i class="fa fa-suitcase" aria-hidden="true"></i> My Orders</a
+            >
             <ng-container *ngIf="isAdmin">
               <a mat-menu-item routerLink="/admin/orders">
-                <i class="fa fa-tasks" aria-hidden="true"></i>
-                Manage Orders</a>
+                <i class="fa fa-tasks" aria-hidden="true"></i> Manage Orders</a
+              >
               <a mat-menu-item routerLink="/admin/products">
-                <i class="fa fa-product-hunt" aria-hidden="true"></i>
-                Manage Products</a>
+                <i class="fa fa-product-hunt" aria-hidden="true"></i> Manage Products</a
+              >
               <a mat-menu-item routerLink="/admin/broadcastMessage">
-                <i class="fa fa-podcast" aria-hidden="true"></i>
-                Send Broadcast Message</a>
+                <i class="fa fa-podcast" aria-hidden="true"></i> Send Broadcast Message</a
+              >
             </ng-container>
             <a mat-menu-item (click)="logout()">
-              <i class="fa fa-sign-out" aria-hidden="true"></i>
-              Log Out
+              <i class="fa fa-sign-out" aria-hidden="true"></i> Log Out
             </a>
           </mat-menu>
         </li>
@@ -62,13 +82,13 @@
         <ng-template #anonymousUser>
           <li class="nav-item">
             <a class="nav-link" routerLink="/login">
-              <i class="fa fa-sign-in" aria-hidden="true"></i>
-              Login</a>
+              <i class="fa fa-sign-in" aria-hidden="true"></i> Login</a
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/signup">
-              <i class="fa fa-user-plus" aria-hidden="true"></i>
-              Signup</a>
+              <i class="fa fa-user-plus" aria-hidden="true"></i> Signup</a
+            >
           </li>
         </ng-template>
         <li class="nav-item active" *ngIf="isLoggedIn">

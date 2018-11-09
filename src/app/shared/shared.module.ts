@@ -6,23 +6,12 @@ import { ProductQuantityComponent } from './components/product-quantity/product-
 import { OrderService } from './services/order.service'
 import { ProductService } from './services/product.service'
 import { ShoppingCartService } from './services/shopping-cart.service'
+import { RbacAllowDirective } from './directives/rbac-allow.directive'
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    ProductCardComponent,
-    ProductQuantityComponent,
-  ],
-  exports: [
-    ProductCardComponent,
-    ProductQuantityComponent,
-  ],
-  providers: [
-    ProductService,
-    OrderService,
-    ShoppingCartService
-  ]
+  imports: [CommonModule],
+  declarations: [ProductCardComponent, ProductQuantityComponent, RbacAllowDirective],
+  exports: [ProductCardComponent, ProductQuantityComponent, RbacAllowDirective],
+  providers: [ProductService, OrderService, ShoppingCartService]
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -25,11 +25,12 @@ import { CATEGORIES_DB } from './product/product-api'
 
 // necessary imports from bldg25 chat server package
 import {
-  attachVideoSocketServer,
+  attachSocketServer,
   // ChatRedisDatabase,
   ChatMemoryDataBase,
   ChatMongoDataBase,
-  ChatDatabase
+  ChatDatabase,
+  clean
 } from 'bldg25-chat-server'
 
 import { serverConfig } from './server-config'
@@ -80,6 +81,7 @@ Promise.all(dataBases)
     const [client, redisClient] = clients
     let chatDb: ChatDatabase
     if (!serverConfig.useChatMemDb) {
+      console.log(`Using chat mongo database`)
       chatDb = new ChatMongoDataBase(client, serverConfig.mongoDataBase)
     } else {
       console.log(`Using chat memory database`)
@@ -99,7 +101,9 @@ Promise.all(dataBases)
     console.log(`Error while connecting: ${err}`)
   })
 
-function runServer(dbChat: ChatDatabase) {
+async function runServer(dbChat: ChatDatabase) {
+  const cleanResult = await clean(dbChat, app.locals[USER_DB])
+  console.log(`Clean result: ${cleanResult}`)
   if (serverConfig.secure) {
     // launch an HTTPS Server. Note: this does NOT mean that the application is secure
     const httpsServer = https.createServer(
@@ -111,7 +115,7 @@ function runServer(dbChat: ChatDatabase) {
     )
 
     // *** Chat server must be added to the express server as follows:
-    attachVideoSocketServer(httpsServer, dbChat, verifySocketConnection)
+    attachSocketServer(httpsServer, dbChat, verifySocketConnection)
 
     httpsServer.listen(port, () => {
       console.log(`HTTPS Server running at port: ${port}`)
@@ -121,7 +125,7 @@ function runServer(dbChat: ChatDatabase) {
     const httpServer = http.createServer(app)
 
     // *** Chat server must be added to the express server as follows:
-    attachVideoSocketServer(httpServer, dbChat, verifySocketConnection)
+    attachSocketServer(httpServer, dbChat, verifySocketConnection)
 
     httpServer.listen(port, () => {
       console.log(`HTTP Server running at port: ${port}`)

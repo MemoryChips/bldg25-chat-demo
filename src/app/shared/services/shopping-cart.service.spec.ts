@@ -23,4 +23,10 @@ describe('ShoppingCartService', () => {
   it('should be created', inject([ShoppingCartService], (service: ShoppingCartService) => {
     expect(service).toBeTruthy()
   }))
+
+  it('should load example cart', inject([ShoppingCartService], (service: ShoppingCartService) => {
+    service.cart$.subscribe(cart => {
+      expect(cart.dateCreated).toBeTruthy()
+    })
+  }))
 })

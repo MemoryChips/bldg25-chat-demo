@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs'
   // selector: 'appRbacAllow'
 })
 export class RbacAllowDirective implements OnDestroy {
-  allowedRoles: string[]
+  allowedRoles: string[] = []
   user: User
   sub: Subscription
   constructor(
@@ -29,7 +29,7 @@ export class RbacAllowDirective implements OnDestroy {
     this.showIfUserAllowed()
   }
   showIfUserAllowed() {
-    if (!this.allowedRoles || this.allowedRoles.length === 0) {
+    if (!this.user || !this.user.roles || !this.allowedRoles || this.allowedRoles.length === 0) {
       return this.viewContainer.clear()
     } else {
       const allowed = this.allowedRoles.some(r => this.user.roles.includes(r))

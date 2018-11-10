@@ -39,7 +39,10 @@ mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_USER -p $M
 npm run api-test
 # front end tests
 ng test
+ng test --code-coverage
 npm run test
+# TBD: integrate with travis-ci
+ng test --code-coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 ```
 
 - Local test of prod

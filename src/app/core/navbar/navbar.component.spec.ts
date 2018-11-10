@@ -1,13 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
 import { NavbarComponent } from './navbar.component'
+import { SharedModule } from '../../shared/shared.module'
 import { MaterialModule } from '../../material/material.module'
 import { AuthService } from '../../auth/auth.service'
 import { ShoppingCartService } from '../../shared/services/shopping-cart.service'
 import { of } from 'rxjs'
 
 class MockAuthService {
-  user$ = of({})
+  user$ = of({}) // Perhaps this should be a real user or null
   isLoggedIn$ = of(false)
 }
 class MockShoppingCartService {
@@ -19,7 +20,7 @@ describe('NavbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MaterialModule],
+      imports: [SharedModule, MaterialModule],
       declarations: [NavbarComponent],
       providers: [
         { provide: AuthService, useClass: MockAuthService },

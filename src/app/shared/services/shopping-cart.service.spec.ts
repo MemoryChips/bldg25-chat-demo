@@ -13,20 +13,14 @@ class MockHttpClient {
   post() {}
 }
 
-xdescribe('ShoppingCartService', () => {
+describe('ShoppingCartService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ShoppingCartService,
-        { provide: HttpClient, useClass: MockHttpClient }
-      ]
+      providers: [ShoppingCartService, { provide: HttpClient, useClass: MockHttpClient }]
     })
   })
 
-  it('should be created', inject(
-    [ShoppingCartService],
-    (service: ShoppingCartService) => {
-      expect(service).toBeTruthy()
-    }
-  ))
+  it('should be created', inject([ShoppingCartService], (service: ShoppingCartService) => {
+    expect(service).toBeTruthy()
+  }))
 })

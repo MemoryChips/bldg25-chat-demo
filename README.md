@@ -4,6 +4,14 @@ This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 See Setup Demo App below
 
+[![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
+[![Known Vulnerabilities](https://snyk.io/test/github/nickmerwin/node-coveralls/badge.svg)](https://snyk.io/test/github/nickmerwin/node-coveralls)
+
+[travis-image]: https://travis-ci.org/nickmerwin/node-coveralls.svg?branch=master
+[travis-url]: https://travis-ci.org/nickmerwin/node-coveralls
+[coveralls-image]: https://coveralls.io/repos/nickmerwin/node-coveralls/badge.svg?branch=master&service=github
+[coveralls-url]: https://coveralls.io/github/nickmerwin/node-coveralls?branch=master
+
 ## Develop with Mongo
 
 - pre load users data
@@ -41,7 +49,8 @@ npm run api-test
 ng test
 ng test --code-coverage
 npm run test
-# TBD: integrate with travis-ci
+# TBD: integrate with travis-ci or maybe coveralls.io
+# Use dev branch for code dev. When merge and push master to github trigger ci
 ng test --code-coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 ```
 

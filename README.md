@@ -80,7 +80,9 @@ git remote -v  # verify heroku remote has been added to git
 # }
 # verify build worked
 # set heroku env
-source server/keys/env-dev.sh
+source server/keys/env-prod.sh
+# Ping config
+heroku config:set PING_INTERVAL_MSEC=$PING_INTERVAL_MSEC
 # redis config
 heroku config:set REDIS_DB_HOST=$REDIS_DB_HOST
 heroku config:set REDIS_DB_PORT=$REDIS_DB_PORT

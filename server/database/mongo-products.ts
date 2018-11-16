@@ -2,7 +2,7 @@ import { Db, Collection, MongoClient, ObjectId } from 'mongodb'
 import { DbProduct } from '../product/product-api'
 import { getPreloadProducts } from './reset-app-db'
 import { Order } from '../order/order-api'
-
+import { Observable, BehaviorSubject } from 'rxjs'
 const PRODUCTS_COLLECTION = 'products'
 const ORDERS_COLLECTION = 'orders'
 export const PRODUCT_DB = 'product-db'
@@ -21,6 +21,7 @@ export interface ProductDatabase {
   saveProduct(product: DbProduct, productId: string): Promise<boolean>
   createProduct(product: DbProduct): Promise<boolean>
   getAllProducts(): Promise<DbProduct[]>
+  getAllProductsO(): Observable<DbProduct[]>
   getProductById(productId: string): Promise<DbProduct | null>
 }
 
@@ -29,18 +30,30 @@ export class MongoProductDatabase implements ProductDatabase {
   private productsCollection: Collection<DbProduct>
   private ordersCollection: Collection<Order>
 
+  getAllProducts$ = new BehaviorSubject<DbProduct[]>([])
+  // TODO: update this subject whenever products collection is changed
+  // Or get products everytime there is a new subscriber?
+
+  getAllProductsO(): Observable<DbProduct[]> {
+    return this.getAllProducts$.asObservable()
+  }
+
   constructor(private client: MongoClient, dbName: string) {
     // TODO: Consider using client.s.options.db for the dbName
     console.log('Instance of mongo product database class created.')
     this.db = this.client.db(dbName)
     this.productsCollection = this.db.collection(PRODUCTS_COLLECTION)
     this.ordersCollection = this.db.collection(ORDERS_COLLECTION)
+    this.getAllProducts().then(products => {
+      this.getAllProducts$.next(products)
+    })
   }
 
   flushDb() {
     const flushes = [this.ordersCollection.deleteMany({}), this.productsCollection.deleteMany({})]
     return Promise.all(flushes).then(results => {
-      const success = !!results[0].result.ok
+      const success = results.every(r => !!r.result.ok)
+      // const success = !!results[0].result.ok
       console.log(`Database flushed`)
       return success
     })
@@ -89,6 +102,8 @@ export class MongoProductDatabase implements ProductDatabase {
     return this.productsCollection.find({}).toArray()
     // .then(xs => xs.filter(x => !!x))
   }
+
+  productsUpdated() {}
 
   getProductById(productId: string): Promise<DbProduct | null> {
     return this.productsCollection.findOne({ _id: new ObjectId(productId) })

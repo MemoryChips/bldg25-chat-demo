@@ -7,17 +7,10 @@ import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { RouterModule } from '@angular/router'
 import { CustomFormsModule } from 'ng2-validation'
 
-// import { environment } from '../environments/environment'
+import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-// import { AuthGuard } from './auth/auth.guard'
-// import { AuthService } from './auth/auth.service'
-import { LoginComponent } from './auth/login/login.component'
-import { SignupComponent } from './auth/signup/signup.component'
-// import { UserService } from './auth/user.service'
-import { HomeComponent } from './core/home/home.component'
 import { MaterialModule } from './material/material.module'
 import { SharedModule } from './shared/shared.module'
 
@@ -54,12 +47,7 @@ import { environment } from '../environments/environment'
     FormsModule,
     ReactiveFormsModule,
     CustomFormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent },
-      { path: 'home', component: HomeComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'signup', component: SignupComponent }
-    ])
+    AppRoutingModule
   ],
   providers: [
     // AuthService,

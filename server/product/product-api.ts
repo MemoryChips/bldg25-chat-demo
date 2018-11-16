@@ -5,6 +5,7 @@ import { MongoProductDatabase, PRODUCT_DB } from '../database/mongo-products'
 import { ShoppingCartDatabase, SHOPPING_CART_DB } from '../shopping-cart/shopping-cart-api'
 import { categoriesPreload } from '../database/reset-app-db'
 
+import { take } from 'rxjs/operators'
 // align models FE: product.service BE: product.api
 export interface ProductWoKey {
   title: string
@@ -68,14 +69,25 @@ function convertToProduct(dbProduct: DbProduct): Product {
 
 export function getAllProducts(req: Request, res: Response) {
   const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
-  db.getAllProducts()
-    .then(dbProducts => {
-      const products = dbProducts.map(convertToProduct)
-      res.status(200).send(products)
-    })
-    .catch(err => {
-      res.status(500).send(`Internal server error: ${err}`)
-    })
+  db.getAllProductsO()
+    .pipe(take(1))
+    .subscribe(
+      dbProducts => {
+        const products = dbProducts.map(convertToProduct)
+        res.status(200).send(products)
+      },
+      err => {
+        res.status(500).send(`Internal server error: ${err}`)
+      }
+    )
+  // db.getAllProducts()
+  //   .then(dbProducts => {
+  //     const products = dbProducts.map(convertToProduct)
+  //     res.status(200).send(products)
+  //   })
+  //   .catch(err => {
+  //     res.status(500).send(`Internal server error: ${err}`)
+  //   })
 }
 
 export function getProduct(req: Request, res: Response) {

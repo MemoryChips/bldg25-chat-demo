@@ -1,6 +1,6 @@
 import { Db, Collection, MongoClient, ObjectId } from 'mongodb'
 import { UserWoId, User } from '../auth/models/user'
-
+import { Observable, from } from 'rxjs'
 interface DbUser extends UserWoId {
   _id?: ObjectId
 }
@@ -30,6 +30,7 @@ export interface UserDatabase {
   flushDb(): Promise<boolean>
 
   getUserById(userId: string): Promise<User | null>
+  getUserByIdNew(userId: string): Observable<User | null>
   getUserByEmail(email: string): Promise<User | null>
   getUserPwdDigest(email: string): Promise<string | null>
   getAllUsers(): Promise<UserWoId[]>
@@ -70,6 +71,12 @@ export class MongoUserDatabase implements UserDatabase {
 
   getUserById(userId: string): Promise<User | null> {
     return this.usersCollection.findOne({ _id: new ObjectId(userId) }).then(addUserId)
+  }
+
+  getUserByIdNew(userId: string): Observable<User | null> {
+    const userPromise = this.usersCollection.findOne({ _id: new ObjectId(userId) }).then(addUserId)
+    return from(userPromise)
+    // return this.usersCollection.findOne({ _id: new ObjectId(userId) }).then(addUserId)
   }
 
   getUserByEmail(email: string): Promise<User | null> {

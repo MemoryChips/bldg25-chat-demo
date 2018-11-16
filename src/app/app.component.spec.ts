@@ -3,11 +3,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core'
 import { AppComponent } from './app.component'
 import { CoreModule } from './core/core.module'
 import { RouterTestingModule } from '@angular/router/testing'
-
+import { By } from '@angular/platform-browser'
 import { ChatModule } from 'bldg25-chat'
 import { environment } from '../environments/environment'
 
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, RouterOutlet } from '@angular/router'
 import { AuthService } from './auth/auth.service'
 import { ShoppingCartService } from './shared/services/shopping-cart.service'
 import { of } from 'rxjs'
@@ -38,7 +38,7 @@ describe('AppComponent', () => {
         ChatModule,
         CoreModule,
         ChatModule.forRoot(environment.chatConfig),
-        RouterTestingModule
+        RouterTestingModule.withRoutes([])
       ],
       providers: [
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
@@ -58,6 +58,13 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance
     expect(app.title).toEqual('Chat 6 Demo')
   }))
+
+  it(`should have a router outlet'`, async(() => {
+    const fixture = TestBed.createComponent(AppComponent)
+    const el = fixture.debugElement.query(By.directive(RouterOutlet))
+    expect(el).toBeTruthy()
+  }))
+
   // it('should render title in a h1 tag', async(() => {
   //   const fixture = TestBed.createComponent(AppComponent)
   //   fixture.detectChanges()

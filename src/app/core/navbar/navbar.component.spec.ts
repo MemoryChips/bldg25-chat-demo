@@ -1,4 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+// import { RouterLink } from '@angular/router'
+// import { RouterLinkWithHref } from '@angular/router'
+// import { RouterTestingModule } from '@angular/router/testing'
+import { By } from '@angular/platform-browser'
 
 import { NavbarComponent } from './navbar.component'
 import { SharedModule } from '../../shared/shared.module'
@@ -37,5 +41,17 @@ describe('NavbarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy()
+  })
+
+  it('should have a links to login signup and products pages', () => {
+    const de = fixture.debugElement.queryAll(By.css('.fa-sign-in'))
+    expect(de.length).toBe(1)
+    const links = fixture.debugElement.queryAll(By.css('[routerLink]'))
+    let index = links.findIndex(link => link.attributes.routerLink === '/login')
+    expect(index).not.toBe(-1)
+    index = links.findIndex(link => link.attributes.routerLink === '/products')
+    expect(index).not.toBe(-1)
+    index = links.findIndex(link => link.attributes.routerLink === '/signup')
+    expect(index).not.toBe(-1)
   })
 })

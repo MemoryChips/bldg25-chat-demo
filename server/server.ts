@@ -115,7 +115,7 @@ async function runServer(dbChat: ChatDatabase) {
     )
 
     // *** Chat server must be added to the express server as follows:
-    attachSocketServer(httpsServer, dbChat, verifySocketConnection)
+    attachSocketServer(httpsServer, verifySocketConnection, dbChat)
 
     httpsServer.listen(port, () => {
       console.log(`HTTPS Server running at port: ${port}`)
@@ -125,7 +125,7 @@ async function runServer(dbChat: ChatDatabase) {
     const httpServer = http.createServer(app)
 
     // *** Chat server must be added to the express server as follows:
-    attachSocketServer(httpServer, dbChat, verifySocketConnection)
+    attachSocketServer(httpServer, verifySocketConnection, dbChat)
 
     httpServer.listen(port, () => {
       console.log(`HTTP Server running at port: ${port}`)

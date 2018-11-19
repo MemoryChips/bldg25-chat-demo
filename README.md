@@ -47,7 +47,7 @@ mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_USER -p $M
 npm run api-test
 # front end tests
 ng test
-ng test --code-coverage
+ng test --code-coverage # then open ./coverage/index.html in browser
 npm run test
 # TBD: integrate with travis-ci or maybe coveralls.io
 # Use dev branch for code dev. When merge and push master to github trigger ci

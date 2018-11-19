@@ -10,7 +10,9 @@ class MockHttpClient {
   get() {
     return of(exampleCart)
   }
-  post() {}
+  post() {
+    return of('Got your post request')
+  }
 }
 
 describe('ShoppingCartService', () => {

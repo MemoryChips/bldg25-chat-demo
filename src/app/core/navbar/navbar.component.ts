@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   development = ''
   collapse = true
 
-  private subscriptions: Subscription[]
+  private subscriptions: Subscription[] = []
 
   constructor(private authService: AuthService, private shoppingCartService: ShoppingCartService) {}
 

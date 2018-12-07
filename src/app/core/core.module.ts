@@ -8,6 +8,7 @@ import { NavbarComponent } from './navbar/navbar.component'
 import { SharedModule } from '../shared/shared.module'
 
 import { MaterialModule } from '../material/material.module'
+import { NotFoundComponent } from './not-found/not-found.component'
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +17,7 @@ import { MaterialModule } from '../material/material.module'
     MaterialModule,
     RouterModule.forChild([])
   ],
-  declarations: [NavbarComponent, FooterComponent, HomeComponent],
+  declarations: [NavbarComponent, FooterComponent, HomeComponent, NotFoundComponent],
   exports: [NavbarComponent, FooterComponent]
 })
 export class CoreModule {}

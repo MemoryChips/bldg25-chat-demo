@@ -44,6 +44,10 @@ mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_USER -p $M
 ```bash
 # if running with some data stored in local redis server
 # redis-server ./server/database/redis.conf  # ONLY if needed launch local redis server
+# start api server in debug
+# OR
+# after build
+MONGO_URL='mongodb+srv://chat-dev-server:W_%3BjB%5Bw%7B%7DD2%2BRkQK@dev-vejwg.mongodb.net/test?retryWrites=true' npm run start-server
 npm run api-test
 # front end tests
 ng test

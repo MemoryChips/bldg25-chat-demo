@@ -100,8 +100,11 @@ export class MongoUserDatabase implements UserDatabase {
     return Promise.all([
       this.usersCollection.insertOne(userWoId).then(insertResult),
       this.passwordsCollection
-        .insertOne({ email: userWoId.email, passwordDigest })
-        .then(insertResult)
+        .updateOne({ email: userWoId.email }, { $set: { passwordDigest } }, { upsert: true })
+        // .insertOne({ email: userWoId.email, passwordDigest })
+        .then(r => {
+          return r.upsertedCount === 1 || r.modifiedCount === 1
+        })
     ]).then(results => results.every(r => r))
   }
 

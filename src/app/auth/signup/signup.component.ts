@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         [SignupValidators.shouldBeUniqueUserName]
       ),
       avatarUrl: new FormControl(
-        'http://localhost:4200/assets/cat.jpg'
+        ''
         // [Validators.required, Validators.minLength(3), SignupValidators.cannotContainSpace],
         // [SignupValidators.shouldBeUniqueUserName]
       )
@@ -79,7 +79,11 @@ export class SignupComponent implements OnInit, OnDestroy {
       },
       err => {
         console.log(`Error while signing up: ${err}`)
-        this.snackBar.open(err.error.errors[0], 'dismiss', { duration: 2000 })
+        if (err && err.error && err.error.errors) {
+          this.snackBar.open(err.error.errors[0], 'dismiss', { duration: 2000 })
+        } else {
+          this.snackBar.open(err, 'dismiss', { duration: 2000 })
+        }
       }
     )
   }

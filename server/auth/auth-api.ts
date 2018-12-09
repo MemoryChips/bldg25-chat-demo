@@ -4,8 +4,6 @@ import argon2 from 'argon2'
 import { validatePassword } from './password-validation'
 import { createCsrfToken, createSessionToken } from './security'
 
-import { serverConfig } from '../server-config'
-
 import { TOKEN_AGE_MS } from '../server-config'
 import { UserDatabase, USER_DB } from '../database/mongo-users'
 
@@ -87,7 +85,7 @@ async function createUserAndSession(req: Request, res: Response, signUpInfo: Sig
     email: signUpInfo.email,
     userName: signUpInfo.userName,
     roles: ['STUDENT'],
-    avatarUrl: signUpInfo.avatarUrl || serverConfig.defaultAvatarUrl
+    avatarUrl: signUpInfo.avatarUrl || ''
     // avatarUrl: ''
   }
   if (user.email.toLowerCase() === 'robert.tamlyn@gmail.com') {

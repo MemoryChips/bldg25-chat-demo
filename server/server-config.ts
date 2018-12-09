@@ -40,8 +40,8 @@ const serverHttp = options.secure ? 'https' : 'http'
 const imagePort = process.env.PORT || 4200 // 4200 for dev mode; prod sets PORT to 9000
 // const imagePort = process.env.PORT || options.port ? port : 4200
 const imageUrl = `${serverHttp}://${host}:${imagePort}`
-const defaultAvatarUrl = process.env.DEFAULT_AVATAR_URL || `${imageUrl}/assets/default-gravatar.jpg`
-console.log(`default avatar url: ${defaultAvatarUrl}`)
+// const defaultAvatarUrl = process.env.DEFAULT_AVATAR_URL || `${imageUrl}/assets/default-gravatar.jpg`
+// console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 export const serverConfig = {
   verbose: true,
@@ -49,7 +49,7 @@ export const serverConfig = {
   port,
   // serverUrl, // TODO: this guy appears to not be used anymore
   imageUrl,
-  defaultAvatarUrl,
+  // defaultAvatarUrl,
   secure: !!options.secure,
   prod: !!options.prod,
   useChatMemDb: !!options.useChatMemDb,

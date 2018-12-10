@@ -22,6 +22,7 @@ export const environment = {
   chatConfig: {
     chatOpenAtLogin: false,
     reconnectInterval: 5000,
-    reconnectAttempts: 6
+    reconnectAttempts: 6,
+    pingIntervalMsec: 5000
   }
 }

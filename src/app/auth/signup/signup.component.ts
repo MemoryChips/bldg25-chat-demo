@@ -6,6 +6,7 @@ import { AuthService, SignUpInfo } from '../auth.service'
 
 import { SignupValidators } from './signup.validators'
 import { MatSnackBar } from '@angular/material'
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-signup',
@@ -57,7 +58,14 @@ export class SignupComponent implements OnInit, OnDestroy {
     public snackBar: MatSnackBar
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (environment.production) {
+      this.form.controls.userName.setValue('')
+      this.form.controls.email.setValue('')
+      this.form.controls.password.setValue('')
+      this.form.controls.confirmPassword.setValue('')
+    }
+  }
 
   ngOnDestroy() {}
 

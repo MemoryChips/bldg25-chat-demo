@@ -6,6 +6,7 @@ import { Router } from '@angular/router'
 import { Unsubscribe } from 'shared/utils'
 import { MatSnackBar } from '@angular/material'
 import { SignupValidators } from '../signup/signup.validators'
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-login',
@@ -41,6 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    if (environment.production) {
+      this.form.controls.email.setValue('')
+      this.form.controls.password.setValue('')
+    }
     this._subscriptions = [
       this.authService.user$.subscribe(user => (this.user = user)),
       this.authService.isLoggedIn$.subscribe(isLoggedIn => {

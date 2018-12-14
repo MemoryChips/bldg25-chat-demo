@@ -47,7 +47,7 @@ mongo "mongodb+srv://dev-vejwg.mongodb.net/test" --username $MONGO_DB_USER -p $M
 # start api server in debug
 # OR
 # after build
-MONGO_URL='mongodb+srv://chat-dev-server:W_%3BjB%5Bw%7B%7DD2%2BRkQK@dev-vejwg.mongodb.net/test?retryWrites=true' npm run start-server
+# <see todo file for start command of server>
 npm run api-test
 # front end tests
 ng test

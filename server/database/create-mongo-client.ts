@@ -6,18 +6,12 @@ export function createMongoClient(): Promise<MongoClient> {
     serverConfig.mongoUrl,
     { useNewUrlParser: true }
   ).then(client => {
-    // TODO: Do these events happen?
-    client.on('error', err => {
-      // Can I reconnect here?
-      console.error(`Error in client: ${err} Can I reconnect?`)
-    })
-    client.on('connect', _e => {
-      console.log(`Connect event`)
-    })
-    client.on('reconnect', _e => {
-      console.log(`Reconnect event`)
-    })
-
+    console.log(`Mongo client created using ${serverConfig.mongoUrl}`)
     return client
   })
+  // .catch(_err => {
+  //   console.error(`${_err}`)
+  //   console.log(`Unable to create Mongo client using ${serverConfig.mongoUrl}`)
+  //   return null
+  // })
 }

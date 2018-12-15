@@ -31,23 +31,13 @@ const port = process.env.PORT || 9000
 
 const serverHttp = options.secure ? 'https' : 'http'
 
-// TODO: serverUrl appears to no longer be used
-// const serverUrlXX = `${serverHttp}://${host}:${port}`
-// console.log(`server url: ${serverUrlXX}`)
-// End no longer used
-
-// PORT was set to 48759 on heroku for stormy mountain
 const imagePort = process.env.PORT || 4200 // 4200 for dev mode; prod sets PORT to 9000
-// const imagePort = process.env.PORT || options.port ? port : 4200
 const imageUrl = `${serverHttp}://${host}:${imagePort}`
-// const defaultAvatarUrl = process.env.DEFAULT_AVATAR_URL || `${imageUrl}/assets/default-gravatar.jpg`
-// console.log(`default avatar url: ${defaultAvatarUrl}`)
 
 export const serverConfig = {
   verbose: true,
   host,
   port,
-  // serverUrl, // TODO: this guy appears to not be used anymore
   imageUrl,
   // defaultAvatarUrl,
   secure: !!options.secure,

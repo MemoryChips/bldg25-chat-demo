@@ -55,8 +55,6 @@ describe('SignupComponent', () => {
   })
   it('initial password field validity', () => {
     const password = component.form.controls['password']
-    // FIXME: this should be falsy
-    // expect(password.valid).toBeFalsy()
     expect(password.valid).toBeTruthy()
   })
   it('good password and bad password with blank', () => {

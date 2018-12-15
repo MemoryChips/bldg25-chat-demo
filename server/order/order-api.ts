@@ -21,7 +21,6 @@ export function postOrder(req: any, res: Response) {
 
 export function getMyOrders(req: any, res: Response) {
   const db: MongoProductDatabase = req.app.locals[PRODUCT_DB]
-  // const userId = req.user.sub
   const userId: string = req.app.locals.userId
   db.getOrdersById(userId)
     .then(orders => {

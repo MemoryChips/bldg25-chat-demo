@@ -8,16 +8,14 @@ const regex = {
 }
 
 export class PasswordValidator {
-  // private _valid = false
-  private _flip = false
+  private _not = false
   private _errors: string[] = []
 
   constructor(private password: string) {}
 
   private _setValid(b: boolean, errMsg: string): PasswordValidator {
-    if (b === this._flip) {
-      this._errors.push(`password must${this._flip ? ' ' : ' not '} ${errMsg}`)
-      // this._valid = false
+    if (b === this._not) {
+      this._errors.push(`password must${this._not ? ' ' : ' not '} ${errMsg}`)
     }
     return this
   }
@@ -27,12 +25,12 @@ export class PasswordValidator {
   }
 
   not() {
-    this._flip = true
+    this._not = true
     return this
   }
 
   has() {
-    this._flip = false
+    this._not = false
     return this
   }
 

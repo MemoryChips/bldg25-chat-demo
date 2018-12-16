@@ -69,11 +69,19 @@ if (process.env.PROD || serverConfig.prod) {
   })
 }
 
+// let chatDataBase: Promise<ChatDatabase>
+// if (serverConfig.useChatMemDb) chatDataBase = Promise.resolve(new ChatMemoryDataBase())
+// else chatDataBase = createMongoClient(serverConfig.mongoUrl).then(client => new ChatMongoDataBase(client, serverConfig.mongoDataBase))
+// chatDataBase.then(chatDb => {
+//   app.locals.CHAT_DB = chatDb
+//   app.locals[CATEGORIES_DB] = new MongoCategoryDatabase(client, serverConfig.mongoDataBase)
+// })
+
 // TODO: This is clumsy. Find cleaner way
 const dataBases: any[] = []
-dataBases.push(createMongoClient())
+dataBases.push(createMongoClient(serverConfig.mongoUrl))
 if (serverConfig.useRedisCategories) {
-  dataBases.push(createRedisClient())
+  dataBases.push(createRedisClient(serverConfig.redisClientOptions))
 }
 // Promise.all([createMongoClient(), createRedisClient()])
 Promise.all(dataBases)

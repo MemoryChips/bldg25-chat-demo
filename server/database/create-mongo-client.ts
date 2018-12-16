@@ -1,12 +1,12 @@
 import { MongoClient } from 'mongodb'
-import { serverConfig } from '../server-config'
+// import { serverConfig } from '../server-config'
 
-export function createMongoClient(): Promise<MongoClient> {
+export function createMongoClient(mongoUrl: string): Promise<MongoClient> {
   return MongoClient.connect(
-    serverConfig.mongoUrl,
+    mongoUrl,
     { useNewUrlParser: true }
   ).then(client => {
-    console.log(`Mongo client created using ${serverConfig.mongoUrl}`)
+    console.log(`Mongo client created using ${mongoUrl}`)
     return client
   })
   // .catch(_err => {

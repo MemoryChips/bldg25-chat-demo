@@ -1,5 +1,7 @@
 # Chat 6
 
+See latest version is now at [demo](https://bitbucket.org/rtamlyn/bldg25-chat-demo/src/master/)
+
 This demo shows how to add bldg25-chat to an existing angular 6+ application
 
 See Setup Demo App below
